@@ -1,0 +1,1566 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Спеціалісти для приватних занять</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --teal: #2ec4a5; --teal-dark: #22a98d;
+    --orange: #f4862a; --orange-dark: #d96f1a;
+    --navy: #1a1f36; --text: #2d3348; --muted: #8590a6;
+    --border: #e8ecf4; --bg: #f7f9fc; --card: #ffffff;
+    --shadow: 0 2px 16px rgba(30,40,80,0.07);
+    --shadow-lg: 0 8px 40px rgba(30,40,80,0.13);
+    --radius: 16px; --radius-sm: 10px;
+  }
+  body { font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; font-size: clamp(14px, 1.4vw, 16px); }
+
+  /* NAV */
+  nav { background:#fff; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .nav-inner { max-width:1120px; margin:0 auto; padding:0 24px; height:64px; display:flex; align-items:center; gap:32px; }
+  .logo { width:44px; height:44px; background:linear-gradient(135deg,var(--teal),var(--teal-dark)); border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Unbounded',sans-serif; font-size:14px; font-weight:700; color:#fff; flex-shrink:0; text-decoration:none; }
+  .nav-links { display:flex; gap:28px; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--text); font-size:15px; font-weight:500; transition:color .2s; }
+  .nav-links a:hover { color:var(--teal); }
+  .nav-right { margin-left:auto; display:flex; align-items:center; gap:16px; }
+  .nav-lang { display:flex; align-items:center; gap:6px; font-size:14px; font-weight:600; color:var(--text); cursor:pointer; border:none; background:none; padding:6px 10px; border-radius:8px; transition:background .2s; }
+  .nav-lang:hover { background:var(--bg); }
+  .nav-lang svg { width:18px; height:18px; color:var(--muted); }
+  .btn-login { font-family:'Manrope',sans-serif; font-size:15px; font-weight:600; color:var(--text); background:none; border:1.5px solid var(--border); border-radius:10px; padding:8px 18px; cursor:pointer; transition:all .2s; text-decoration:none; }
+  .btn-login:hover { border-color:var(--teal); color:var(--teal); }
+  .btn-register { font-family:'Manrope',sans-serif; font-size:15px; font-weight:700; color:#fff; background:var(--navy); border:none; border-radius:10px; padding:9px 20px; cursor:pointer; transition:background .2s; text-decoration:none; }
+  .btn-register:hover { background:#252d52; }
+  .burger { display:none; background:none; border:none; cursor:pointer; flex-direction:column; gap:5px; padding:4px; }
+  .burger span { display:block; width:24px; height:2px; background:var(--text); border-radius:2px; }
+
+  /* HERO */
+  .hero { background:linear-gradient(160deg,#edfaf7 0%,#f7f9fc 60%,#fff8f2 100%); padding:52px 24px 0; }
+  .hero-inner { max-width:1120px; margin:0 auto; display:flex; flex-direction:column; }
+  .hero h1 { font-family:'Unbounded',sans-serif; font-size:clamp(20px,4vw,36px); font-weight:700; color:var(--navy); margin-bottom:8px; }
+  .hero p { font-size:clamp(13px,1.3vw,15px); color:var(--muted); max-width:540px; line-height:1.6; margin-bottom:32px; }
+
+  /* CATEGORY BUTTONS */
+  .category-row { display:flex; flex-direction:row; gap:12px; margin-bottom:28px; }
+  .cat-btn { display:flex; align-items:center; gap:12px; background:#fff; border:1.5px solid var(--border); border-radius:var(--radius-sm); padding:14px 18px; cursor:pointer; transition:all .2s; text-align:left; flex:1; font-family:'Manrope',sans-serif; }
+  .cat-btn:hover { border-color:var(--teal); box-shadow:0 4px 16px rgba(46,196,165,.12); transform:translateY(-1px); }
+  .cat-btn.active { border-color:var(--teal); background:linear-gradient(135deg,#edfaf7,#f5fffd); box-shadow:0 4px 20px rgba(46,196,165,.18); }
+  .cat-icon { font-size:26px; width:44px; height:44px; background:var(--bg); border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .cat-btn.active .cat-icon { background:#d8f5ee; }
+  .cat-text { display:flex; flex-direction:column; gap:2px; flex:1; }
+  .cat-text strong { font-size:14px; font-weight:700; color:var(--navy); }
+  .cat-text small { font-size:12px; color:var(--muted); font-weight:500; }
+  .cat-arrow { font-size:20px; color:var(--muted); transition:color .2s,transform .2s; }
+  .cat-btn:hover .cat-arrow, .cat-btn.active .cat-arrow { color:var(--teal); transform:translateX(2px); }
+
+  /* MAIN */
+  .main { max-width:1120px; margin:0 auto; padding:12px 24px 80px; }
+
+  /* SORT TABS */
+  /* SORT ROW */
+  .sort-row { display:flex; align-items:center; justify-content:space-between; margin-top:2px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+  .sort-count { font-family:'Manrope',sans-serif; font-size:14px; font-weight:600; color:var(--muted); }
+  .sort-count strong { color:var(--navy); }
+  /* SORT DROPDOWN */
+  .sort-wrap { position:relative; display:inline-block; }
+  .sort-btn { font-family:'Manrope',sans-serif; font-size:12px; font-weight:600; color:var(--navy); background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:6px 12px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; box-shadow:0 1px 4px rgba(30,40,80,.06); transition:border-color .2s; white-space:nowrap; }
+  .sort-btn:hover { border-color:var(--teal); }
+  .sort-btn-label { color:var(--muted); font-weight:500; font-size:13px; }
+  .sort-btn svg { width:14px; height:14px; color:var(--muted); transition:transform .2s; flex-shrink:0; }
+  .sort-wrap.open .sort-btn svg { transform:rotate(180deg); }
+  .sort-dropdown { position:absolute; top:calc(100% + 6px); left:0; background:#fff; border:1.5px solid var(--border); border-radius:14px; box-shadow:0 8px 32px rgba(30,40,80,.13); min-width:260px; z-index:50; overflow:hidden; display:none; }
+  .sort-wrap.open .sort-dropdown { display:block; }
+  .sort-option { font-family:'Manrope',sans-serif; font-size:14px; font-weight:500; color:var(--text); padding:12px 16px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; transition:background .15s; }
+  .sort-option:hover { background:var(--bg); }
+  .sort-option.active { font-weight:700; color:var(--navy); }
+  .sort-option.active::after { content:'✓'; font-size:14px; color:var(--teal); }
+
+  /* MOBILE SORT BAR */
+
+  /* Mobile sort scroll tabs */
+  .mobile-sort-tabs { display:none; overflow-x:auto; scrollbar-width:none; margin-bottom:20px; border-bottom:2px solid var(--border); }
+  .mobile-sort-tabs::-webkit-scrollbar { display:none; }
+  .mobile-sort-tabs-inner { display:flex; gap:0; width:max-content; }
+  .mob-sort-tab { font-family:'Manrope',sans-serif; font-size:13.5px; font-weight:600; color:var(--muted); background:none; border:none; border-bottom:2.5px solid transparent; margin-bottom:-2px; padding:10px 16px; cursor:pointer; white-space:nowrap; transition:all .2s; }
+  .mob-sort-tab:hover { color:var(--navy); }
+  .mob-sort-tab.active { color:var(--teal); border-bottom-color:var(--teal); }
+
+  /* CARD */
+  .card { background:var(--card); border:1.5px solid var(--border); border-radius:var(--radius); display:grid; grid-template-columns:148px 1fr 220px; margin-bottom:20px; overflow:hidden; box-shadow:var(--shadow); transition:box-shadow .25s,transform .2s; animation:fadeUp .5s ease both; }
+  .card > .card-side { grid-column:3; grid-row:1; }
+  .card-top-row { grid-column:1/3; grid-row:1; display:grid; grid-template-columns:148px 1fr; grid-template-rows:auto auto auto; }
+  .card-top-row > .card-photo-wrap { grid-column:1; grid-row:1/3; aspect-ratio:1; overflow:hidden; }
+  .card-top-row > .card-body { grid-column:2; grid-row:1; }
+  .card-top-row > .card-subjects { grid-column:2; grid-row:2; padding:2px 10px 4px; font-size:17px; color:#0d1117; font-weight:700; }
+  .card-top-row > .card-details { grid-column:1 / -1; grid-row:3; border-top:1px solid var(--border); }
+  .card:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+  .card:nth-child(2) { animation-delay:.1s; }
+  .card:nth-child(3) { animation-delay:.2s; }
+
+  .card-photo-wrap { position:relative; width:140px; align-self:stretch; }
+  .card-photo-wrap img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+  .photo-label { position:absolute; bottom:0; left:0; right:0; padding:18px 10px 6px; background:linear-gradient(transparent, rgba(0,0,0,0.55)); font-family:'Manrope',sans-serif; font-size:11px; font-weight:700; color:#fff; text-align:center; letter-spacing:0.5px; text-transform:uppercase; }
+  .online-dot { display:none; }
+  .online-dot.orange { background:var(--orange); }
+
+  .card-body { padding:10px 10px 0; display:flex; flex-direction:column; gap:4px; min-width:0; }
+  .card-name { font-family:'Unbounded',sans-serif; font-size:clamp(15px,1.4vw,18px); font-weight:700; color:var(--navy); }
+  .badge-verified { display:none; }
+  .badge-verified svg { width:12px; height:12px; }
+  .rating-wrap { display:flex; align-items:center; gap:5px; }
+  .rating-inline { display:inline-flex; align-items:center; gap:4px; font-size:14px; font-weight:600; color:var(--navy); white-space:nowrap; }
+  .rating-inline .reviews-link { font-size:14px; color:#4a5068; font-weight:600; text-decoration:underline; text-underline-offset:3px; text-decoration-color:#b0b8ca; margin-left:2px; cursor:pointer; }
+  .star { color:#fbbf24; font-size:14px; }
+  .rating-val { font-size:14px; font-weight:700; color:var(--navy); }
+  .reviews-link { font-size:13px; font-weight:600; color:#4a5068; text-decoration:underline; text-underline-offset:3px; text-decoration-color:#b0b8ca; cursor:pointer; transition:color .2s; }
+  .stats-row { display:flex; gap:16px; }
+  .exp-row { display:flex; align-items:center; gap:8px; }
+  .stats-row-below { display:flex; align-items:center; gap:16px; }
+  .stat { display:flex; align-items:center; gap:5px; }
+  .stat-val { font-size:16px; font-weight:700; color:var(--navy); }
+  .stat-label { font-size:15px; color:#4a5068; font-weight:500; }
+  .tags-row { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:0; }
+  .exp-line { font-size:16px; color:var(--navy); font-weight:600; display:flex; align-items:center; gap:8px; }
+  .exp-type { font-weight:700; font-size:14px; padding:4px 12px; border-radius:8px; }
+  .exp-type.teal { color:var(--teal-dark); background:#e8faf5; }
+  .exp-type.orange { color:var(--orange-dark); background:#fff3e8; }
+  .exp-dot { color:var(--muted); }
+  .exp-years { color:var(--navy); font-weight:700; font-size:15px; }
+  .tag { font-size:12px; font-weight:700; border-radius:6px; padding:4px 10px; }
+  .tag-teal { background:#e8faf5; color:var(--teal-dark); }
+  .tag-gray { background:#f0f2f7; color:var(--text); }
+  .subjects { font-size:17px; color:#0d1117; font-weight:700; }
+  .card-desc { font-size:16px; line-height:1.6; color:#0d1117; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; }
+  .card-desc strong { font-weight:700; }
+  .card-details { display:flex; flex-direction:column; gap:6px; padding:8px 14px 14px 14px; }
+  .card-details .subjects { margin-bottom:0; }
+  .location-row { display:flex; align-items:center; gap:6px; font-size:14px; color:#4a5068; font-weight:600; margin-left:auto; flex-shrink:0; }
+  .location-row svg { width:14px; height:14px; }
+  .dot-sep { color:var(--border); }
+
+  .card-side { padding:16px 22px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; border-left:1.5px solid var(--border); background:#ffffff; position:relative; }
+  .heart-btn { position:absolute; top:18px; right:16px; background:none; border:none; cursor:pointer; color:#c0c8de; font-size:30px; transition:color .2s; padding:0; line-height:1; z-index:2; }
+  .heart-btn:hover, .heart-btn.liked { color:#ef4444; }
+  .price { font-family:'Unbounded',sans-serif; font-size:clamp(18px,2vw,25px); font-weight:700; color:var(--navy); letter-spacing:-0.5px; }
+  .price-unit { font-family:'Manrope',sans-serif; font-size:15px; font-weight:500; color:var(--muted); }
+  .price-wrap { text-align:center; padding:4px 0; }
+  .cta-wrap { display:flex; flex-direction:column; gap:7px; width:100%; }
+  .btn-cta { font-family:'Manrope',sans-serif; font-size:14px; font-weight:700; border:none; border-radius:10px; padding:12px 16px; cursor:pointer; transition:all .2s; text-align:center; width:100%; }
+  .btn-cta-teal { background:var(--teal); color:#fff; }
+  .btn-cta-teal:hover { background:var(--teal-dark); }
+  .btn-cta-orange { background:var(--orange); color:#fff; }
+  .btn-cta-orange:hover { background:var(--orange-dark); }
+  .btn-more { font-family:'Manrope',sans-serif; font-size:14px; font-weight:600; color:var(--text); background:none; border:1.5px solid var(--border); border-radius:10px; padding:10px 16px; cursor:pointer; transition:all .2s; width:100%; text-align:center; }
+  .btn-more:hover { border-color:var(--navy); color:var(--navy); }
+
+  /* FILTER CHIPS */
+  .filter-bar { background:#fff; border-top:1.5px solid var(--border); border-bottom:1.5px solid var(--border); display:none; padding:0; }
+  .filter-bar.visible { display:block; }
+  .filter-bar-inner { max-width:1120px; margin:0 auto; padding:16px 24px 16px; }
+  /* HERO SEARCH */
+  .search-filter-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .hero-search-box { flex:1; display:flex; align-items:center; background:#fff; border:2px solid var(--border); border-radius:20px; padding:8px 8px 8px 24px; box-shadow:0 4px 24px rgba(30,40,80,.1); transition:border-color .2s,box-shadow .2s; }
+  .filter-toggle-btn { display:none; align-items:center; gap:7px; font-family:'Manrope',sans-serif; font-size:14px; font-weight:700; color:var(--navy); background:#fff; border:1.5px solid var(--border); border-radius:18px; padding:0 22px; height:72px; cursor:pointer; transition:all .2s; white-space:nowrap; flex-shrink:0; box-shadow:0 2px 8px rgba(30,40,80,.07); }
+  .filter-toggle-btn svg { width:16px; height:16px; }
+  .filter-toggle-btn:hover { border-color:var(--teal); color:var(--teal); }
+  .hero-search-box:focus-within { border-color:var(--teal); box-shadow:0 4px 28px rgba(46,196,165,.18); }
+  .hero-search-input { flex:1; font-family:'Manrope',sans-serif; font-size:17px; font-weight:500; color:var(--text); border:none; outline:none; background:transparent; padding:12px 0; }
+  .hero-search-input::placeholder { color:var(--muted); }
+  .hero-search-btn { width:58px; height:58px; border-radius:16px; background:var(--teal); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .2s,transform .15s; }
+  .hero-search-btn:hover { background:var(--teal-dark); transform:scale(1.05); }
+  .hero-search-btn svg { width:22px; height:22px; color:#fff; }
+  .scroll-arrow { display:none; }
+
+  /* QUICK CHIPS */
+  .quick-chips { display:flex; gap:8px; overflow-x:auto; flex:1; scrollbar-width:none; -ms-overflow-style:none; align-items:center; padding:4px 0; }
+  .quick-chips::-webkit-scrollbar { display:none; }
+  .qchip { font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; color:var(--text); background:#fff; border:1.5px solid var(--border); border-radius:20px; padding:8px 16px; cursor:pointer; white-space:nowrap; flex-shrink:0; transition:all .2s; }
+  .qchip:hover { border-color:var(--teal); color:var(--teal); background:#f0fdf9; }
+  .qchip.active { background:var(--teal); border-color:var(--teal); color:#fff; }
+
+  /* SUBJECT SELECTOR */
+  .subject-selector { flex:0 0 auto; position:relative; min-width:260px; }
+  .subject-selector-btn { display:flex; align-items:center; background:#fff; border:2px solid #c0c7d6; border-radius:12px; padding:12px 18px; cursor:pointer; transition:all .2s; box-shadow:0 2px 8px rgba(30,40,80,.08); }
+  .subject-selector-btn:hover { border-color:var(--teal); box-shadow:0 4px 20px rgba(46,196,165,.15); }
+  .subject-selector.open .subject-selector-btn { border-color:var(--teal); border-radius:12px 12px 0 0; }
+  .subject-selector-label { font-family:'Manrope',sans-serif; font-size:16px; font-weight:600; color:var(--navy); }
+  .subject-selector-value { font-family:'Manrope',sans-serif; font-size:16px; font-weight:600; color:var(--navy); }
+  .subject-selector-arrow { width:18px; height:18px; color:var(--muted); margin-left:auto; transition:transform .2s; flex-shrink:0; }
+  .subject-selector.open .subject-selector-arrow { transform:rotate(180deg); }
+  .subject-drop { display:none; position:absolute; top:100%; left:0; right:0; background:#fff; border:1.5px solid var(--teal); border-top:none; border-radius:0 0 12px 12px; box-shadow:0 8px 32px rgba(30,40,80,.13); z-index:100; max-height:320px; overflow:hidden; display:none; flex-direction:column; }
+  .subject-selector.open .subject-drop { display:flex; }
+  .subject-drop-search { font-family:'Manrope',sans-serif; font-size:14px; padding:10px 16px; border:none; border-bottom:1px solid var(--border); outline:none; background:var(--bg); }
+  .subject-drop-search:focus { background:#fff; }
+  .subject-drop-search::placeholder { color:var(--muted); }
+  .subject-drop-list { overflow-y:auto; max-height:260px; }
+  .subject-drop-list::-webkit-scrollbar { width:4px; }
+  .subject-drop-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+  .subject-drop-group { font-family:'Manrope',sans-serif; font-size:11px; font-weight:800; color:var(--muted); text-transform:uppercase; letter-spacing:.5px; padding:10px 16px 4px; }
+  .subject-drop-item { font-family:'Manrope',sans-serif; font-size:14px; font-weight:500; color:var(--text); padding:9px 16px; cursor:pointer; transition:background .12s; }
+  .subject-drop-item:hover { background:var(--bg); color:var(--teal); }
+  .subject-drop-item.picked { color:var(--teal); font-weight:700; }
+
+  .chip { font-family:'Manrope',sans-serif; font-size:15px; font-weight:600; color:var(--text); background:#fff; border:1.5px solid var(--border); border-radius:24px; padding:10px 20px; cursor:pointer; white-space:nowrap; transition:all .2s; flex-shrink:0; box-shadow:0 1px 4px rgba(30,40,80,.06); display:inline-flex; align-items:center; gap:6px; }
+  .lang-badge { font-size:10px; font-weight:800; background:var(--bg); color:var(--muted); border-radius:4px; padding:2px 5px; letter-spacing:.3px; transition:all .2s; }
+  .chip:hover .lang-badge { background:#d8f5ee; color:var(--teal-dark); }
+  .chip.active .lang-badge { background:rgba(255,255,255,.25); color:#fff; }
+  .chip:hover { border-color:var(--teal); color:var(--teal); background:#f0fdf9; transform:translateY(-1px); box-shadow:0 3px 10px rgba(46,196,165,.15); }
+  .chip.active { background:linear-gradient(135deg,var(--teal),var(--teal-dark)); border-color:transparent; color:#fff; box-shadow:0 3px 12px rgba(46,196,165,.35); transform:translateY(-1px); }
+  .chip-more { font-family:'Manrope',sans-serif; font-size:13px; font-weight:700; color:var(--teal); background:#f0fdf9; border:1.5px dashed var(--teal); border-radius:24px; padding:8px 14px; cursor:pointer; white-space:nowrap; transition:all .2s; flex-shrink:0; }
+  .chip-more:hover { background:var(--teal); color:#fff; border-style:solid; }
+
+  @media (max-width:700px) {
+    .filter-bar { padding:10px 16px; }
+    .filter-toggle-btn { display:flex !important; }
+    .subject-selector { flex:1 !important; width:auto !important; max-width:none !important; margin-bottom:0 !important; }
+    .quick-chips { display:none !important; }
+
+    .search-filter-row { display:flex !important; flex-direction:row !important; align-items:center !important; gap:10px !important; }
+    .chip { font-size:12.5px; padding:7px 12px; }
+    .filter-section-label { font-size:10px; }
+    .filter-section { margin-bottom:10px; }
+    .hero-search-input { font-size:13px; }
+    .hero-search-btn { width:40px; height:40px; }
+    .quick-tag-icon { width:44px; height:44px; font-size:18px; }
+    .quick-tags-row { gap:10px; }
+  }
+  @media (max-width:700px) {
+    .nav-links { display:none; }
+    .btn-login { display:none; }
+    .burger { display:flex; }
+    .hero { padding:8px 0 0; }
+    .hero h1 { font-size:20px; }
+    .hero p { font-size:13px; margin-bottom:8px; }
+    .hero-inner { padding:0 16px; }
+    .main { padding:4px 0 60px; max-width:100% !important; }
+    .filter-bar { padding:10px 0 !important; }
+    .filter-bar-inner { padding:10px 16px !important; }
+    .category-row { gap:6px; margin-bottom:8px; }
+    .mobile-sort-tabs { display:none; }
+    .category-row { flex-direction:column; gap:10px; }
+    .cat-btn { width:100%; padding:12px 14px; }
+    .cat-icon { width:38px; height:38px; font-size:22px; }
+    .card { border-radius:0 !important; border-left:none !important; border-right:none !important; margin-bottom:8px !important; }
+    .sort-row { padding-left:16px !important; padding-right:16px !important; }
+
+    /* Mobile card */
+    .card {
+      display: flex !important;
+      flex-direction: column !important;
+      grid-template-columns: unset !important;
+    }
+    .card-top-row {
+      display: grid !important;
+      grid-template-columns: 100px 1fr !important;
+      grid-template-rows: auto auto auto !important;
+      position: relative;
+    }
+    .card-top-row > .card-photo-wrap {
+      grid-column: 1 !important;
+      grid-row: 1 !important;
+      aspect-ratio: auto !important;
+      width: auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      border-radius: 0 !important;
+      overflow: hidden;
+      position: relative;
+    }
+    .card-top-row > .card-photo-wrap img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+    .online-dot { bottom:8px; left:8px; width:9px; height:9px; }
+    .heart-btn {
+      position: absolute !important;
+      top: 8px !important;
+      right: 8px !important;
+      font-size: 20px !important;
+      padding: 0 !important;
+      z-index: 10;
+    }
+    .card-top-row > .card-body {
+      grid-column: 2;
+      grid-row: 1;
+      padding: 6px 32px 12px 12px !important;
+      gap: 8px !important;
+      display: flex !important;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+    }
+    .card-top-row > .card-subjects {
+      grid-column: 1 / -1 !important;
+      grid-row: 2 !important;
+      padding: 6px 14px 2px !important;
+      font-size: 11.7px !important;
+      border-top: 1px solid var(--border) !important;
+    }
+
+    .card-top-row > .card-details {
+      grid-column: 1 / -1 !important;
+      grid-row: 3 !important;
+      padding: 4px 14px 10px !important;
+      gap: 5px !important;
+      display: flex !important;
+      flex-direction: column;
+      border-top: none !important;
+    }
+    /* Нижня панель: ціна зліва + кнопка "Записатись" справа */
+    .card > .card-side {
+      border-left: none !important;
+      border-top: 1.5px solid var(--border);
+      padding: 10px 14px;
+      flex-direction: row !important;
+      align-items: center;
+      justify-content: space-between;
+      grid-column: unset !important;
+      grid-row: unset !important;
+      display: flex !important;
+      position: relative;
+    }
+
+    .card-name { font-size: 14px; }
+    .badge-verified { display: none; }
+    .card-body > div:first-child { flex-wrap: nowrap !important; gap: 4px !important; overflow: hidden; }
+    .rating-inline .reviews-link { display: inline; font-size: 11px; }
+    .reviews-link { display: none !important; }
+    .rating-inline { font-size: 12px !important; gap: 2px !important; }
+    .stats-row { display: none !important; }
+    .stat-val { font-size: 15px !important; }
+    .stat-label { font-size: 14px !important; }
+    .stat { align-items: center !important; }
+    .exp-line { font-size: 13px !important; }
+    .exp-type { font-size: 11px !important; padding: 2px 8px !important; }
+    .exp-years { font-size: 12px !important; }
+    .stat svg { width: 14px !important; height: 14px !important; }
+    .stats-row-below { gap: 16px !important; }
+    .subjects { font-size: clamp(14px, 1.4vw, 16px) !important; }
+    .card-subjects { font-size: clamp(14px, 1.4vw, 16px) !important; font-weight: 600 !important; }
+    .card-top-row > .card-subjects { font-size: clamp(14px, 1.4vw, 16px) !important; }
+    .card-desc { -webkit-line-clamp: 2 !important; display: -webkit-box !important; -webkit-box-orient: vertical !important; overflow: hidden !important; }
+    .location-row { font-size: 12px; margin-left: auto !important; white-space: nowrap; }
+    .card-desc { font-size: clamp(14px, 1.4vw, 16px) !important; }
+    /* Показуємо stats-row на мобільному */
+    .stats-row { display: flex !important; gap: 12px; }
+    .price { font-size: 18px; }
+    .price-wrap { text-align: left; }
+    /* Сховати кнопку "Детальніше" на мобільному */
+    .btn-more { display: none !important; }
+    .cta-wrap { flex-direction: row; width: auto; margin-left: 0; }
+    .btn-cta { padding: 11px 20px; font-size: 14px; width: auto; white-space: nowrap; }
+  }
+
+  /* MOBILE MENU */
+  .mobile-menu { display:none; position:fixed; inset:0; background:rgba(0,0,0,.5); z-index:200; opacity:0; transition:opacity .3s; }
+  .mobile-menu.open { display:flex; opacity:1; }
+  .mobile-menu-panel { background:#fff; width:280px; height:100%; padding:24px; display:flex; flex-direction:column; gap:24px; transform:translateX(-100%); transition:transform .3s; }
+  .mobile-menu.open .mobile-menu-panel { transform:translateX(0); }
+  .mobile-menu-links { display:flex; flex-direction:column; gap:16px; list-style:none; }
+  .mobile-menu-links a { font-size:17px; font-weight:600; color:var(--text); text-decoration:none; }
+  .mobile-menu-close { background:none; border:none; cursor:pointer; font-size:24px; color:var(--text); align-self:flex-end; }
+
+  /* ── DESKTOP FILTER DROPDOWNS ── */
+  .desktop-filter-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; position:relative; z-index:10; }
+  .flt-wrap { position:relative; flex-shrink:0; }
+  .flt-btn { font-family:'Manrope',sans-serif; font-size:13.5px; font-weight:600; color:var(--navy); background:#fff; border:1.5px solid var(--border); border-radius:12px; padding:9px 14px; cursor:pointer; display:inline-flex; align-items:center; gap:7px; transition:all .2s; white-space:nowrap; box-shadow:0 1px 4px rgba(30,40,80,.05); }
+  .flt-btn:hover { border-color:var(--teal); color:var(--teal); }
+  .flt-btn.on { border-color:var(--teal); background:#edfaf7; color:var(--teal-dark); }
+  .flt-btn svg { width:14px; height:14px; color:var(--muted); transition:transform .2s; flex-shrink:0; }
+  .flt-wrap.open .flt-btn svg { transform:rotate(180deg); }
+  .flt-drop { display:none; position:absolute; top:calc(100% + 8px); left:0; min-width:270px; background:#fff; border:1.5px solid var(--border); border-radius:16px; box-shadow:0 16px 48px rgba(30,40,80,.16); z-index:500; overflow:visible; }
+  .flt-wrap.open .flt-drop { display:block; }
+  .flt-drop-inner { padding:14px 16px 16px; max-height:380px; overflow-y:auto; }
+  .flt-drop-inner::-webkit-scrollbar { width:4px; }
+  .flt-drop-inner::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+  .flt-label { font-size:11px; font-weight:800; color:var(--muted); letter-spacing:.7px; text-transform:uppercase; margin-bottom:10px; }
+  .flt-opt { display:flex; align-items:center; gap:10px; padding:9px 8px; border-radius:10px; cursor:pointer; font-size:14px; font-weight:500; color:var(--text); transition:background .15s; }
+  .flt-opt:hover { background:var(--bg); }
+  .flt-opt.sel { font-weight:700; color:var(--navy); }
+  .flt-box { width:17px; height:17px; border-radius:5px; border:1.5px solid #c0c7d6; background:#fff; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff; transition:all .15s; }
+  .flt-opt.sel .flt-box { background:var(--teal); border-color:var(--teal); }
+  .flt-opt.sel .flt-box::after { content:'✓'; }
+  .flt-radio .flt-box { border-radius:50%; }
+  .flt-opt.sel .flt-radio-dot { background:var(--teal); }
+  .flt-radio-dot { width:8px; height:8px; border-radius:50%; background:transparent; transition:background .15s; }
+  /* search inside dropdown */
+  .flt-search { width:100%; font-family:'Manrope',sans-serif; font-size:13px; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; padding:7px 11px; outline:none; margin-bottom:10px; }
+  .flt-search:focus { border-color:var(--teal); }
+  /* spec tabs */
+  .spec-tabs { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:12px; }
+  .spec-tab { font-family:'Manrope',sans-serif; font-size:12px; font-weight:700; color:var(--text); background:var(--bg); border:1.5px solid var(--border); border-radius:20px; padding:5px 11px; cursor:pointer; transition:all .18s; }
+  .spec-tab.on { background:var(--teal); border-color:var(--teal); color:#fff; }
+  .spec-panel { display:none; }
+  .spec-panel.show { display:block; }
+  /* dual range */
+  .dual-range { position:relative; height:32px; margin:6px 0 14px; }
+  .dual-range input[type=range] { position:absolute; width:100%; pointer-events:none; -webkit-appearance:none; appearance:none; height:4px; background:transparent; outline:none; top:50%; transform:translateY(-50%); }
+  .dual-range input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:#fff; border:2.5px solid var(--teal); cursor:pointer; pointer-events:all; box-shadow:0 1px 4px rgba(46,196,165,.3); }
+  .dual-range input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:#fff; border:2.5px solid var(--teal); cursor:pointer; pointer-events:all; }
+  .range-track { position:absolute; top:50%; left:0; right:0; height:4px; background:var(--border); border-radius:4px; transform:translateY(-50%); }
+  .range-fill { position:absolute; top:50%; height:4px; background:var(--teal); border-radius:4px; transform:translateY(-50%); pointer-events:none; }
+  .price-row { display:flex; align-items:center; gap:8px; margin-bottom:6px; }
+  .price-inp { font-family:'Manrope',sans-serif; font-size:14px; font-weight:600; color:var(--navy); background:var(--bg); border:1.5px solid var(--border); border-radius:9px; padding:7px 10px; width:88px; outline:none; }
+  .price-inp:focus { border-color:var(--teal); }
+  /* apply/clear */
+  .flt-apply { width:100%; font-family:'Manrope',sans-serif; font-size:14px; font-weight:700; background:var(--teal); color:#fff; border:none; border-radius:10px; padding:10px; cursor:pointer; margin-top:10px; transition:background .2s; }
+  .flt-apply:hover { background:var(--teal-dark); }
+  .flt-clear { font-size:12px; color:var(--muted); cursor:pointer; text-align:center; display:block; margin-top:8px; text-decoration:underline; }
+  /* active chips */
+  .active-chips { display:flex; gap:7px; flex-wrap:wrap; margin-top:12px; min-height:0; }
+  .a-chip { display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:700; color:var(--teal-dark); background:#e8faf5; border:1.5px solid #b8edd8; border-radius:20px; padding:4px 11px; }
+  .a-chip-x { cursor:pointer; font-size:13px; color:var(--teal); margin-left:1px; }
+  .a-chip-x:hover { color:#ef4444; }
+
+  /* ── MOBILE FILTER SHEET ── */
+  .mob-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.48); z-index:400; }
+  .mob-overlay.open { display:block; }
+  .mob-sheet { position:fixed; bottom:0; left:0; right:0; background:#fff; border-radius:22px 22px 0 0; max-height:92vh; display:flex; flex-direction:column; z-index:401; transform:translateY(100%); transition:transform .34s cubic-bezier(.32,1,.4,1); }
+  .mob-overlay.open .mob-sheet { transform:translateY(0); }
+  .mob-head { display:flex; align-items:center; justify-content:space-between; padding:18px 20px 14px; border-bottom:1px solid var(--border); flex-shrink:0; }
+  .mob-head-title { font-family:'Unbounded',sans-serif; font-size:15px; font-weight:700; color:var(--navy); }
+  .mob-head-x { background:none; border:none; cursor:pointer; font-size:22px; color:var(--muted); padding:4px; }
+  .mob-body { overflow-y:auto; flex:1; padding:0 20px 16px; }
+  .mob-body::-webkit-scrollbar { width:0; }
+  .mob-sec { border-bottom:1px solid var(--border); padding:18px 0; }
+  .mob-sec:last-child { border-bottom:none; }
+  .mob-sec-title { font-size:12.5px; font-weight:800; color:var(--navy); letter-spacing:.3px; margin-bottom:13px; }
+  /* mob price */
+  .mob-price-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .mob-price-inp { font-family:'Manrope',sans-serif; font-size:14px; font-weight:600; color:var(--navy); background:var(--bg); border:1.5px solid var(--border); border-radius:11px; padding:9px 12px; flex:1; outline:none; }
+  .mob-price-inp:focus { border-color:var(--teal); }
+  /* mob radio */
+  .mob-opt { display:flex; align-items:center; justify-content:space-between; padding:11px 0; cursor:pointer; border-bottom:1px solid var(--border); }
+  .mob-opt:last-of-type { border-bottom:none; }
+  .mob-opt-label { font-size:14px; font-weight:500; color:var(--text); }
+  .mob-radio { width:20px; height:20px; border-radius:50%; border:2px solid #b0b8ca; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:border-color .15s; }
+  .mob-opt.sel .mob-radio { border-color:var(--teal); }
+  .mob-opt.sel .mob-radio::after { content:''; width:9px; height:9px; border-radius:50%; background:var(--teal); display:block; }
+  .mob-check { width:20px; height:20px; border-radius:6px; border:1.5px solid #b0b8ca; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:11px; color:#fff; transition:all .15s; }
+  .mob-opt.sel .mob-check { background:var(--teal); border-color:var(--teal); }
+  .mob-opt.sel .mob-check::after { content:'✓'; }
+  /* mob tags */
+  .mob-tags { display:flex; flex-wrap:wrap; gap:7px; }
+  .mob-tag { font-family:'Manrope',sans-serif; font-size:13px; font-weight:600; color:var(--text); background:var(--bg); border:1.5px solid var(--border); border-radius:20px; padding:7px 14px; cursor:pointer; transition:all .18s; }
+  .mob-tag.sel { background:var(--teal); border-color:var(--teal); color:#fff; }
+  /* mob spec tabs */
+  .mob-spec-tabs { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+  .mob-spec-tab { font-family:'Manrope',sans-serif; font-size:12.5px; font-weight:700; color:var(--text); background:var(--bg); border:1.5px solid var(--border); border-radius:20px; padding:6px 12px; cursor:pointer; transition:all .18s; }
+  .mob-spec-tab.on { background:var(--teal); border-color:var(--teal); color:#fff; }
+  .mob-spec-panel { display:none; }
+  .mob-spec-panel.show { display:block; }
+  .mob-search { width:100%; font-family:'Manrope',sans-serif; font-size:13px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; padding:8px 12px; outline:none; margin-bottom:10px; }
+  .mob-search:focus { border-color:var(--teal); }
+  /* mob city hidden by default */
+  .mob-city-block { display:none; margin-top:12px; }
+  .mob-visit-opt { display:none; }
+  /* footer */
+  .mob-foot { padding:14px 20px; border-top:1px solid var(--border); display:flex; gap:10px; flex-shrink:0; }
+  .mob-foot-clear { flex:1; font-family:'Manrope',sans-serif; font-size:15px; font-weight:700; color:var(--navy); background:none; border:1.5px solid var(--border); border-radius:13px; padding:13px; cursor:pointer; transition:all .2s; }
+  .mob-foot-apply { flex:2; font-family:'Manrope',sans-serif; font-size:15px; font-weight:700; color:#fff; background:var(--teal); border:none; border-radius:13px; padding:13px; cursor:pointer; transition:background .2s; }
+  .mob-foot-apply:hover { background:var(--teal-dark); }
+
+  /* multi-subject block */
+  .multi-block { margin-top:10px; border-top:1px solid var(--border); padding-top:10px; }
+  .multi-check-row { display:flex; align-items:center; gap:9px; cursor:pointer; font-size:13.5px; font-weight:600; color:var(--navy); user-select:none; }
+  .multi-box { width:17px; height:17px; border-radius:5px; border:1.5px solid #b0b8ca; background:#fff; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:10px; color:#fff; transition:all .15s; }
+  .multi-box.on { background:var(--teal); border-color:var(--teal); }
+  .multi-box.on::after { content:'✓'; }
+  .multi-radios { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+  .multi-radio { display:flex; align-items:center; gap:9px; padding:9px 12px; border-radius:10px; border:1.5px solid var(--border); cursor:pointer; font-size:13.5px; font-weight:500; color:var(--text); transition:all .18s; }
+  .multi-radio:hover { border-color:var(--teal); }
+  .multi-radio.sel { border-color:var(--teal); background:#edfaf7; color:var(--navy); font-weight:700; }
+  .multi-dot { width:14px; height:14px; border-radius:50%; border:2px solid #b0b8ca; flex-shrink:0; display:flex; align-items:center; justify-content:center; transition:border-color .15s; }
+  .multi-radio.sel .multi-dot { border-color:var(--teal); box-shadow:inset 0 0 0 3px var(--teal); }
+
+  .mob-subj-list { border:1.5px solid var(--border); border-radius:12px; overflow:hidden; margin-top:4px; }
+  .mob-subj-list:empty { display:none; }
+  .mob-subj-item { display:flex; align-items:center; justify-content:space-between; padding:11px 14px; cursor:pointer; font-size:14px; color:var(--text); border-bottom:1px solid var(--border); transition:background .13s; }
+  .mob-subj-item:last-child { border-bottom:none; }
+  .mob-subj-item:hover { background:var(--bg); }
+  .mob-subj-item.sel { color:var(--teal); font-weight:700; }
+  .mob-subj-item.sel::after { content:'✓'; font-size:13px; }
+
+  /* subject search dropdown */
+  .subj-drop { position:absolute; top:calc(100% + 4px); left:0; right:0; background:#fff; border:1.5px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(30,40,80,.12); z-index:500; max-height:220px; overflow-y:auto; }
+  .subj-drop::-webkit-scrollbar { width:4px; }
+  .subj-drop::-webkit-scrollbar-thumb { background:var(--border); border-radius:4px; }
+  .subj-drop-item { display:flex; align-items:center; gap:9px; padding:9px 12px; cursor:pointer; font-size:14px; font-weight:500; color:var(--text); transition:background .13s; }
+  .subj-drop-item:hover { background:var(--bg); }
+  .subj-drop-item.picked { color:var(--teal); font-weight:700; }
+  .subj-drop-item.picked::after { content:'✓'; margin-left:auto; font-size:12px; }
+  .subj-drop-empty { padding:12px; font-size:13px; color:var(--muted); text-align:center; }
+  .subj-chosen { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .subj-tag { display:inline-flex; align-items:center; gap:5px; font-size:12.5px; font-weight:700; color:var(--teal-dark); background:#e8faf5; border:1.5px solid #b8edd8; border-radius:20px; padding:4px 10px; }
+  .subj-tag-x { cursor:pointer; color:var(--teal); font-size:13px; }
+  .subj-tag-x:hover { color:#ef4444; }
+
+  @media (max-width:700px) {
+    .desktop-filter-row { display:none !important; }
+    .filter-toggle-btn { height:50px; font-size:13px; padding:0 16px; }
+    .hero-search-box { border-radius:14px; }
+    .active-chips { display:none; }
+  }
+  @media (min-width:701px) {
+    .mob-overlay { display:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="logo" href="#">🎓</a>
+    <ul class="nav-links">
+      <li><a href="#">Спеціалісти</a></li>
+      <li><a href="#">Як це працює</a></li>
+      <li><a href="#">Відгуки</a></li>
+    </ul>
+    <div class="nav-right">
+      <button class="nav-lang">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        UA
+      </button>
+      <a class="btn-login" href="#">Увійти</a>
+      <a class="btn-register" href="#">Реєстрація</a>
+      <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-panel">
+    <button class="mobile-menu-close" id="menuClose">✕</button>
+    <ul class="mobile-menu-links">
+      <li><a href="#">Спеціалісти</a></li>
+      <li><a href="#">Як це працює</a></li>
+      <li><a href="#">Відгуки</a></li>
+      <li><a href="#">Увійти</a></li>
+      <li><a href="#" style="color:var(--teal)">Реєстрація</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Спеціалісти для приватних занять</h1>
+    <p>Оберіть з 3 перевірених спеціалістів. Запишіться на пробне заняття та почніть навчання вже сьогодні.</p>
+
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar visible" id="filterBar">
+  <div class="filter-bar-inner">
+  <div class="search-filter-row">
+    <div class="subject-selector" id="subjectSelector">
+      <div class="subject-selector-btn" onclick="toggleSubjectDrop()">
+        <span class="subject-selector-label">Що бажаєте вивчати?</span>
+        <span class="subject-selector-value" id="subjectValue"></span>
+        <svg class="subject-selector-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="subject-drop" id="subjectDrop2">
+        <input class="subject-drop-search" id="subjectDropSearch" type="text" placeholder="Пошук напрямку..." oninput="filterSubjectDrop(this.value)" autocomplete="off">
+        <div class="subject-drop-list" id="subjectDropList">
+          <div class="subject-drop-group">Репетитори</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Англійська мова</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Математика</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Фізика</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Хімія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Біологія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Українська мова</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Німецька мова</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Французька мова</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Програмування</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Історія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Географія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">ЗНО / НМТ</div>
+          <div class="subject-drop-group">Психологи</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Тривожність та стрес</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Сімейна терапія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Дитяча психологія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Депресія</div>
+          <div class="subject-drop-group">Логопеди</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Дислексія</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Заїкання</div>
+          <div class="subject-drop-item" onclick="pickSubject(this)">Затримка мовлення</div>
+        </div>
+      </div>
+    </div>
+    <button class="filter-toggle-btn" id="mobFltBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      Фільтри
+    </button>
+  <!-- DESKTOP FILTERS -->
+  <div class="desktop-filter-row" style="display:contents">
+
+    <!-- Спеціаліст -->
+    <div class="flt-wrap" id="fw-spec">
+      <button class="flt-btn" onclick="toggleFlt('fw-spec')">Спеціаліст <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="flt-drop" style="min-width:320px"><div class="flt-drop-inner">
+        <div class="flt-label">Тип спеціаліста</div>
+        <div class="spec-tabs">
+          <span class="spec-tab on" onclick="deskSpecTab(this,'ds-rep')">Репетитор</span>
+          <span class="spec-tab" onclick="deskSpecTab(this,'ds-psy')">Психолог</span>
+          <span class="spec-tab" onclick="deskSpecTab(this,'ds-logo')">Логопед</span>
+          <span class="spec-tab" onclick="deskSpecTab(this,'ds-coach')">Коуч</span>
+        </div>
+
+        <!-- Репетитор -->
+        <div class="spec-panel show" id="ds-rep">
+          <div class="flt-label">Напрямок</div>
+          <div class="subj-search-wrap" style="position:relative">
+            <input class="flt-search" id="subjInp" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+              oninput="renderSubjDrop(this.value,'rep')" onfocus="renderSubjDrop(this.value,'rep');document.getElementById('subjDrop').style.display='block'" style="margin-bottom:0">
+            <div id="subjDrop" class="subj-drop" style="display:none"></div>
+          </div>
+          <div id="subjChosen" class="subj-chosen"></div>
+          <div id="multiBlock-rep" class="multi-block" style="display:none">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю репетитора</div>
+            <div class="multi-radios" id="deskMultiRadios-rep" style="display:flex">
+              <div class="multi-radio sel" id="desk-mr-rep-diff" onclick="pickMultiMode('rep','diff')"><span class="multi-dot"></span>Різні репетитори для кожного напрямку</div>
+              <div class="multi-radio" id="desk-mr-rep-one" onclick="pickMultiMode('rep','one')"><span class="multi-dot"></span>Один репетитор знає всі напрямки <span style="color:var(--muted);font-weight:500">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Психолог -->
+        <div class="spec-panel" id="ds-psy">
+          <div class="flt-label">Напрямок</div>
+          <div class="subj-search-wrap" style="position:relative">
+            <input class="flt-search" id="subjInpPsy" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+              oninput="renderSubjDrop(this.value,'psy')" onfocus="renderSubjDrop(this.value,'psy');document.getElementById('subjDropPsy').style.display='block'" style="margin-bottom:0">
+            <div id="subjDropPsy" class="subj-drop" style="display:none"></div>
+          </div>
+          <div id="subjChosenPsy" class="subj-chosen"></div>
+          <div id="multiBlock-psy" class="multi-block" style="display:none">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю спеціаліста</div>
+            <div class="multi-radios" id="deskMultiRadios-psy" style="display:flex">
+              <div class="multi-radio sel" id="desk-mr-psy-diff" onclick="pickMultiMode('psy','diff')"><span class="multi-dot"></span>Різні спеціалісти для кожного напрямку</div>
+              <div class="multi-radio" id="desk-mr-psy-one" onclick="pickMultiMode('psy','one')"><span class="multi-dot"></span>Один спеціаліст знає всі напрямки <span style="color:var(--muted);font-weight:500">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Логопед -->
+        <div class="spec-panel" id="ds-logo">
+          <div class="flt-label">Напрямок</div>
+          <div class="subj-search-wrap" style="position:relative">
+            <input class="flt-search" id="subjInpLogo" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+              oninput="renderSubjDrop(this.value,'logo')" onfocus="renderSubjDrop(this.value,'logo');document.getElementById('subjDropLogo').style.display='block'" style="margin-bottom:0">
+            <div id="subjDropLogo" class="subj-drop" style="display:none"></div>
+          </div>
+          <div id="subjChosenLogo" class="subj-chosen"></div>
+          <div id="multiBlock-logo" class="multi-block" style="display:none">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю логопеда</div>
+            <div class="multi-radios" id="deskMultiRadios-logo" style="display:flex">
+              <div class="multi-radio sel" id="desk-mr-logo-diff" onclick="pickMultiMode('logo','diff')"><span class="multi-dot"></span>Різні логопеди для кожного напрямку</div>
+              <div class="multi-radio" id="desk-mr-logo-one" onclick="pickMultiMode('logo','one')"><span class="multi-dot"></span>Один логопед знає всі напрямки <span style="color:var(--muted);font-weight:500">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Коуч -->
+        <div class="spec-panel" id="ds-coach">
+          <div class="flt-label">Напрямок</div>
+          <div class="subj-search-wrap" style="position:relative">
+            <input class="flt-search" id="subjInpCoach" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+              oninput="renderSubjDrop(this.value,'coach')" onfocus="renderSubjDrop(this.value,'coach');document.getElementById('subjDropCoach').style.display='block'" style="margin-bottom:0">
+            <div id="subjDropCoach" class="subj-drop" style="display:none"></div>
+          </div>
+          <div id="subjChosenCoach" class="subj-chosen"></div>
+          <div id="multiBlock-coach" class="multi-block" style="display:none">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю коуча</div>
+            <div class="multi-radios" id="deskMultiRadios-coach" style="display:flex">
+              <div class="multi-radio sel" id="desk-mr-coach-diff" onclick="pickMultiMode('coach','diff')"><span class="multi-dot"></span>Різні коучі для кожного напрямку</div>
+              <div class="multi-radio" id="desk-mr-coach-one" onclick="pickMultiMode('coach','one')"><span class="multi-dot"></span>Один коуч знає всі напрямки <span style="color:var(--muted);font-weight:500">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+
+        <button class="flt-apply" onclick="applyFlt('spec','fw-spec')">Застосувати</button>
+      </div></div>
+    </div>
+
+    <!-- Ціна -->
+    <div class="flt-wrap" id="fw-price">
+      <button class="flt-btn" onclick="toggleFlt('fw-price')">Ціна за урок <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="flt-drop"><div class="flt-drop-inner">
+        <div class="flt-label">Ціна за 50 хв (₴)</div>
+        <div class="price-row">
+          <input class="price-inp" id="pMin" type="number" value="100" min="100" max="2000" oninput="syncRange()">
+          <span style="color:var(--muted)">—</span>
+          <input class="price-inp" id="pMax" type="number" value="2000" min="100" max="2000" oninput="syncRange()">
+        </div>
+        <div class="dual-range">
+          <div class="range-track"></div>
+          <div class="range-fill" id="dRangeFill"></div>
+          <input type="range" id="rMin" min="100" max="2000" value="100" oninput="dualRange()">
+          <input type="range" id="rMax" min="100" max="2000" value="2000" oninput="dualRange()">
+        </div>
+        <button class="flt-apply" onclick="applyFlt('price','fw-price')">Застосувати</button>
+        <span class="flt-clear" onclick="clearFlt('price','fw-price')">Скинути</span>
+      </div></div>
+    </div>
+
+    <!-- Формат -->
+    <div class="flt-wrap" id="fw-format">
+      <button class="flt-btn on" id="fmtBtn" onclick="toggleFlt('fw-format')">Онлайн <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="flt-drop"><div class="flt-drop-inner">
+        <div class="flt-label">Формат занять</div>
+        <div class="flt-opt flt-radio sel" id="fmt-online" onclick="pickFormat(this,'Онлайн')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Онлайн</div>
+        <div class="flt-opt flt-radio" id="fmt-offline" onclick="pickFormat(this,'Офлайн')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Офлайн</div>
+        <div class="flt-opt flt-radio" id="fmt-visit" style="display:none" onclick="pickFormat(this,'Виїзд до учня')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Виїзд до учня</div>
+        <div id="cityBlock" style="display:none;margin-top:12px">
+          <div class="flt-label">Місто</div>
+          <input class="flt-search" placeholder="Пошук міста..." oninput="filterOpts(this,'cityList')">
+          <div id="cityList">
+            <div class="flt-opt" onclick="chk(this,'city','Київ')"><span class="flt-box"></span>Київ</div>
+            <div class="flt-opt" onclick="chk(this,'city','Харків')"><span class="flt-box"></span>Харків</div>
+            <div class="flt-opt" onclick="chk(this,'city','Львів')"><span class="flt-box"></span>Львів</div>
+            <div class="flt-opt" onclick="chk(this,'city','Одеса')"><span class="flt-box"></span>Одеса</div>
+            <div class="flt-opt" onclick="chk(this,'city','Дніпро')"><span class="flt-box"></span>Дніпро</div>
+            <div class="flt-opt" onclick="chk(this,'city','Запоріжжя')"><span class="flt-box"></span>Запоріжжя</div>
+            <div class="flt-opt" onclick="chk(this,'city','Вінниця')"><span class="flt-box"></span>Вінниця</div>
+            <div class="flt-opt" onclick="chk(this,'city','Полтава')"><span class="flt-box"></span>Полтава</div>
+          </div>
+        </div>
+        <button class="flt-apply" onclick="applyFlt('format','fw-format')">Застосувати</button>
+      </div></div>
+    </div>
+
+    <!-- Освіта репетитора -->
+    <div class="flt-wrap" id="fw-edu">
+      <button class="flt-btn" onclick="toggleFlt('fw-edu')">Освіта <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="flt-drop" style="min-width:300px"><div class="flt-drop-inner">
+        <div class="flt-label">Педагогічна освіта</div>
+        <div class="flt-opt flt-radio sel" id="edu-any" onclick="pickEdu(this,'any')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Не важливо</div>
+        <div class="flt-opt flt-radio" id="edu-ped" onclick="pickEdu(this,'ped')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Є педагогічна освіта</div>
+        <div class="flt-opt flt-radio" id="edu-high" onclick="pickEdu(this,'high')"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Є вища освіта за напрямком</div>
+        <div style="border-top:1px solid var(--border);margin:12px 0 10px"></div>
+        <div class="flt-label">Де вчився репетитор</div>
+        <div class="flt-opt" id="eduWhereToggle" onclick="toggleEduWhere()"><span class="flt-box" id="eduWhereBox"></span>Вказати університет та спеціальність</div>
+        <div id="eduWhereBlock" style="display:none;margin-top:10px">
+          <div class="flt-label">Університет</div>
+          <input class="flt-search" placeholder="Пошук університету..." oninput="filterOpts(this,'uniList')">
+          <div id="uniList" style="max-height:160px;overflow-y:auto">
+            <div class="flt-opt" onclick="chk(this,'uni','КНУ ім. Шевченка')"><span class="flt-box"></span>КНУ ім. Шевченка</div>
+            <div class="flt-opt" onclick="chk(this,'uni','КПІ')"><span class="flt-box"></span>КПІ</div>
+            <div class="flt-opt" onclick="chk(this,'uni','НаУКМА')"><span class="flt-box"></span>НаУКМА</div>
+            <div class="flt-opt" onclick="chk(this,'uni','НПУ ім. Драгоманова')"><span class="flt-box"></span>НПУ ім. Драгоманова</div>
+            <div class="flt-opt" onclick="chk(this,'uni','ХНУ ім. Каразіна')"><span class="flt-box"></span>ХНУ ім. Каразіна</div>
+            <div class="flt-opt" onclick="chk(this,'uni','ЛНУ ім. Франка')"><span class="flt-box"></span>ЛНУ ім. Франка</div>
+            <div class="flt-opt" onclick="chk(this,'uni','ОНУ ім. Мечникова')"><span class="flt-box"></span>ОНУ ім. Мечникова</div>
+            <div class="flt-opt" onclick="chk(this,'uni','КНЛУ')"><span class="flt-box"></span>КНЛУ</div>
+            <div class="flt-opt" onclick="chk(this,'uni','Іноземний виш')"><span class="flt-box"></span>Іноземний виш</div>
+          </div>
+          <div class="flt-label" style="margin-top:12px">Спеціальність</div>
+          <input class="flt-search" placeholder="Пошук спеціальності..." oninput="filterOpts(this,'depList')">
+          <div id="depList" style="max-height:140px;overflow-y:auto">
+            <div class="flt-opt" onclick="chk(this,'dep','Педагогіка')"><span class="flt-box"></span>Педагогіка</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Психологія')"><span class="flt-box"></span>Психологія</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Мовознавство')"><span class="flt-box"></span>Мовознавство</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Математика')"><span class="flt-box"></span>Математика</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Фізика')"><span class="flt-box"></span>Фізика</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Комп'ютерні науки')"><span class="flt-box"></span>Комп'ютерні науки</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Соціальна робота')"><span class="flt-box"></span>Соціальна робота</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Логопедія')"><span class="flt-box"></span>Логопедія</div>
+            <div class="flt-opt" onclick="chk(this,'dep','Менеджмент')"><span class="flt-box"></span>Менеджмент</div>
+          </div>
+        </div>
+        <button class="flt-apply" onclick="applyFlt('edu','fw-edu')">Застосувати</button>
+        <span class="flt-clear" onclick="clearFlt('edu','fw-edu');clearEdu()">Скинути</span>
+      </div></div>
+    </div>
+
+    <!-- Програма країни -->
+    <div class="flt-wrap" id="fw-prog">
+      <button class="flt-btn" onclick="toggleFlt('fw-prog')">Закордонна програма <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="flt-drop"><div class="flt-drop-inner">
+        <div class="flt-label">Викладає за програмою іншої країни</div>
+        <div class="flt-opt flt-radio" id="prog-yes" onclick="pickProg(this,true)"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Так, викладає</div>
+        <div class="flt-opt flt-radio" id="prog-no" onclick="pickProg(this,false)"><span class="flt-box flt-radio"><span class="flt-radio-dot"></span></span>Не важливо</div>
+        <div id="progCountries" style="display:none;margin-top:12px">
+          <div class="flt-label">Оберіть програму</div>
+          <div class="flt-opt" onclick="chk(this,'prog','Польська')"><span class="flt-box"></span>🇵🇱 Польська</div>
+          <div class="flt-opt" onclick="chk(this,'prog','Німецька')"><span class="flt-box"></span>🇩🇪 Німецька</div>
+          <div class="flt-opt" onclick="chk(this,'prog','Американська (US)')"><span class="flt-box"></span>🇺🇸 Американська (US)</div>
+          <div class="flt-opt" onclick="chk(this,'prog','Британська (UK)')"><span class="flt-box"></span>🇬🇧 Британська (UK)</div>
+          <div class="flt-opt" onclick="chk(this,'prog','IB (міжнародна)')"><span class="flt-box"></span><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;display:inline;vertical-align:-3px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>IB (міжнародна)</div>
+          <div class="flt-opt" onclick="chk(this,'prog','Канадська')"><span class="flt-box"></span>🇨🇦 Канадська</div>
+        </div>
+        <button class="flt-apply" onclick="applyFlt('prog','fw-prog')">Застосувати</button>
+        <span class="flt-clear" onclick="clearFlt('prog','fw-prog');document.getElementById('progCountries').style.display='none';document.querySelectorAll('#fw-prog .flt-radio').forEach(o=>o.classList.remove('sel'))">Скинути</span>
+      </div></div>
+    </div>
+
+  <div class="active-chips" id="activeChips"></div>
+  </div><!-- /filter-bar-inner -->
+</div>
+
+<!-- MOBILE FILTER SHEET -->
+<div class="mob-overlay" id="mobOverlay" onclick="if(event.target===this)closeMob()">
+  <div class="mob-sheet">
+    <div class="mob-head">
+      <span class="mob-head-title">Фільтри</span>
+      <button class="mob-head-x" onclick="closeMob()">✕</button>
+    </div>
+    <div class="mob-body">
+
+      <!-- Спеціаліст -->
+      <div class="mob-sec">
+        <div class="mob-sec-title">Тип спеціаліста</div>
+        <div class="mob-spec-tabs">
+          <span class="mob-spec-tab on" onclick="mobSpecTab(this,'ms-rep')">Репетитор</span>
+          <span class="mob-spec-tab" onclick="mobSpecTab(this,'ms-psy')">Психолог</span>
+          <span class="mob-spec-tab" onclick="mobSpecTab(this,'ms-logo')">Логопед</span>
+          <span class="mob-spec-tab" onclick="mobSpecTab(this,'ms-coach')">Коуч</span>
+        </div>
+        <div class="mob-spec-panel show" id="ms-rep">
+          <div class="flt-label" style="margin-bottom:8px">Напрямок</div>
+          <input class="mob-search" id="mSubjInp" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+            oninput="renderMobSubjDrop(this.value,'rep')" onfocus="renderMobSubjDrop(this.value,'rep')">
+          <div id="mSubjList-rep" class="mob-subj-list"></div>
+          <div id="mSubjChosen-rep" class="subj-chosen" style="margin-top:8px"></div>
+          <div id="mobMultiBlock-rep" class="multi-block" style="display:none;margin-top:12px">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю репетитора</div>
+            <div class="multi-radios" id="mobMultiRadios-rep" style="display:flex">
+              <div class="multi-radio sel" id="mob-mr-rep-diff" onclick="pickMultiModeMob('rep','diff')"><span class="multi-dot"></span>Різні репетитори для кожного</div>
+              <div class="multi-radio" id="mob-mr-rep-one" onclick="pickMultiModeMob('rep','one')"><span class="multi-dot"></span>Один репетитор знає всі напрямки <span style="color:var(--muted);font-size:12px">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mob-spec-panel" id="ms-psy">
+          <div class="flt-label" style="margin-bottom:8px">Напрямок</div>
+          <input class="mob-search" id="mSubjInpPsy" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+            oninput="renderMobSubjDrop(this.value,'psy')" onfocus="renderMobSubjDrop(this.value,'psy')">
+          <div id="mSubjList-psy" class="mob-subj-list"></div>
+          <div id="mSubjChosen-psy" class="subj-chosen" style="margin-top:8px"></div>
+          <div id="mobMultiBlock-psy" class="multi-block" style="display:none;margin-top:12px">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю спеціаліста</div>
+            <div class="multi-radios" id="mobMultiRadios-psy" style="display:flex">
+              <div class="multi-radio sel" id="mob-mr-psy-diff" onclick="pickMultiModeMob('psy','diff')"><span class="multi-dot"></span>Різні спеціалісти для кожного</div>
+              <div class="multi-radio" id="mob-mr-psy-one" onclick="pickMultiModeMob('psy','one')"><span class="multi-dot"></span>Один спеціаліст знає всі напрямки <span style="color:var(--muted);font-size:12px">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mob-spec-panel" id="ms-logo">
+          <div class="flt-label" style="margin-bottom:8px">Напрямок</div>
+          <input class="mob-search" id="mSubjInpLogo" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+            oninput="renderMobSubjDrop(this.value,'logo')" onfocus="renderMobSubjDrop(this.value,'logo')">
+          <div id="mSubjList-logo" class="mob-subj-list"></div>
+          <div id="mSubjChosen-logo" class="subj-chosen" style="margin-top:8px"></div>
+          <div id="mobMultiBlock-logo" class="multi-block" style="display:none;margin-top:12px">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю логопеда</div>
+            <div class="multi-radios" id="mobMultiRadios-logo" style="display:flex">
+              <div class="multi-radio sel" id="mob-mr-logo-diff" onclick="pickMultiModeMob('logo','diff')"><span class="multi-dot"></span>Різні логопеди для кожного</div>
+              <div class="multi-radio" id="mob-mr-logo-one" onclick="pickMultiModeMob('logo','one')"><span class="multi-dot"></span>Один логопед знає всі напрямки <span style="color:var(--muted);font-size:12px">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="mob-spec-panel" id="ms-coach">
+          <div class="flt-label" style="margin-bottom:8px">Напрямок</div>
+          <input class="mob-search" id="mSubjInpCoach" placeholder="🔍 Пошук напрямку..." autocomplete="off"
+            oninput="renderMobSubjDrop(this.value,'coach')" onfocus="renderMobSubjDrop(this.value,'coach')">
+          <div id="mSubjList-coach" class="mob-subj-list"></div>
+          <div id="mSubjChosen-coach" class="subj-chosen" style="margin-top:8px"></div>
+          <div id="mobMultiBlock-coach" class="multi-block" style="display:none;margin-top:12px">
+            <div class="flt-label" style="margin-bottom:8px">Шукаю коуча</div>
+            <div class="multi-radios" id="mobMultiRadios-coach" style="display:flex">
+              <div class="multi-radio sel" id="mob-mr-coach-diff" onclick="pickMultiModeMob('coach','diff')"><span class="multi-dot"></span>Різні коучі для кожного</div>
+              <div class="multi-radio" id="mob-mr-coach-one" onclick="pickMultiModeMob('coach','one')"><span class="multi-dot"></span>Один коуч знає всі напрямки <span style="color:var(--muted);font-size:12px">(менший вибір)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ціна -->
+      <div class="mob-sec">
+        <div class="mob-sec-title">Ціна за урок (₴ / 50 хв)</div>
+        <div class="mob-price-row">
+          <input class="mob-price-inp" id="mpMin" type="number" value="100" oninput="mobSyncRange()">
+          <span style="color:var(--muted);flex-shrink:0">—</span>
+          <input class="mob-price-inp" id="mpMax" type="number" value="2000" oninput="mobSyncRange()">
+        </div>
+        <div class="dual-range">
+          <div class="range-track"></div>
+          <div class="range-fill" id="mRangeFill"></div>
+          <input type="range" id="mrMin" min="100" max="2000" value="100" oninput="mobDualRange()">
+          <input type="range" id="mrMax" min="100" max="2000" value="2000" oninput="mobDualRange()">
+        </div>
+      </div>
+
+      <!-- Формат -->
+      <div class="mob-sec">
+        <div class="mob-sec-title">Формат занять</div>
+        <div class="mob-opt sel" onclick="mobPickFormat(this,'Онлайн')"><span class="mob-opt-label">Онлайн</span><span class="mob-radio"></span></div>
+        <div class="mob-opt" onclick="mobPickFormat(this,'Офлайн')"><span class="mob-opt-label">Офлайн — місто</span><span class="mob-radio"></span></div>
+        <div class="mob-opt mob-visit-opt" id="mobVisitOpt" onclick="mobPickFormat(this,'Виїзд до учня')"><span class="mob-opt-label">Виїзд до учня</span><span class="mob-radio"></span></div>
+        <div class="mob-city-block" id="mobCityBlock">
+          <div class="flt-label" style="margin:10px 0 8px">Місто</div>
+          <input class="mob-search" placeholder="Пошук міста..." oninput="mobFilterList(this,'mobCityList')">
+          <div id="mobCityList">
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Київ</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Харків</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Львів</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Одеса</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Дніпро</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Запоріжжя</span><span class="mob-check"></span></div>
+            <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Вінниця</span><span class="mob-check"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Освіта -->
+      <div class="mob-sec">
+        <div class="mob-sec-title">Освіта репетитора</div>
+        <div class="flt-label" style="margin-bottom:8px">Педагогічна освіта</div>
+        <div class="mob-opt sel" id="mobEduAny" onclick="mobPickEdu('any')"><span class="mob-opt-label">Не важливо</span><span class="mob-radio"></span></div>
+        <div class="mob-opt" id="mobEduPed" onclick="mobPickEdu('ped')"><span class="mob-opt-label">Є педагогічна освіта</span><span class="mob-radio"></span></div>
+        <div class="mob-opt" id="mobEduHigh" onclick="mobPickEdu('high')"><span class="mob-opt-label">Є вища освіта за напрямком</span><span class="mob-radio"></span></div>
+        <div style="margin-top:14px">
+          <div class="mob-opt" id="mobEduWhereToggle" onclick="mobToggleEduWhere()">
+            <span class="mob-opt-label" style="font-weight:600">Вказати де вчився репетитор</span>
+            <span class="mob-check" id="mobEduWhereBox"></span>
+          </div>
+          <div id="mobEduWhereBlock" style="display:none;margin-top:10px">
+            <div class="flt-label" style="margin-bottom:6px">Університет</div>
+            <input class="mob-search" placeholder="Пошук університету..." oninput="mobFilterList(this,'mobUniList')">
+            <div id="mobUniList">
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">КНУ ім. Шевченка</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">КПІ</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">НаУКМА</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">НПУ ім. Драгоманова</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">ХНУ ім. Каразіна</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">ЛНУ ім. Франка</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Іноземний виш</span><span class="mob-check"></span></div>
+            </div>
+            <div class="flt-label" style="margin:12px 0 6px">Спеціальність</div>
+            <input class="mob-search" placeholder="Пошук спеціальності..." oninput="mobFilterList(this,'mobDepList')">
+            <div id="mobDepList">
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Педагогіка</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Психологія</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Мовознавство</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Математика</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Комп'ютерні науки</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Логопедія</span><span class="mob-check"></span></div>
+              <div class="mob-opt" onclick="this.classList.toggle('sel')"><span class="mob-opt-label">Менеджмент</span><span class="mob-check"></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Програма країни -->
+      <div class="mob-sec">
+        <div class="mob-sec-title">Закордонна програма</div>
+        <div class="mob-opt" id="mobProgYes" onclick="mobPickProg(true)"><span class="mob-opt-label">Так, викладає за програмою іншої країни</span><span class="mob-radio"></span></div>
+        <div class="mob-opt sel" id="mobProgNo" onclick="mobPickProg(false)"><span class="mob-opt-label">Не важливо</span><span class="mob-radio"></span></div>
+        <div id="mobProgCountries" style="display:none;margin-top:12px">
+          <div class="flt-label" style="margin-bottom:8px">Оберіть програму</div>
+          <div class="mob-tags">
+            <span class="mob-tag" onclick="this.classList.toggle('sel')">🇵🇱 Польська</span>
+            <span class="mob-tag" onclick="this.classList.toggle('sel')">🇩🇪 Німецька</span>
+            <span class="mob-tag" onclick="this.classList.toggle('sel')">🇺🇸 Американська</span>
+            <span class="mob-tag" onclick="this.classList.toggle('sel')">🇬🇧 Британська</span>
+            <span class="mob-tag" onclick="this.classList.toggle('sel')"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;display:inline;vertical-align:-3px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>IB</span>
+            <span class="mob-tag" onclick="this.classList.toggle('sel')">🇨🇦 Канадська</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="mob-foot">
+      <button class="mob-foot-clear" onclick="clearMob()">Скинути</button>
+      <button class="mob-foot-apply" onclick="closeMob()">Показати результати</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- SORT ROW -->
+  <div class="sort-row">
+    <span class="sort-count"><strong>3</strong> спеціалісти</span>
+    <div class="sort-wrap" id="sortWrap">
+    <button class="sort-btn" onclick="toggleSort()">
+      Сортування: <span id="sortLabel">Нашими рекомендаціями</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <div class="sort-dropdown">
+      <div class="sort-option active" onclick="selectSort(this, 'Нашими рекомендаціями')">Нашими рекомендаціями</div>
+      <div class="sort-option" onclick="selectSort(this, 'Високий рейтинг')">Високий рейтинг</div>
+      <div class="sort-option" onclick="selectSort(this, 'Кількість відгуків')">Кількість відгуків</div>
+      <div class="sort-option" onclick="selectSort(this, 'Ціна: від низької до високої')">Ціна: від низької до високої</div>
+      <div class="sort-option" onclick="selectSort(this, 'Ціна: від високої до низької')">Ціна: від високої до низької</div>
+      <div class="sort-option" onclick="selectSort(this, 'Більше досвіду')">Більше досвіду</div>
+    </div>
+    </div>
+  </div>
+
+  <!-- CARD 1 -->
+  <div class="card">
+    <div class="card-top-row">
+    <div class="card-photo-wrap">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyODAiIGhlaWdodD0iMzYwIiB2aWV3Qm94PSIwIDAgMjgwIDM2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNkNGE1NzQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYzQ5NDZhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJib2R5MSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiMyZDJkMmQiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojMWExYTFhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGNsaXBQYXRoIGlkPSJjaXJjbGUxIj48Y2lyY2xlIGN4PSIxNDAiIGN5PSIxMjAiIHI9IjY1Ii8+PC9jbGlwUGF0aD4KICA8L2RlZnM+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMzYwIiBmaWxsPSIjZjVlNmQzIi8+CiAgPHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIzNjAiIGZpbGw9InVybCgjYmcxKSIgb3BhY2l0eT0iMC4zIi8+CiAgPCEtLSBCb2R5IC8gY2xvdGhpbmcgLS0+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjM0MCIgcng9IjEwMCIgcnk9IjgwIiBmaWxsPSIjMWExYTJlIi8+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjMxMCIgcng9Ijc1IiByeT0iNjAiIGZpbGw9IiMxNjIxM2UiLz4KICA8IS0tIE5lY2sgLS0+CiAgPHJlY3QgeD0iMTI1IiB5PSIxNzUiIHdpZHRoPSIzMCIgaGVpZ2h0PSI0MCIgcng9IjEwIiBmaWxsPSIjZjBjODk2Ii8+CiAgPCEtLSBIZWFkIC0tPgogIDxjaXJjbGUgY3g9IjE0MCIgY3k9IjEyMCIgcj0iNjUiIGZpbGw9IiNmMGM4OTYiLz4KICA8IS0tIEhhaXIgLSBsb25nIGJsb25kZSAtLT4KICA8ZWxsaXBzZSBjeD0iMTQwIiBjeT0iODUiIHJ4PSI2OCIgcnk9IjQ1IiBmaWxsPSIjZDRhODMyIi8+CiAgPHJlY3QgeD0iNzQiIHk9IjEwMCIgd2lkdGg9IjIyIiBoZWlnaHQ9IjEyMCIgcng9IjExIiBmaWxsPSIjZDRhODMyIi8+CiAgPHJlY3QgeD0iMTg0IiB5PSIxMDAiIHdpZHRoPSIyMiIgaGVpZ2h0PSIxMjAiIHJ4PSIxMSIgZmlsbD0iI2Q0YTgzMiIvPgogIDxlbGxpcHNlIGN4PSIxNDAiIGN5PSI4MiIgcng9IjY1IiByeT0iMzAiIGZpbGw9IiNlOGJjM2MiLz4KICA8IS0tIEZhY2UgZmVhdHVyZXMgLS0+CiAgPCEtLSBFeWVzIC0tPgogIDxlbGxpcHNlIGN4PSIxMTgiIGN5PSIxMjAiIHJ4PSIxMCIgcnk9IjciIGZpbGw9IndoaXRlIi8+CiAgPGVsbGlwc2UgY3g9IjE2MiIgY3k9IjEyMCIgcng9IjEwIiByeT0iNyIgZmlsbD0id2hpdGUiLz4KICA8Y2lyY2xlIGN4PSIxMTkiIGN5PSIxMjAiIHI9IjUiIGZpbGw9IiM1YzNkMmUiLz4KICA8Y2lyY2xlIGN4PSIxNjMiIGN5PSIxMjAiIHI9IjUiIGZpbGw9IiM1YzNkMmUiLz4KICA8Y2lyY2xlIGN4PSIxMjEiIGN5PSIxMTgiIHI9IjIiIGZpbGw9ImJsYWNrIi8+CiAgPGNpcmNsZSBjeD0iMTY1IiBjeT0iMTE4IiByPSIyIiBmaWxsPSJibGFjayIvPgogIDxjaXJjbGUgY3g9IjEyMiIgY3k9IjExNyIgcj0iMSIgZmlsbD0id2hpdGUiLz4KICA8Y2lyY2xlIGN4PSIxNjYiIGN5PSIxMTciIHI9IjEiIGZpbGw9IndoaXRlIi8+CiAgPCEtLSBFeWVicm93cyAtLT4KICA8cGF0aCBkPSJNMTA4IDExMCBRMTE5IDEwNSAxMjkgMTEwIiBzdHJva2U9IiM4YjY5MTQiIHN0cm9rZS13aWR0aD0iMi41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8cGF0aCBkPSJNMTUxIDExMCBRMTYyIDEwNSAxNzIgMTEwIiBzdHJva2U9IiM4YjY5MTQiIHN0cm9rZS13aWR0aD0iMi41IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICA8IS0tIE5vc2UgLS0+CiAgPHBhdGggZD0iTTEzNyAxMjggUTEzNSAxMzggMTMyIDE0MiBRMTQwIDE0NSAxNDggMTQyIFExNDUgMTM4IDE0MyAxMjgiIGZpbGw9IiNlOGI4ODIiIHN0cm9rZT0ibm9uZSIvPgogIDwhLS0gU21pbGUgLS0+CiAgPHBhdGggZD0iTTEyNiAxNTIgUTE0MCAxNjIgMTU0IDE1MiIgc3Ryb2tlPSIjYzQ4NDVhIiBzdHJva2Utd2lkdGg9IjIiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDxwYXRoIGQ9Ik0xMjggMTU0IFExNDAgMTYwIDE1MiAxNTQiIGZpbGw9IiNmMDgwODAiIG9wYWNpdHk9IjAuNSIvPgogIDwhLS0gQ2hlZWtzIC0tPgogIDxlbGxpcHNlIGN4PSIxMDgiIGN5PSIxNDAiIHJ4PSIxMiIgcnk9IjgiIGZpbGw9IiNmNGEwYTAiIG9wYWNpdHk9IjAuNCIvPgogIDxlbGxpcHNlIGN4PSIxNzIiIGN5PSIxNDAiIHJ4PSIxMiIgcnk9IjgiIGZpbGw9IiNmNGEwYTAiIG9wYWNpdHk9IjAuNCIvPgogIDwhLS0gRWFycmluZ3MgLS0+CiAgPGNpcmNsZSBjeD0iNzciIGN5PSIxMjgiIHI9IjUiIGZpbGw9IiNmMGQwNjAiLz4KICA8Y2lyY2xlIGN4PSIyMDMiIGN5PSIxMjgiIHI9IjUiIGZpbGw9IiNmMGQwNjAiLz4KPC9zdmc+" alt="Олена І.">
+      <span class="online-dot"></span>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;">
+        <span class="card-name">Олена І.</span>
+        <span class="rating-inline"><span class="star">★</span> 4.9 <span class="reviews-link">48 відгуків</span></span>
+        <span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Верифіковано</span>
+        <div class="location-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Онлайн · Київ</div>
+      </div>
+      <div class="exp-line"><span class="exp-type teal">Репетитор</span><span class="exp-years">5 років досвіду</span></div>
+      <div class="stats-row-below">
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="stat-val">49</span><span class="stat-label">учнів</span></div>
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="stat-val">4975</span><span class="stat-label">занять</span></div>
+      </div>
+    </div>
+    <div class="card-subjects"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;display:inline;vertical-align:-3px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Англійська мова, Німецька мова, Французька мова</div>
+    <div class="card-details">
+      <div class="card-desc"><strong>Готую до IELTS та TOEFL | Розмовна англійська для дорослих</strong> • Маю 5 років досвіду викладання англійської мови. Працюю з учнями різного віку — від школярів до дорослих. Готую до міжнародних іспитів, розвиваю розмовні навички та впевненість у спілкуванні<span style="color:var(--muted)">...</span></div>
+    </div>
+    </div>
+    <div class="card-side">
+      <button class="heart-btn" onclick="this.classList.toggle('liked')">♡</button>
+      <div class="price-wrap"><span class="price">₴400</span> <span class="price-unit">/ 50 хв</span></div>
+      <div class="cta-wrap">
+        <button class="btn-cta btn-cta-teal">Залишити заявку</button>
+        <button class="btn-more">Детальніше</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="card">
+    <div class="card-top-row">
+    <div class="card-photo-wrap">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyODAiIGhlaWdodD0iMzYwIiB2aWV3Qm94PSIwIDAgMjgwIDM2MCI+CiAgPGRlZnM+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImJnMiIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNjOWE4ODIiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdHlsZT0ic3RvcC1jb2xvcjojYjg5MjZhIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8IS0tIEJhY2tncm91bmQgLS0+CiAgPHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIzNjAiIGZpbGw9IiNmMGU4ZTAiLz4KICA8IS0tIEJ1c2luZXNzIGphY2tldCBib2R5IC0tPgogIDxlbGxpcHNlIGN4PSIxNDAiIGN5PSIzNDUiIHJ4PSIxMTAiIHJ5PSI4MCIgZmlsbD0iIzNhM2E1YyIvPgogIDxlbGxpcHNlIGN4PSIxNDAiIGN5PSIzMTUiIHJ4PSI4MiIgcnk9IjY1IiBmaWxsPSIjNGE0YTZjIi8+CiAgPCEtLSBXaGl0ZSBzaGlydCB1bmRlcm5lYXRoIC0tPgogIDxwb2x5Z29uIHBvaW50cz0iMTMwLDIwMCAxNTAsMjAwIDE1NSwyNjAgMTI1LDI2MCIgZmlsbD0id2hpdGUiLz4KICA8IS0tIEphY2tldCBsYXBlbHMgLS0+CiAgPHBvbHlnb24gcG9pbnRzPSIxMjAsMTk1IDE0MCwyMTAgMTEwLDI4MCA5MCwyNjAiIGZpbGw9IiMzYTNhNWMiLz4KICA8cG9seWdvbiBwb2ludHM9IjE2MCwxOTUgMTQwLDIxMCAxNzAsMjgwIDE5MCwyNjAiIGZpbGw9IiMzYTNhNWMiLz4KICA8IS0tIE5lY2sgLS0+CiAgPHJlY3QgeD0iMTI2IiB5PSIxNzgiIHdpZHRoPSIyOCIgaGVpZ2h0PSIzOCIgcng9IjkiIGZpbGw9IiNlOGI4ODIiLz4KICA8IS0tIEhlYWQgLS0+CiAgPGNpcmNsZSBjeD0iMTQwIiBjeT0iMTE4IiByPSI2MyIgZmlsbD0iI2U4Yjg4MiIvPgogIDwhLS0gSGFpciAtIGRhcmsgYnJvd24gYnVuL3Byb2Zlc3Npb25hbCAtLT4KICA8ZWxsaXBzZSBjeD0iMTQwIiBjeT0iNzgiIHJ4PSI2NiIgcnk9IjQwIiBmaWxsPSIjM2QyYjFmIi8+CiAgPHJlY3QgeD0iNzYiIHk9IjkwIiB3aWR0aD0iMTgiIGhlaWdodD0iODUiIHJ4PSI5IiBmaWxsPSIjM2QyYjFmIi8+CiAgPHJlY3QgeD0iMTg2IiB5PSI5MCIgd2lkdGg9IjE4IiBoZWlnaHQ9Ijg1IiByeD0iOSIgZmlsbD0iIzNkMmIxZiIvPgogIDwhLS0gQnVuIG9uIHRvcCAtLT4KICA8ZWxsaXBzZSBjeD0iMTQwIiBjeT0iNjIiIHJ4PSIzMCIgcnk9IjIyIiBmaWxsPSIjNGEzNTI1Ii8+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjU4IiByeD0iMjYiIHJ5PSIxNiIgZmlsbD0iIzNkMmIxZiIvPgogIDwhLS0gRmFjZSAtLT4KICA8IS0tIEV5ZXMgLS0+CiAgPGVsbGlwc2UgY3g9IjExOCIgY3k9IjExOCIgcng9IjEwIiByeT0iNyIgZmlsbD0id2hpdGUiLz4KICA8ZWxsaXBzZSBjeD0iMTYyIiBjeT0iMTE4IiByeD0iMTAiIHJ5PSI3IiBmaWxsPSJ3aGl0ZSIvPgogIDxjaXJjbGUgY3g9IjExOSIgY3k9IjExOCIgcj0iNSIgZmlsbD0iIzNkMmIxZiIvPgogIDxjaXJjbGUgY3g9IjE2MyIgY3k9IjExOCIgcj0iNSIgZmlsbD0iIzNkMmIxZiIvPgogIDxjaXJjbGUgY3g9IjEyMSIgY3k9IjExNiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KICA8Y2lyY2xlIGN4PSIxNjUiIGN5PSIxMTYiIHI9IjIiIGZpbGw9ImJsYWNrIi8+CiAgPGNpcmNsZSBjeD0iMTIyIiBjeT0iMTE1IiByPSIxIiBmaWxsPSJ3aGl0ZSIvPgogIDxjaXJjbGUgY3g9IjE2NiIgY3k9IjExNSIgcj0iMSIgZmlsbD0id2hpdGUiLz4KICA8IS0tIEV5ZWJyb3dzIC0gZGVmaW5lZCAtLT4KICA8cGF0aCBkPSJNMTA3IDEwOCBRMTE5IDEwMyAxMzAgMTA3IiBzdHJva2U9IiMzZDJiMWYiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTE1MCAxMDcgUTE2MiAxMDMgMTczIDEwOCIgc3Ryb2tlPSIjM2QyYjFmIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogIDwhLS0gTm9zZSAtLT4KICA8cGF0aCBkPSJNMTM3IDEyNiBRMTM1IDEzNiAxMzMgMTQwIFExNDAgMTQzIDE0NyAxNDAgUTE0NSAxMzYgMTQzIDEyNiIgZmlsbD0iI2RhYTg3MCIvPgogIDwhLS0gTGlwcyAtIHByb2Zlc3Npb25hbCAtLT4KICA8cGF0aCBkPSJNMTI3IDE1MCBRMTQwIDE1OCAxNTMgMTUwIiBmaWxsPSIjYzA2MDUwIi8+CiAgPHBhdGggZD0iTTEyNyAxNTAgUTE0MCAxNDUgMTUzIDE1MCIgZmlsbD0iI2QwNzA2MCIvPgogIDwhLS0gU3VidGxlIHNtaWxlIC0tPgogIDxwYXRoIGQ9Ik0xMzAgMTUzIFExNDAgMTU5IDE1MCAxNTMiIHN0cm9rZT0iI2EwNDA0MCIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIi8+CiAgPCEtLSBDaGVla3Mgc3VidGxlIC0tPgogIDxlbGxpcHNlIGN4PSIxMDgiIGN5PSIxMzYiIHJ4PSIxMSIgcnk9IjciIGZpbGw9IiNmNGEwYTAiIG9wYWNpdHk9IjAuMyIvPgogIDxlbGxpcHNlIGN4PSIxNzIiIGN5PSIxMzYiIHJ4PSIxMSIgcnk9IjciIGZpbGw9IiNmNGEwYTAiIG9wYWNpdHk9IjAuMyIvPgogIDwhLS0gR2xhc3NlcyAtLT4KICA8cmVjdCB4PSIxMDAiIHk9IjExMSIgd2lkdGg9IjMyIiBoZWlnaHQ9IjIwIiByeD0iOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMmQyZDJkIiBzdHJva2Utd2lkdGg9IjIuNSIgb3BhY2l0eT0iMC43Ii8+CiAgPHJlY3QgeD0iMTQ4IiB5PSIxMTEiIHdpZHRoPSIzMiIgaGVpZ2h0PSIyMCIgcng9IjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzJkMmQyZCIgc3Ryb2tlLXdpZHRoPSIyLjUiIG9wYWNpdHk9IjAuNyIvPgogIDxsaW5lIHgxPSIxMzIiIHkxPSIxMjEiIHgyPSIxNDgiIHkyPSIxMjEiIHN0cm9rZT0iIzJkMmQyZCIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjciLz4KICA8bGluZSB4MT0iODAiIHkxPSIxMTgiIHgyPSIxMDAiIHkyPSIxMTgiIHN0cm9rZT0iIzJkMmQyZCIgc3Ryb2tlLXdpZHRoPSIyIiBvcGFjaXR5PSIwLjciLz4KICA8bGluZSB4MT0iMTgwIiB5MT0iMTE4IiB4Mj0iMjAwIiB5Mj0iMTE4IiBzdHJva2U9IiMyZDJkMmQiIHN0cm9rZS13aWR0aD0iMiIgb3BhY2l0eT0iMC43Ii8+Cjwvc3ZnPg==" alt="Марія К.">
+      <span class="online-dot orange"></span>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;">
+        <span class="card-name">Марія К.</span>
+        <span class="rating-inline"><span class="star">★</span> 5 <span class="reviews-link">62 відгуків</span></span>
+        <span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Верифіковано</span>
+        <div class="location-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Онлайн</div>
+      </div>
+      <div class="exp-line"><span class="exp-type orange">Психолог</span><span class="exp-years">10 років досвіду</span></div>
+      <div class="stats-row-below">
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="stat-val">38</span><span class="stat-label">учнів</span></div>
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="stat-val">6100</span><span class="stat-label">занять</span></div>
+      </div>
+    </div>
+    <div class="card-subjects"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;display:inline;vertical-align:-3px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Індивідуальна терапія, Сімейна терапія</div>
+    <div class="card-details">
+      <div class="card-desc"><strong>Клінічний психолог | Тривожність, депресія, стрес</strong> • Клінічний психолог з 10-річним досвідом. Спеціалізуюся на роботі з тривожністю, депресією та стресом. Працюю з дорослими та підлітками, використовую когнітивно-поведінкову терапію та mindfulness-підхід<span style="color:var(--muted)">...</span></div>
+    </div>
+    </div>
+    <div class="card-side">
+      <button class="heart-btn" onclick="this.classList.toggle('liked')">♡</button>
+      <div class="price-wrap"><span class="price">₴600</span> <span class="price-unit">/ 50 хв</span></div>
+      <div class="cta-wrap">
+        <button class="btn-cta btn-cta-orange">Залишити заявку</button>
+        <button class="btn-more">Детальніше</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="card">
+    <div class="card-top-row">
+    <div class="card-photo-wrap">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyODAiIGhlaWdodD0iMzYwIiB2aWV3Qm94PSIwIDAgMjgwIDM2MCI+CiAgPCEtLSBCYWNrZ3JvdW5kIC0tPgogIDxyZWN0IHdpZHRoPSIyODAiIGhlaWdodD0iMzYwIiBmaWxsPSIjZThlZmY4Ii8+CiAgPCEtLSBCb2R5IC0gc2hpcnQgLS0+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjM0NSIgcng9IjExMCIgcnk9IjgwIiBmaWxsPSIjMmM1MjgyIi8+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjMxMiIgcng9Ijg1IiByeT0iNjgiIGZpbGw9IiMzYTZhYWEiLz4KICA8IS0tIENvbGxhci9zaGlydCB3aGl0ZSAtLT4KICA8cG9seWdvbiBwb2ludHM9IjEyOCwxOTUgMTUyLDE5NSAxNTgsMjQwIDEyMiwyNDAiIGZpbGw9IndoaXRlIi8+CiAgPCEtLSBUaWUgLS0+CiAgPHBvbHlnb24gcG9pbnRzPSIxMzYsMTk4IDE0NCwxOTggMTQ3LDI1MCAxNDAsMjU4IDEzMywyNTAiIGZpbGw9IiNjNTMwMzAiLz4KICA8IS0tIEphY2tldCAtLT4KICA8cG9seWdvbiBwb2ludHM9IjExOCwxOTIgMTQwLDIwOCAxMDgsMjg1IDg1LDI2NSIgZmlsbD0iIzJjNTI4MiIvPgogIDxwb2x5Z29uIHBvaW50cz0iMTYyLDE5MiAxNDAsMjA4IDE3MiwyODUgMTk1LDI2NSIgZmlsbD0iIzJjNTI4MiIvPgogIDwhLS0gTmVjayAtLT4KICA8cmVjdCB4PSIxMjYiIHk9IjE3NiIgd2lkdGg9IjI4IiBoZWlnaHQ9IjM4IiByeD0iOSIgZmlsbD0iI2Q0OTU2YSIvPgogIDwhLS0gSGVhZCAtLT4KICA8Y2lyY2xlIGN4PSIxNDAiIGN5PSIxMTgiIHI9IjYyIiBmaWxsPSIjZDQ5NTZhIi8+CiAgPCEtLSBIYWlyIC0gc2hvcnQgZGFyayAtLT4KICA8ZWxsaXBzZSBjeD0iMTQwIiBjeT0iNzIiIHJ4PSI2NCIgcnk9IjM4IiBmaWxsPSIjMmQxZjBlIi8+CiAgPGVsbGlwc2UgY3g9IjE0MCIgY3k9IjgwIiByeD0iNjIiIHJ5PSIzMCIgZmlsbD0iIzJkMWYwZSIvPgogIDxyZWN0IHg9Ijc4IiB5PSI4NSIgd2lkdGg9IjE0IiBoZWlnaHQ9IjUwIiByeD0iNyIgZmlsbD0iIzJkMWYwZSIvPgogIDxyZWN0IHg9IjE4OCIgeT0iODUiIHdpZHRoPSIxNCIgaGVpZ2h0PSI1MCIgcng9IjciIGZpbGw9IiMyZDFmMGUiLz4KICA8IS0tIEVhcnMgLS0+CiAgPGVsbGlwc2UgY3g9Ijc5IiBjeT0iMTIyIiByeD0iMTAiIHJ5PSIxNCIgZmlsbD0iI2M4ODU0YSIvPgogIDxlbGxpcHNlIGN4PSIyMDEiIGN5PSIxMjIiIHJ4PSIxMCIgcnk9IjE0IiBmaWxsPSIjYzg4NTRhIi8+CiAgPCEtLSBGYWNlIC0tPgogIDwhLS0gRXllcyAtLT4KICA8ZWxsaXBzZSBjeD0iMTE4IiBjeT0iMTE4IiByeD0iMTAiIHJ5PSI3IiBmaWxsPSJ3aGl0ZSIvPgogIDxlbGxpcHNlIGN4PSIxNjIiIGN5PSIxMTgiIHJ4PSIxMCIgcnk9IjciIGZpbGw9IndoaXRlIi8+CiAgPGNpcmNsZSBjeD0iMTE5IiBjeT0iMTE4IiByPSI1IiBmaWxsPSIjM2QyYjFmIi8+CiAgPGNpcmNsZSBjeD0iMTYzIiBjeT0iMTE4IiByPSI1IiBmaWxsPSIjM2QyYjFmIi8+CiAgPGNpcmNsZSBjeD0iMTIxIiBjeT0iMTE2IiByPSIyIiBmaWxsPSJibGFjayIvPgogIDxjaXJjbGUgY3g9IjE2NSIgY3k9IjExNiIgcj0iMiIgZmlsbD0iYmxhY2siLz4KICA8Y2lyY2xlIGN4PSIxMjIiIGN5PSIxMTUiIHI9IjEiIGZpbGw9IndoaXRlIi8+CiAgPGNpcmNsZSBjeD0iMTY2IiBjeT0iMTE1IiByPSIxIiBmaWxsPSJ3aGl0ZSIvPgogIDwhLS0gRXllYnJvd3MgLSBzdHJvbmcgLS0+CiAgPHBhdGggZD0iTTEwNyAxMDggUTExOSAxMDIgMTMwIDEwNyIgc3Ryb2tlPSIjMmQxZjBlIiBzdHJva2Utd2lkdGg9IjMuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPHBhdGggZD0iTTE1MCAxMDcgUTE2MiAxMDIgMTczIDEwOCIgc3Ryb2tlPSIjMmQxZjBlIiBzdHJva2Utd2lkdGg9IjMuNSIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgPCEtLSBOb3NlIC0gbWFsZSBicm9hZGVyIC0tPgogIDxwYXRoIGQ9Ik0xMzYgMTI2IFExMzQgMTM4IDEzMCAxNDMgUTE0MCAxNDcgMTUwIDE0MyBRMTQ2IDEzOCAxNDQgMTI2IiBmaWxsPSIjYzA3ODQwIi8+CiAgPCEtLSBNb3V0aCAtIHNsaWdodCBzbWlsZSAtLT4KICA8cGF0aCBkPSJNMTI2IDE1MyBRMTQwIDE2MyAxNTQgMTUzIiBmaWxsPSIjYjA2MDQwIi8+CiAgPHBhdGggZD0iTTEyNiAxNTMgUTE0MCAxNTAgMTU0IDE1MyIgZmlsbD0iI2MwNzg1OCIgb3BhY2l0eT0iMC42Ii8+CiAgPCEtLSBTdHViYmxlIHN1YnRsZSAtLT4KICA8ZWxsaXBzZSBjeD0iMTI4IiBjeT0iMTU4IiByeD0iMTgiIHJ5PSIxMiIgZmlsbD0iI2MwNzg0MCIgb3BhY2l0eT0iMC4yIi8+CiAgPGVsbGlwc2UgY3g9IjE1MiIgY3k9IjE1OCIgcng9IjE4IiByeT0iMTIiIGZpbGw9IiNjMDc4NDAiIG9wYWNpdHk9IjAuMiIvPgogIDwhLS0gQ2hlZWsgLS0+CiAgPGVsbGlwc2UgY3g9IjEwNiIgY3k9IjEzNiIgcng9IjEyIiByeT0iOCIgZmlsbD0iI2UwOTA5MCIgb3BhY2l0eT0iMC4yNSIvPgogIDxlbGxpcHNlIGN4PSIxNzQiIGN5PSIxMzYiIHJ4PSIxMiIgcnk9IjgiIGZpbGw9IiNlMDkwOTAiIG9wYWNpdHk9IjAuMjUiLz4KPC9zdmc+" alt="Денис П.">
+      <span class="online-dot"></span>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px 10px;">
+        <span class="card-name">Денис П.</span>
+        <span class="rating-inline"><span class="star">★</span> 4.8 <span class="reviews-link">31 відгуків</span></span>
+        <span class="badge-verified"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Верифіковано</span>
+        <div class="location-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Онлайн · Харків</div>
+      </div>
+      <div class="exp-line"><span class="exp-type teal">Репетитор</span><span class="exp-years">7 років досвіду</span></div>
+      <div class="stats-row-below">
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="stat-val">22</span><span class="stat-label">учнів</span></div>
+        <div class="stat"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;color:var(--teal);flex-shrink:0;vertical-align:middle"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg><span class="stat-val">1840</span><span class="stat-label">занять</span></div>
+      </div>
+    </div>
+    <div class="card-subjects"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0;display:inline;vertical-align:-3px;margin-right:5px"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Математика, Фізика, Програмування</div>
+    <div class="card-details">
+      <div class="card-desc"><strong>Математика ЗНО / НМТ | Підготовка до вступу у вуз</strong> • Допоможу підготуватись до ЗНО та НМТ з математики та фізики. Понад 7 років практики. Пояснюю складне простими словами, навчаю розв'язувати задачі системно та готую до вступу у топ-виші<span style="color:var(--muted)">...</span></div>
+    </div>
+    </div>
+    <div class="card-side">
+      <button class="heart-btn" onclick="this.classList.toggle('liked')">♡</button>
+      <div class="price-wrap"><span class="price">₴350</span> <span class="price-unit">/ 50 хв</span></div>
+      <div class="cta-wrap">
+        <button class="btn-cta btn-cta-teal">Залишити заявку</button>
+        <button class="btn-more">Детальніше</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // ── SUBJECT SELECTOR ──
+  function toggleSubjectDrop() {
+    document.getElementById('subjectSelector').classList.toggle('open');
+    setTimeout(() => document.getElementById('subjectDropSearch').focus(), 100);
+  }
+  function pickSubject(el) {
+    document.querySelectorAll('.subject-drop-item').forEach(i => i.classList.remove('picked'));
+    el.classList.add('picked');
+    const val = el.textContent;
+    document.getElementById('subjectValue').textContent = val;
+    document.querySelector('.subject-selector-label').style.display = 'none';
+    document.getElementById('subjectSelector').classList.remove('open');
+    document.getElementById('subjectDropSearch').value = '';
+    filterSubjectDrop('');
+  }
+  function filterSubjectDrop(q) {
+    const items = document.querySelectorAll('.subject-drop-item, .subject-drop-group');
+    const lower = q.toLowerCase();
+    let lastGroup = null;
+    let groupHasVisible = false;
+    items.forEach(el => {
+      if (el.classList.contains('subject-drop-group')) {
+        if (lastGroup && !groupHasVisible) lastGroup.style.display = 'none';
+        lastGroup = el;
+        groupHasVisible = false;
+        el.style.display = '';
+      } else {
+        const match = !q || el.textContent.toLowerCase().includes(lower);
+        el.style.display = match ? '' : 'none';
+        if (match) groupHasVisible = true;
+      }
+    });
+    if (lastGroup && !groupHasVisible) lastGroup.style.display = 'none';
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.subject-selector')) {
+      document.getElementById('subjectSelector').classList.remove('open');
+    }
+  });
+
+
+  function quickPick(el) {
+    document.querySelectorAll('.qchip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('subjectValue').textContent = el.textContent;
+    document.querySelector('.subject-selector-label').style.display = 'none';
+  }
+
+
+
+  // ── BURGER MENU ──
+  document.getElementById('burgerBtn').addEventListener('click', () => document.getElementById('mobileMenu').classList.add('open'));
+  document.getElementById('menuClose').addEventListener('click', () => document.getElementById('mobileMenu').classList.remove('open'));
+  document.getElementById('mobileMenu').addEventListener('click', e => { if(e.target===document.getElementById('mobileMenu')) document.getElementById('mobileMenu').classList.remove('open'); });
+
+  // ── ОСВІТА ──
+  function pickEdu(el, val) {
+    document.querySelectorAll('#fw-edu .flt-radio').forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    activeF.edu = val === 'any' ? null : val;
+    if (!activeF.edu) delete activeF.edu;
+  }
+  function toggleEduWhere() {
+    const box = document.getElementById('eduWhereBox');
+    const block = document.getElementById('eduWhereBlock');
+    const isOn = box.classList.contains('on');
+    box.classList.toggle('on', !isOn);
+    block.style.display = isOn ? 'none' : 'block';
+  }
+  function clearEdu() {
+    document.getElementById('eduWhereBox').classList.remove('on');
+    document.getElementById('eduWhereBlock').style.display = 'none';
+    document.querySelectorAll('#uniList .flt-opt, #depList .flt-opt').forEach(o => o.classList.remove('sel'));
+    delete activeF.uni; delete activeF.dep; delete activeF.edu;
+    const first = document.getElementById('edu-any');
+    if (first) { document.querySelectorAll('#fw-edu .flt-radio').forEach(o=>o.classList.remove('sel')); first.classList.add('sel'); }
+  }
+  function mobPickEdu(val) {
+    ['Any','Ped','High'].forEach(v => {
+      const el = document.getElementById('mobEdu' + v);
+      if (el) el.classList.toggle('sel', v.toLowerCase() === val);
+    });
+  }
+  function mobToggleEduWhere() {
+    const box = document.getElementById('mobEduWhereBox');
+    const block = document.getElementById('mobEduWhereBlock');
+    const tog = document.getElementById('mobEduWhereToggle');
+    const isOn = box.classList.contains('on');
+    box.classList.toggle('on', !isOn);
+    block.style.display = isOn ? 'none' : 'block';
+    tog.classList.toggle('sel', !isOn);
+  }
+
+  const multiMode = { rep: null, psy: null, logo: null, coach: null };
+
+  function toggleMultiMode(type) {
+    const isOn = multiMode[type] !== null;
+    multiMode[type] = isOn ? null : 'diff';
+    // desktop
+    const dBox = document.getElementById('deskMultiBox-' + type);
+    const dRadios = document.getElementById('deskMultiRadios-' + type);
+    if (dBox) dBox.classList.toggle('on', !isOn);
+    if (dRadios) dRadios.style.display = isOn ? 'none' : 'flex';
+    if (!isOn) {
+      const dd = document.getElementById('desk-mr-' + type + '-diff');
+      const do_ = document.getElementById('desk-mr-' + type + '-one');
+      if (dd) dd.classList.add('sel');
+      if (do_) do_.classList.remove('sel');
+    }
+  }
+
+  function pickMultiMode(type, mode) {
+    multiMode[type] = mode;
+    ['diff','one'].forEach(m => {
+      const el = document.getElementById('desk-mr-' + type + '-' + m);
+      if (el) el.classList.toggle('sel', m === mode);
+    });
+  }
+
+  function toggleMultiModeMob(type) {
+    const isOn = multiMode[type] !== null;
+    multiMode[type] = isOn ? null : 'diff';
+    const mBox = document.getElementById('mobMultiBox-' + type);
+    const mRadios = document.getElementById('mobMultiRadios-' + type);
+    if (mBox) mBox.classList.toggle('on', !isOn);
+    if (mRadios) mRadios.style.display = isOn ? 'none' : 'flex';
+    if (!isOn) {
+      const md = document.getElementById('mob-mr-' + type + '-diff');
+      const mo = document.getElementById('mob-mr-' + type + '-one');
+      if (md) md.classList.add('sel');
+      if (mo) mo.classList.remove('sel');
+    }
+  }
+
+  function pickMultiModeMob(type, mode) {
+    multiMode[type] = mode;
+    ['diff','one'].forEach(m => {
+      const el = document.getElementById('mob-mr-' + type + '-' + m);
+      if (el) el.classList.toggle('sel', m === mode);
+    });
+  }
+
+  function updateMultiBlock(type) {
+    const deskCount = subjPicked[type] ? subjPicked[type].length : 0;
+    const mobCount  = mobSubjPicked[type] ? mobSubjPicked[type].length : 0;
+    const deskBlock = document.getElementById('multiBlock-' + type);
+    const mobBlock  = document.getElementById('mobMultiBlock-' + type);
+    if (deskBlock) deskBlock.style.display = deskCount >= 2 ? 'block' : 'none';
+    if (mobBlock)  mobBlock.style.display  = mobCount  >= 2 ? 'block' : 'none';
+    if (deskCount < 2) { multiMode[type] = multiMode[type] === 'one' ? null : multiMode[type]; }
+  }
+
+  // ── SUBJECT SEARCH DROPDOWN ──
+  const SUBJ_DATA = {
+    rep:   ['Англійська мова','Математика','Фізика','Хімія','Біологія','Українська мова','Українська літ-ра','Історія','Географія','Програмування','Німецька мова','Французька мова','Польська мова','Іспанська мова','Музика','Малювання'],
+    psy:   ['Тривожність та стрес','Сімейна терапія','Дитяча психологія','Депресія','Травма та ПТСР','Самооцінка','Стосунки','Горе та втрата'],
+    logo:  ['Дислексія','Заїкання','Дошкільний вік','Затримка мовлення','Порушення вимови','Аутизм (мовлення)'],
+    coach: ['Кар\'єрний коучинг','Лайф-коучинг','Бізнес-коучинг','Тайм-менеджмент','Лідерство','Впевненість']
+  };
+  const subjPicked = { rep:[], psy:[], logo:[], coach:[] };
+  const subjMeta = {
+    rep:   { inp:'subjInp',    drop:'subjDrop',    chosen:'subjChosen'    },
+    psy:   { inp:'subjInpPsy', drop:'subjDropPsy', chosen:'subjChosenPsy' },
+    logo:  { inp:'subjInpLogo',drop:'subjDropLogo',chosen:'subjChosenLogo'},
+    coach: { inp:'subjInpCoach',drop:'subjDropCoach',chosen:'subjChosenCoach'}
+  };
+
+  function renderSubjDrop(q, type) {
+    const meta = subjMeta[type];
+    const drop = document.getElementById(meta.drop);
+    const list = SUBJ_DATA[type];
+    const filtered = q ? list.filter(s => s.toLowerCase().includes(q.toLowerCase())) : list;
+    if (!filtered.length) {
+      drop.innerHTML = '<div class="subj-drop-empty">Нічого не знайдено</div>';
+    } else {
+      drop.innerHTML = filtered.map(s => {
+        const picked = subjPicked[type].includes(s);
+        const hl = q ? s.replace(new RegExp('('+q+')','gi'), '<strong>$1</strong>') : s;
+        return `<div class="subj-drop-item${picked?' picked':''}" onclick="toggleSubj('${type}','${s.replace(/'/g,"\\'")}',this)">${hl}</div>`;
+      }).join('');
+    }
+    drop.style.display = 'block';
+  }
+
+  function toggleSubj(type, val, el) {
+    const arr = subjPicked[type];
+    const idx = arr.indexOf(val);
+    if (idx === -1) arr.push(val); else arr.splice(idx, 1);
+    el.classList.toggle('picked', arr.includes(val));
+    renderSubjChosen(type);
+    // close drop and clear input after pick
+    document.getElementById(subjMeta[type].drop).style.display = 'none';
+    document.getElementById(subjMeta[type].inp).value = '';
+  }
+
+  function renderSubjChosen(type) {
+    const el = document.getElementById(subjMeta[type].chosen);
+    el.innerHTML = subjPicked[type].map(v =>
+      `<span class="subj-tag">${v}<span class="subj-tag-x" onclick="removeSubj('${type}','${v.replace(/'/g,"\\'")}')">×</span></span>`
+    ).join('');
+    activeF.subj = subjPicked.rep.concat(subjPicked.psy, subjPicked.logo, subjPicked.coach);
+    if (!activeF.subj.length) delete activeF.subj;
+    updateMultiBlock(type);
+  }
+
+  function removeSubj(type, val) {
+    subjPicked[type] = subjPicked[type].filter(v => v !== val);
+    renderSubjChosen(type);
+    // re-render drop if open
+    const inp = document.getElementById(subjMeta[type].inp);
+    renderSubjDrop(inp.value, type);
+  }
+
+  // close subject drop on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.subj-search-wrap') && !e.target.closest('.subj-drop')) {
+      document.querySelectorAll('.subj-drop').forEach(d => d.style.display = 'none');
+    }
+  });
+
+  // ── SORT ──
+  function toggleSort() { document.getElementById('sortWrap').classList.toggle('open'); }
+  function selectSort(el, label) {
+    document.querySelectorAll('.sort-option').forEach(o => o.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('sortLabel').textContent = label;
+    document.getElementById('sortWrap').classList.remove('open');
+  }
+
+  const mobSubjPicked = { rep:[], psy:[], logo:[], coach:[] };
+
+  function renderMobSubjDrop(q, type) {
+    const list = document.getElementById('mSubjList-' + type);
+    const all = SUBJ_DATA[type];
+    const filtered = q ? all.filter(s => s.toLowerCase().includes(q.toLowerCase())) : all;
+    list.innerHTML = filtered.map(s => {
+      const sel = mobSubjPicked[type].includes(s);
+      return `<div class="mob-subj-item${sel?' sel':''}" onclick="toggleMobSubj('${type}','${s.replace(/'/g,"\\'")}',this)">${s}</div>`;
+    }).join('');
+  }
+
+  function toggleMobSubj(type, val, el) {
+    const arr = mobSubjPicked[type];
+    const idx = arr.indexOf(val);
+    if (idx === -1) arr.push(val); else arr.splice(idx, 1);
+    el.classList.toggle('sel', arr.includes(val));
+    renderMobSubjChosen(type);
+    // close list and clear input after pick
+    document.getElementById('mSubjList-' + type).innerHTML = '';
+    const inpMap = { rep:'mSubjInp', psy:'mSubjInpPsy', logo:'mSubjInpLogo', coach:'mSubjInpCoach' };
+    document.getElementById(inpMap[type]).value = '';
+  }
+
+  function renderMobSubjChosen(type) {
+    const el = document.getElementById('mSubjChosen-' + type);
+    el.innerHTML = mobSubjPicked[type].map(v =>
+      `<span class="subj-tag">${v}<span class="subj-tag-x" onclick="removeMobSubj('${type}','${v.replace(/'/g,"\\'")}')">×</span></span>`
+    ).join('');
+    updateMultiBlock(type);
+  }
+
+  function removeMobSubj(type, val) {
+    mobSubjPicked[type] = mobSubjPicked[type].filter(v => v !== val);
+    renderMobSubjChosen(type);
+    const listEl = document.getElementById('mSubjList-' + type);
+    listEl.querySelectorAll('.mob-subj-item').forEach(el => {
+      if (el.textContent.trim() === val) el.classList.remove('sel');
+    });
+  }
+
+  // ── MOBILE SHEET ──
+  document.getElementById('mobFltBtn').onclick = () => document.getElementById('mobOverlay').classList.add('open');
+  function closeMob() { document.getElementById('mobOverlay').classList.remove('open'); }
+  function clearMob() {
+    document.querySelectorAll('.mob-body .mob-tag').forEach(t => t.classList.remove('sel'));
+    document.querySelectorAll('.mob-body .mob-opt').forEach(o => o.classList.remove('sel'));
+    document.getElementById('mpMin').value = 100;
+    document.getElementById('mpMax').value = 2000;
+    document.getElementById('mrMin').value = 100;
+    document.getElementById('mrMax').value = 2000;
+    mobUpdateFill();
+    // reset format to Онлайн
+    const first = document.querySelector('.mob-body .mob-opt');
+    if (first) first.classList.add('sel');
+    document.getElementById('mobCityBlock').style.display = 'none';
+    document.getElementById('mobVisitOpt').style.display = 'none';
+    // reset spec tab
+    document.querySelectorAll('.mob-spec-tab').forEach(t => t.classList.remove('on'));
+    document.querySelector('.mob-spec-tab').classList.add('on');
+    document.querySelectorAll('.mob-spec-panel').forEach(p => p.classList.remove('show'));
+    document.getElementById('ms-rep').classList.add('show');
+  }
+  function mobSpecTab(el, id) {
+    el.closest('.mob-spec-tabs').querySelectorAll('.mob-spec-tab').forEach(t => t.classList.remove('on'));
+    el.classList.add('on');
+    document.querySelectorAll('.mob-spec-panel').forEach(p => p.classList.remove('show'));
+    document.getElementById(id).classList.add('show');
+  }
+  function mobPickFormat(el, val) {
+    el.closest('.mob-sec').querySelectorAll('.mob-opt:not(#mobCityList .mob-opt)').forEach(o => {
+      if (!o.closest('#mobCityList')) o.classList.remove('sel');
+    });
+    el.classList.add('sel');
+    const isOffline = val === 'Офлайн';
+    document.getElementById('mobCityBlock').style.display = isOffline ? 'block' : 'none';
+    document.getElementById('mobVisitOpt').style.display = isOffline ? 'flex' : 'none';
+  }
+  function mobFilterList(inp, listId) {
+    const q = inp.value.toLowerCase();
+    document.querySelectorAll('#' + listId + ' .mob-opt').forEach(o => {
+      o.style.display = o.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+    });
+  }
+  // mob dual range
+  function mobDualRange() {
+    let a = +document.getElementById('mrMin').value, b = +document.getElementById('mrMax').value;
+    document.getElementById('mpMin').value = Math.min(a,b);
+    document.getElementById('mpMax').value = Math.max(a,b);
+    mobUpdateFill();
+  }
+  function mobSyncRange() {
+    document.getElementById('mrMin').value = Math.min(+document.getElementById('mpMin').value, +document.getElementById('mpMax').value);
+    document.getElementById('mrMax').value = Math.max(+document.getElementById('mpMin').value, +document.getElementById('mpMax').value);
+    mobUpdateFill();
+  }
+  function mobUpdateFill() {
+    const mn=+document.getElementById('mrMin').value, mx=+document.getElementById('mrMax').value;
+    const p=v=>((v-100)/1900)*100;
+    const f=document.getElementById('mRangeFill');
+    if(f){f.style.left=p(Math.min(mn,mx))+'%';f.style.width=(p(Math.max(mn,mx))-p(Math.min(mn,mx)))+'%';}
+  }
+
+  // ── DESKTOP FILTERS ──
+  const activeF = { format: 'Онлайн' };
+
+  function toggleFlt(id) {
+    const w = document.getElementById(id);
+    const wasOpen = w.classList.contains('open');
+    document.querySelectorAll('.flt-wrap.open').forEach(x => x.classList.remove('open'));
+    if (!wasOpen) w.classList.add('open');
+  }
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.flt-wrap') && !e.target.closest('#sortWrap'))
+      document.querySelectorAll('.flt-wrap.open').forEach(x => x.classList.remove('open'));
+    if (!e.target.closest('#sortWrap'))
+      document.getElementById('sortWrap').classList.remove('open');
+  });
+
+  function chk(el, key, val) {
+    el.classList.toggle('sel');
+    if (!activeF[key]) activeF[key] = [];
+    const i = activeF[key].indexOf(val);
+    if (i === -1) activeF[key].push(val); else activeF[key].splice(i, 1);
+    if (!activeF[key].length) delete activeF[key];
+  }
+
+  function pickFormat(el, val) {
+    el.closest('.flt-drop-inner').querySelectorAll('.flt-opt').forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    activeF.format = val;
+    const isOff = val === 'Офлайн';
+    document.getElementById('cityBlock').style.display = isOff ? 'block' : 'none';
+    document.getElementById('fmt-visit').style.display = isOff ? 'flex' : 'none';
+    document.getElementById('fmtBtn').innerHTML = val + ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><polyline points="6 9 12 15 18 9"/></svg>';
+  }
+
+  function deskSpecTab(el, id) {
+    el.closest('.spec-tabs').querySelectorAll('.spec-tab').forEach(t => t.classList.remove('on'));
+    el.classList.add('on');
+    document.querySelectorAll('.spec-panel').forEach(p => p.classList.remove('show'));
+    document.getElementById(id).classList.add('show');
+  }
+
+  function filterOpts(inp, listId) {
+    const q = inp.value.toLowerCase();
+    document.querySelectorAll('#' + listId + ' .flt-opt').forEach(o => {
+      o.style.display = o.textContent.toLowerCase().includes(q) ? 'flex' : 'none';
+    });
+  }
+
+  // desktop dual range
+  function dualRange() {
+    let a = +document.getElementById('rMin').value, b = +document.getElementById('rMax').value;
+    document.getElementById('pMin').value = Math.min(a,b);
+    document.getElementById('pMax').value = Math.max(a,b);
+    updateFill();
+  }
+  function syncRange() {
+    document.getElementById('rMin').value = Math.min(+document.getElementById('pMin').value, +document.getElementById('pMax').value);
+    document.getElementById('rMax').value = Math.max(+document.getElementById('pMin').value, +document.getElementById('pMax').value);
+    updateFill();
+  }
+  function updateFill() {
+    const mn=+document.getElementById('rMin').value, mx=+document.getElementById('rMax').value;
+    const p=v=>((v-100)/1900)*100;
+    const f=document.getElementById('dRangeFill');
+    if(f){f.style.left=p(Math.min(mn,mx))+'%';f.style.width=(p(Math.max(mn,mx))-p(Math.min(mn,mx)))+'%';}
+  }
+
+  function applyFlt(key, wrapId) {
+    document.getElementById(wrapId).classList.remove('open');
+    if (key === 'price') {
+      activeF.price = document.getElementById('pMin').value + '–' + document.getElementById('pMax').value;
+    }
+    const btn = document.querySelector('#' + wrapId + ' .flt-btn');
+    if (activeF[key]) btn.classList.add('on'); else btn.classList.remove('on');
+    renderChips();
+  }
+  function clearFlt(key, wrapId) {
+    delete activeF[key];
+    document.querySelector('#' + wrapId + ' .flt-btn').classList.remove('on');
+    document.querySelectorAll('#' + wrapId + ' .flt-opt').forEach(o => o.classList.remove('sel'));
+    if (key === 'price') { document.getElementById('pMin').value=100; document.getElementById('pMax').value=2000; document.getElementById('rMin').value=100; document.getElementById('rMax').value=2000; updateFill(); }
+    renderChips();
+  }
+  function renderChips() {
+    const row = document.getElementById('activeChips');
+    let html = '';
+    Object.entries(activeF).forEach(([k, v]) => {
+      if (k === 'format') return;
+      const vals = Array.isArray(v) ? v : [v];
+      vals.forEach(val => {
+        html += `<span class="a-chip">${val}<span class="a-chip-x" onclick="removeChip('${k}','${val.replace(/'/g,'')}')">×</span></span>`;
+      });
+    });
+    row.innerHTML = html;
+  }
+  function removeChip(k, v) {
+    if (Array.isArray(activeF[k])) {
+      activeF[k] = activeF[k].filter(x => x !== v);
+      if (!activeF[k].length) delete activeF[k];
+    } else delete activeF[k];
+    renderChips();
+  }
+
+  function pickProg(el, show) {
+    document.querySelectorAll('#fw-prog .flt-radio').forEach(o => o.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('progCountries').style.display = show ? 'block' : 'none';
+    if (!show) document.querySelectorAll('#progCountries .flt-opt').forEach(o => o.classList.remove('sel'));
+  }
+  function mobPickProg(show) {
+    document.getElementById('mobProgYes').classList.toggle('sel', show);
+    document.getElementById('mobProgNo').classList.toggle('sel', !show);
+    document.getElementById('mobProgCountries').style.display = show ? 'block' : 'none';
+    if (!show) document.querySelectorAll('#mobProgCountries .mob-tag').forEach(t => t.classList.remove('sel'));
+  }
+
+  // init fills
+  setTimeout(() => { updateFill(); mobUpdateFill(); }, 80);
+</script>
+</body>
+</html>
