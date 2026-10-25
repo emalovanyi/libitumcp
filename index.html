@@ -333,6 +333,20 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.93);backdr
 .cf-strip-wrap.show{display:block}
 .cf-strip-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:36px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);pointer-events:none;transition:opacity .2s}
 .cf-strip-wrap.at-end::after{opacity:0}
+/* audience pills + levels on the same row (desktop) */
+.cf-aud-row{display:flex;align-items:center;gap:14px;margin-top:12px;flex-wrap:wrap}
+.cf-aud{display:flex;gap:8px;flex-wrap:wrap}
+.cf-lvside{display:none;align-items:center;gap:10px;flex:1;min-width:220px;position:relative;border-left:1.5px solid var(--border);padding-left:14px;overflow:hidden}
+.cf-lvside.show{display:flex}
+.cf-lvside-lbl{font-size:12.5px;font-weight:700;color:var(--muted);white-space:nowrap;flex-shrink:0}
+.cf-lvside .cf-strip{flex:1;padding-right:30px}
+.cf-lvside::after{content:'';position:absolute;top:0;right:0;bottom:0;width:30px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);pointer-events:none;transition:opacity .2s}
+.cf-lvside.at-end::after{opacity:0}
+@media(max-width:640px){
+  .cf-aud{width:100%}
+  .cf-aud .cf-goalpill{flex:1;text-align:center;padding:9px 6px}
+  .cf-lvside{width:100%;flex:1 1 100%;border-left:none;padding-left:0;margin-top:2px}
+}
 .cf-strip{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 36px 2px 0;scroll-behavior:smooth}
 .cf-strip::-webkit-scrollbar{display:none}
 .cf-goalpill{flex-shrink:0;font-size:14px;font-weight:600;color:var(--ink-2);background:#fff;border:1.5px solid var(--border);border-radius:22px;padding:8px 15px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Manrope',sans-serif}
@@ -581,16 +595,17 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
       </div>
       <button class="cf-flt" id="cfFltBtn"><i class="fa-solid fa-sliders"></i><span class="lbl">Фільтри</span><span class="cf-badge" id="cfBadge"></span></button>
     </div>
-    <div class="cf-row2">
-      <div class="cf-seg" id="cfSeg">
-        <button data-v="all" class="on">Усі</button>
-        <button data-v="child">Дитина</button>
-        <button data-v="teen">Підліток</button>
-        <button data-v="adult">Дорослий</button>
+    <div class="cf-aud-row">
+      <div class="cf-aud" id="cfSeg">
+        <button class="cf-goalpill" data-v="child">Для дитини</button>
+        <button class="cf-goalpill" data-v="teen">Для підлітка</button>
+        <button class="cf-goalpill" data-v="adult">Для дорослого</button>
+      </div>
+      <div class="cf-lvside" id="cfLvWrap">
+        <span class="cf-lvside-lbl" id="cfLvTitle">Рівень</span>
+        <div class="cf-strip" id="cfLvStrip"></div>
       </div>
     </div>
-    <div class="cf-lv-title" id="cfLvTitle">Ваш поточний рівень</div>
-    <div class="cf-strip-wrap" id="cfLvWrap"><div class="cf-strip" id="cfLvStrip"></div></div>
     <div class="cf-goal-wrap" id="cfGoalWrap">
       <button class="cf-goal-btn" id="cfGoalBtn"><span id="cfGoalLabel">Оберіть ціль навчання</span><i class="fa-solid fa-chevron-down"></i></button>
       <div class="cf-goal-back" id="cfGoalBack"></div>
@@ -1285,7 +1300,7 @@ function cfRenderLevel(){
   const show=CF_HAS_LEVEL(CF.subject);
   cfLvWrap.classList.toggle('show',show); cfLvTitle.classList.toggle('show',show);
   if(!show) return;
-  cfLvTitle.textContent = CF.who==='child'?'Поточний рівень дитини':'Ваш поточний рівень';
+  cfLvTitle.textContent = CF.who==='child'?'Поточний рівень дитини':'Поточний рівень';
   const x=cfLvStrip.scrollLeft;
   cfLvStrip.innerHTML=cfLevelScale().map(l=>'<button class="cf-goalpill'+(CF.level===l[0]?' on':'')+'" data-v="'+l[0]+'">'+l[1]+(CF.who==='child'?'':'<small>'+l[2]+'</small>')+'</button>').join('');
   cfLvStrip.scrollLeft=x; cfFade();
@@ -1402,7 +1417,7 @@ function cfInit(){
   cfDrop.addEventListener('mousedown', e=>{ const it=e.target.closest('.cf-item'); if(it){ e.preventDefault(); cfPickSubject(it.dataset.s); } });
   document.getElementById('cfArrow').onclick=()=>{ cfW.classList.contains('open')?(cfCloseWhat(),cfInp.blur()):cfInp.focus(); };
   document.addEventListener('mousedown', e=>{ if(!e.target.closest('#cfWhat')) cfCloseWhat(); if(!e.target.closest('#cfGoalWrap')) cfCloseGoals(); });
-  document.getElementById('cfSeg').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; CF.who=b.dataset.v; if(CF.goal && !GOALS_FOR[CF.who].includes(CF.goal)) CF.goal=null; CF.level=null; cfRenderAll(); });
+  document.getElementById('cfSeg').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; CF.who=(CF.who===b.dataset.v)?'all':b.dataset.v; if(CF.goal && !GOALS_FOR[CF.who].includes(CF.goal)) CF.goal=null; CF.level=null; cfRenderAll(); });
   cfLvStrip.addEventListener('click', e=>{ const b=e.target.closest('.cf-goalpill'); if(!b) return; CF.level=CF.level===b.dataset.v?null:b.dataset.v; cfRenderLevel(); cfRenderList(); });
   cfLvStrip.addEventListener('scroll', cfFade); window.addEventListener('resize', cfFade);
   cfGoalBtn.onclick=()=>{ const op=!cfGoalWrap.classList.contains('open'); cfGoalWrap.classList.toggle('open',op); if(op && window.innerWidth<=640) document.body.style.overflow='hidden'; else document.body.style.overflow=''; };
