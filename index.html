@@ -299,6 +299,103 @@ header{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.93);backdr
 .spec-tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px}
 .spec-tab{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;color:var(--muted);background:var(--bg);border:1.5px solid var(--border);border-radius:20px;padding:5px 12px;cursor:pointer;transition:all .18s}
 .spec-tab.on{background:var(--teal-500);border-color:var(--teal-500);color:#fff}
+
+/* ===== reference-style category filters ===== */
+.cf-top{display:flex;gap:10px;align-items:stretch}
+.cf-what{position:relative;flex:1;min-width:0}
+.cf-what-box{display:flex;align-items:center;background:#fff;border:2px solid var(--border);border-radius:16px;padding:4px 4px 4px 16px;height:52px;transition:border-color .2s}
+.cf-what.open .cf-what-box{border-color:var(--teal-500)}
+.cf-pre{font-size:13px;font-weight:700;color:var(--muted-2);margin-right:8px;white-space:nowrap}
+.cf-inp{flex:1;font-size:15px;font-weight:700;color:var(--ink);border:none;outline:none;background:transparent;min-width:0;font-family:'Manrope',sans-serif}
+.cf-inp::placeholder{color:var(--muted-2);font-weight:500}
+.cf-arrow{width:42px;height:42px;border-radius:12px;background:var(--teal-500);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;color:#fff}
+.cf-arrow i{font-size:13px;transition:transform .2s}
+.cf-what.open .cf-arrow i{transform:rotate(180deg)}
+.cf-drop{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:16px;box-shadow:0 16px 48px rgba(15,23,42,.16);z-index:300;max-height:340px;overflow-y:auto;padding:6px}
+.cf-what.open .cf-drop{display:block}
+.cf-item{padding:11px 13px;border-radius:10px;font-size:15px;font-weight:500;color:var(--ink-2);cursor:pointer;display:flex;justify-content:space-between}
+.cf-item:hover{background:var(--bg)}
+.cf-item.sel{color:var(--teal-700);font-weight:700}
+.cf-item.sel::after{content:'✓'}
+.cf-item.any{color:var(--muted);font-weight:600}
+.cf-empty{padding:14px;color:var(--muted);font-size:14px;text-align:center}
+.cf-flt{position:relative;display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;color:var(--ink-2);background:#fff;border:2px solid var(--border);border-radius:16px;padding:0 16px;cursor:pointer;flex-shrink:0;height:52px}
+.cf-flt:hover{border-color:var(--teal-400)}
+.cf-flt .cf-badge{display:none;position:absolute;top:-7px;right:-7px;min-width:20px;height:20px;border-radius:10px;background:var(--amber);color:#fff;font-size:11px;font-weight:800;align-items:center;justify-content:center;padding:0 5px}
+.cf-flt .cf-badge.show{display:flex}
+.cf-row2{display:flex;align-items:center;gap:8px;margin-top:12px}
+.cf-seg{display:inline-flex;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:3px}
+.cf-seg button{font-size:13.5px;font-weight:700;color:var(--muted);background:none;border:none;border-radius:9px;padding:8px 16px;cursor:pointer;transition:all .15s;white-space:nowrap;font-family:'Manrope',sans-serif}
+.cf-seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(15,23,42,.12)}
+.cf-lv-title{display:none;font-size:12.5px;font-weight:700;color:var(--muted);margin:12px 0 -2px}
+.cf-lv-title.show{display:block}
+.cf-strip-wrap{position:relative;margin-top:10px;display:none}
+.cf-strip-wrap.show{display:block}
+.cf-strip-wrap::after{content:'';position:absolute;top:0;right:0;bottom:0;width:36px;background:linear-gradient(90deg,rgba(255,255,255,0),#fff);pointer-events:none;transition:opacity .2s}
+.cf-strip-wrap.at-end::after{opacity:0}
+.cf-strip{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 36px 2px 0;scroll-behavior:smooth}
+.cf-strip::-webkit-scrollbar{display:none}
+.cf-goalpill{flex-shrink:0;font-size:14px;font-weight:600;color:var(--ink-2);background:#fff;border:1.5px solid var(--border);border-radius:22px;padding:8px 15px;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:'Manrope',sans-serif}
+.cf-goalpill small{font-weight:500;color:var(--muted-2);margin-left:3px}
+.cf-goalpill:hover{border-color:var(--teal-400);color:var(--teal-700)}
+.cf-goalpill.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.cf-goalpill.on small{color:rgba(255,255,255,.7)}
+.cf-goal-wrap{position:relative;margin-top:10px;max-width:420px;display:none}
+.cf-goal-wrap.show{display:block}
+.cf-goal-btn{display:inline-flex;align-items:center;justify-content:space-between;gap:6px;width:100%;height:46px;font-size:14px;font-weight:700;color:var(--ink-2);background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:0 14px;cursor:pointer;font-family:'Manrope',sans-serif}
+.cf-goal-btn.on{background:var(--teal-50);border-color:var(--teal-500);color:var(--teal-700)}
+.cf-goal-btn i{font-size:12px;color:var(--muted-2);transition:transform .2s}
+.cf-goal-wrap.open .cf-goal-btn i{transform:rotate(180deg)}
+.cf-goal-back{display:none}
+.cf-goal-drop{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1.5px solid var(--border);border-radius:14px;box-shadow:0 16px 48px rgba(15,23,42,.16);z-index:300;padding:6px;max-height:360px;overflow-y:auto}
+.cf-goal-wrap.open .cf-goal-drop{display:block}
+.cf-goal-head{display:none}
+.cf-opt{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;border-radius:9px;font-size:14px;font-weight:700;color:var(--ink-2);cursor:pointer}
+.cf-opt:hover{background:var(--bg)}
+.cf-opt.sel{color:var(--teal-700);background:var(--teal-50)}
+.cf-opt.sel::after{content:'✓'}
+.cf-opt.any{font-weight:600;color:var(--muted)}
+.sp-card.dim{opacity:.72}
+.cf-match{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#92400E;background:var(--amber-50);border-radius:6px;padding:4px 9px;align-self:flex-start;margin-top:2px;width:fit-content}
+.cf-divider{display:flex;align-items:center;gap:12px;margin:8px 0 18px;font-size:13px;font-weight:700;color:var(--muted)}
+.cf-divider::before,.cf-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.cf-sheet-ov{display:none;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:400;align-items:center;justify-content:center}
+.cf-sheet-ov.open{display:flex}
+.cf-sheet{background:#fff;width:440px;max-width:calc(100% - 32px);max-height:86vh;border-radius:20px;display:flex;flex-direction:column}
+.cf-sheet-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px 14px;border-bottom:1px solid var(--border)}
+.cf-sheet-head b{font-family:'Fraunces',serif;font-size:16px;color:var(--ink)}
+.cf-sheet-x{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer}
+.cf-sheet-body{overflow-y:auto;padding:4px 20px 12px}
+.cf-sec{padding:16px 0;border-bottom:1px solid var(--border)}
+.cf-sec:last-child{border-bottom:none}
+.cf-sec-t{font-size:12.5px;font-weight:800;color:var(--ink);margin-bottom:12px}
+.cf-pills{display:flex;flex-wrap:wrap;gap:7px}
+.cf-pill{font-size:13.5px;font-weight:600;color:var(--ink-2);background:var(--bg);border:1.5px solid var(--border);border-radius:20px;padding:8px 14px;cursor:pointer;font-family:'Manrope',sans-serif}
+.cf-pill.on{background:var(--teal-500);border-color:var(--teal-500);color:#fff}
+.cf-price-row{display:flex;align-items:center;gap:8px}
+.cf-price-inp{flex:1;font-size:14px;font-weight:600;color:var(--ink);background:var(--bg);border:1.5px solid var(--border);border-radius:11px;padding:10px 12px;outline:none;font-family:'Manrope',sans-serif;min-width:0}
+.cf-price-inp:focus{border-color:var(--teal-500)}
+.cf-sheet-foot{display:flex;gap:10px;padding:14px 20px;border-top:1px solid var(--border)}
+.cf-sf-clear{flex:1;font-size:15px;font-weight:700;color:var(--ink);background:none;border:1.5px solid var(--border);border-radius:13px;padding:13px;cursor:pointer;font-family:'Manrope',sans-serif}
+.cf-sf-apply{flex:2;font-size:15px;font-weight:700;color:#fff;background:var(--teal-500);border:none;border-radius:13px;padding:13px;cursor:pointer;font-family:'Manrope',sans-serif}
+@media(max-width:640px){
+  .cf-pre{display:none}
+  .cf-what-box{height:48px}
+  .cf-flt{height:48px;padding:0 13px}
+  .cf-flt .lbl{display:none}
+  .cf-seg{display:flex;flex:1;min-width:0}
+  .cf-seg button{flex:1;padding:7px 2px;font-size:12.5px}
+  .cf-goal-wrap{max-width:none}
+  .cf-goal-wrap.open .cf-goal-back{display:block;position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:399}
+  .cf-goal-drop{position:fixed;top:auto;bottom:0;left:0;right:0;border:none;border-radius:22px 22px 0 0;padding:0 12px 20px;z-index:400;max-height:80vh;animation:cfSheetUp .28s cubic-bezier(.32,1,.4,1)}
+  .cf-goal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 8px 12px;position:sticky;top:0;background:#fff}
+  .cf-goal-head b{font-family:'Fraunces',serif;font-size:16px;color:var(--ink)}
+  .cf-goal-x{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer}
+  .cf-opt{padding:14px 12px;font-size:15px;border-bottom:1px solid var(--border)}
+  .cf-sheet-ov{align-items:flex-end}
+  .cf-sheet{width:100%;max-width:100%;border-radius:22px 22px 0 0;max-height:90vh;animation:cfSheetUp .28s cubic-bezier(.32,1,.4,1)}
+}
+@keyframes cfSheetUp{from{transform:translateY(100%)}to{transform:none}}
 .spec-panel{display:none}
 .spec-panel.show{display:block}
 
@@ -470,32 +567,55 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
   </div>
 </div>
 
-<!-- QUICK TYPE FILTERS -->
-<div style="background:#fff;border-bottom:1px solid var(--border)">
-  <div class="quick-filters">
-    <button class="qf-btn active" id="qf-all" onclick="quickFilter('all',this)">Всі</button>
-    <button class="qf-btn" id="qf-rep" onclick="quickFilter('rep',this)">Репетитори</button>
-    <button class="qf-btn" id="qf-psy" onclick="quickFilter('psy',this)">Психологи</button>
-    <button class="qf-btn" id="qf-logo" onclick="quickFilter('logo',this)">Логопеди</button>
+<!-- CATEGORY FILTER BAR (reference style) -->
+<div class="filter-bar">
+  <div class="filter-bar-inner" style="display:block">
+    <div class="cf-top">
+      <div class="cf-what" id="cfWhat">
+        <div class="cf-what-box">
+          <span class="cf-pre">Що вивчати:</span>
+          <input class="cf-inp" id="cfInp" placeholder="Оберіть предмет" autocomplete="off">
+          <button class="cf-arrow" id="cfArrow" aria-label="Відкрити список"><i class="fa-solid fa-chevron-down"></i></button>
+        </div>
+        <div class="cf-drop" id="cfDrop"></div>
+      </div>
+      <button class="cf-flt" id="cfFltBtn"><i class="fa-solid fa-sliders"></i><span class="lbl">Фільтри</span><span class="cf-badge" id="cfBadge"></span></button>
+    </div>
+    <div class="cf-row2">
+      <div class="cf-seg" id="cfSeg">
+        <button data-v="all" class="on">Усі</button>
+        <button data-v="child">Дитина</button>
+        <button data-v="teen">Підліток</button>
+        <button data-v="adult">Дорослий</button>
+      </div>
+    </div>
+    <div class="cf-lv-title" id="cfLvTitle">Ваш поточний рівень</div>
+    <div class="cf-strip-wrap" id="cfLvWrap"><div class="cf-strip" id="cfLvStrip"></div></div>
+    <div class="cf-goal-wrap" id="cfGoalWrap">
+      <button class="cf-goal-btn" id="cfGoalBtn"><span id="cfGoalLabel">Оберіть ціль навчання</span><i class="fa-solid fa-chevron-down"></i></button>
+      <div class="cf-goal-back" id="cfGoalBack"></div>
+      <div class="cf-goal-drop" id="cfGoalDrop">
+        <div class="cf-goal-head"><b>Ціль навчання</b><button class="cf-goal-x" id="cfGoalX"><i class="fa-solid fa-xmark"></i></button></div>
+        <div id="cfGoalList"></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- MOBILE FILTER ROW (visible only on mobile) -->
-<div class="mob-filter-row" id="mob-filter-row">
-  <button class="mob-flt-main-btn" onclick="openSheet('main-sheet')">
-    <i class="fa-solid fa-sliders"></i>
-    Фільтри
-    <span class="mob-flt-badge" id="mob-flt-count" style="display:none">0</span>
-  </button>
-  <button class="mob-sort-btn" onclick="openSheet('sort-sheet')">
-    <i class="fa-solid fa-arrow-up-wide-short" style="font-size:13px;color:var(--teal-500)"></i>
-    <span id="mob-sort-label" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px">Рекомендації</span>
-    <i class="fa-solid fa-chevron-down" style="font-size:10px;color:var(--muted-2);flex-shrink:0"></i>
-  </button>
+<!-- CATEGORY FILTERS SHEET (формат + ціна) -->
+<div class="cf-sheet-ov" id="cfSheetOv">
+  <div class="cf-sheet">
+    <div class="cf-sheet-head"><b>Фільтри</b><button class="cf-sheet-x" id="cfSheetX"><i class="fa-solid fa-xmark"></i></button></div>
+    <div class="cf-sheet-body">
+      <div class="cf-sec"><div class="cf-sec-t">Формат</div><div class="cf-pills" id="cfFmtPills"></div></div>
+      <div class="cf-sec"><div class="cf-sec-t">Ціна за 50 хв, ₴</div><div class="cf-price-row"><input class="cf-price-inp" id="cfPMin" type="number" placeholder="від 100"><span style="color:var(--muted-2)">—</span><input class="cf-price-inp" id="cfPMax" type="number" placeholder="до 2000"></div></div>
+    </div>
+    <div class="cf-sheet-foot"><button class="cf-sf-clear" id="cfSfClear">Скинути</button><button class="cf-sf-apply" id="cfSfApply">Показати</button></div>
+  </div>
 </div>
 
-<!-- FILTER BAR (desktop only) -->
-<div class="filter-bar">
+<!-- OLD FILTER BAR (hidden — replaced by category filter bar above) -->
+<div class="filter-bar" style="display:none">
   <div class="filter-bar-inner">
 
     <!-- Desktop + Mobile: all filter buttons visible, horizontal scroll on mobile -->
@@ -617,7 +737,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
 </div>
 
 <!-- ACTIVE CHIPS -->
-<div class="active-chips-bar" id="chips-bar">
+<div class="active-chips-bar" id="chips-bar" style="display:none">
   <div class="active-chips-inner wrap" id="active-chips"></div>
 </div>
 
@@ -806,13 +926,13 @@ const SUBJECTS = {
 };
 
 const SPECIALISTS = [
-  {id:1,name:'Олена І.',photo:'https://i.pravatar.cc/400?u=sp1',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.9,reviews:48,exp:5,students:49,sessions:4975,subjects:'Англійська, Нім., Французька',desc:'<strong>Готую до IELTS та TOEFL | Розмовна англійська для дорослих</strong> — Маю 5 років досвіду викладання. Працюю з учнями різного віку — від школярів до дорослих. Готую до міжнародних іспитів та розвиваю розмовні навички.',price:400,loc:'Онлайн · Київ',ctaClass:'teal'},
-  {id:2,name:'Анна С.',photo:'https://i.pravatar.cc/400?u=sp2',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.9,reviews:89,exp:8,students:42,sessions:3120,subjects:'Математика, Фізика',desc:'<strong>Математика НМТ | Підготовка до вступу у виш</strong> — Системний підхід до підготовки. Розбираємо теорію та вирішуємо задачі різного рівня складності. Результати є вже після 3 занять.',price:350,loc:'Онлайн',ctaClass:'teal'},
-  {id:3,name:'Марія К.',photo:'https://i.pravatar.cc/400?u=ps1',type:'psy',badge:'Психолог',badgeClass:'amber',rating:5.0,reviews:62,exp:10,students:38,sessions:1250,subjects:'Терапія, Сімейна терапія',desc:'<strong>Клінічний психолог | Тривожність, депресія, стрес</strong> — Клінічний психолог з 10-річним досвідом. Спеціалізуюся на роботі з тривожністю, депресією та стресом. Використовую КПТ та mindfulness-підхід.',price:600,loc:'Онлайн',ctaClass:'amber'},
-  {id:4,name:'Дмитро В.',photo:'https://i.pravatar.cc/400?u=sp3',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:5.0,reviews:120,exp:6,students:56,sessions:6200,subjects:'Програмування, Python, JS',desc:'<strong>Програмування з нуля | Frontend та Backend</strong> — Навчу програмувати з нуля або поглиблю знання. Працюю з дорослими та підлітками. Python, JavaScript, веб-розробка.',price:500,loc:'Онлайн',ctaClass:'teal'},
-  {id:5,name:'Катерина С.',photo:'https://i.pravatar.cc/400?u=sp4',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:5.0,reviews:75,exp:7,students:38,sessions:2450,subjects:'Хімія, Біологія',desc:'<strong>Хімія та біологія для НМТ | Медичні виші</strong> — Готую абітурієнтів до вступу на медичні спеціальності. Індивідуальний план та власні матеріали для кожного учня.',price:450,loc:'Онлайн · Харків',ctaClass:'teal'},
-  {id:6,name:'Наталія Л.',photo:'https://i.pravatar.cc/400?u=lg2',type:'logo',badge:'Логопед',badgeClass:'violet',rating:5.0,reviews:80,exp:9,students:42,sessions:1750,subjects:'Постановка звуків, Дошкільний вік',desc:'<strong>Дитячий логопед | Постановка звуків і розвиток мовлення</strong> — Логопед з 9-річним досвідом роботи з дітьми від 3 років. Корекція вимови, підготовка до школи, робота з ЗНМ та ФФН.',price:500,loc:'Онлайн',ctaClass:'amber'},
-  {id:7,name:'Максим Р.',photo:'https://i.pravatar.cc/400?u=sp5',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.7,reviews:34,exp:4,students:25,sessions:1780,subjects:'Англійська мова',desc:'<strong>Розмовна англійська | Підготовка до Cambridge</strong> — Носій рівня C1. Допоможу прокачати розмовні навички, підготуватися до іспитів Cambridge та виїхати за кордон впевненим.',price:550,loc:'Онлайн · Львів',ctaClass:'teal'},
+  {id:1,name:'Олена І.',photo:'https://i.pravatar.cc/400?u=sp1',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.9,reviews:48,exp:5,students:49,sessions:4975,subjects:'Англійська, Нім., Французька',desc:'<strong>Готую до IELTS та TOEFL | Розмовна англійська для дорослих</strong> — Маю 5 років досвіду викладання. Працюю з учнями різного віку — від школярів до дорослих. Готую до міжнародних іспитів та розвиваю розмовні навички.',price:400,loc:'Онлайн · Київ',ctaClass:'teal',subjList:['Англійська мова','Німецька мова','Французька мова'],who:['teen','adult'],lv:['A1','A2','B1','B2','C1'],goals:['general','speaking','ielts','toefl','business'],on:true,off:true},
+  {id:2,name:'Анна С.',photo:'https://i.pravatar.cc/400?u=sp2',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.9,reviews:89,exp:8,students:42,sessions:3120,subjects:'Математика, Фізика',desc:'<strong>Математика НМТ | Підготовка до вступу у виш</strong> — Системний підхід до підготовки. Розбираємо теорію та вирішуємо задачі різного рівня складності. Результати є вже після 3 занять.',price:350,loc:'Онлайн',ctaClass:'teal',subjList:['Математика','Фізика'],who:['teen','adult'],lv:[],goals:[],on:true,off:false},
+  {id:3,name:'Марія К.',photo:'https://i.pravatar.cc/400?u=ps1',type:'psy',badge:'Психолог',badgeClass:'amber',rating:5.0,reviews:62,exp:10,students:38,sessions:1250,subjects:'Терапія, Сімейна терапія',desc:'<strong>Клінічний психолог | Тривожність, депресія, стрес</strong> — Клінічний психолог з 10-річним досвідом. Спеціалізуюся на роботі з тривожністю, депресією та стресом. Використовую КПТ та mindfulness-підхід.',price:600,loc:'Онлайн',ctaClass:'amber',subjList:['Тривожність та стрес','Сімейна терапія','Депресія'],who:['teen','adult'],lv:[],goals:[],on:true,off:false},
+  {id:4,name:'Дмитро В.',photo:'https://i.pravatar.cc/400?u=sp3',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:5.0,reviews:120,exp:6,students:56,sessions:6200,subjects:'Програмування, Python, JS',desc:'<strong>Програмування з нуля | Frontend та Backend</strong> — Навчу програмувати з нуля або поглиблю знання. Працюю з дорослими та підлітками. Python, JavaScript, веб-розробка.',price:500,loc:'Онлайн',ctaClass:'teal',subjList:['Програмування'],who:['teen','adult'],lv:[],goals:[],on:true,off:false},
+  {id:5,name:'Катерина С.',photo:'https://i.pravatar.cc/400?u=sp4',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:5.0,reviews:75,exp:7,students:38,sessions:2450,subjects:'Хімія, Біологія',desc:'<strong>Хімія та біологія для НМТ | Медичні виші</strong> — Готую абітурієнтів до вступу на медичні спеціальності. Індивідуальний план та власні матеріали для кожного учня.',price:450,loc:'Онлайн · Харків',ctaClass:'teal',subjList:['Хімія','Біологія'],who:['teen','adult'],lv:[],goals:[],on:true,off:true},
+  {id:6,name:'Наталія Л.',photo:'https://i.pravatar.cc/400?u=lg2',type:'logo',badge:'Логопед',badgeClass:'violet',rating:5.0,reviews:80,exp:9,students:42,sessions:1750,subjects:'Постановка звуків, Дошкільний вік',desc:'<strong>Дитячий логопед | Постановка звуків і розвиток мовлення</strong> — Логопед з 9-річним досвідом роботи з дітьми від 3 років. Корекція вимови, підготовка до школи, робота з ЗНМ та ФФН.',price:500,loc:'Онлайн',ctaClass:'amber',subjList:['Порушення вимови','Дошкільний вік'],who:['child'],lv:[],goals:[],on:true,off:false},
+  {id:7,name:'Максим Р.',photo:'https://i.pravatar.cc/400?u=sp5',type:'rep',badge:'Репетитор',badgeClass:'teal',rating:4.7,reviews:34,exp:4,students:25,sessions:1780,subjects:'Англійська мова',desc:'<strong>Розмовна англійська | Підготовка до Cambridge</strong> — Носій рівня C1. Допоможу прокачати розмовні навички, підготуватися до іспитів Cambridge та виїхати за кордон впевненим.',price:550,loc:'Онлайн · Львів',ctaClass:'teal',subjList:['Англійська мова'],who:['teen','adult'],lv:['B1','B2','C1'],goals:['speaking','cambridge','ielts','abroad'],on:true,off:true},
 ];
 
 /* ══ RENDER CARDS ══ */
@@ -1133,14 +1253,173 @@ function specTab(el, panelId) {
   document.getElementById(panelId).classList.add('show');
 }
 
+/* ══ CATEGORY FILTERS (reference-style) ══ */
+const CF_SUBJECTS = [...new Set([...SUBJECTS.rep, ...SUBJECTS.psy, ...SUBJECTS.logo])];
+const GOALS = [['general'],['school'],['speaking'],['nmt'],['business'],['it'],['abroad'],['ielts'],['toefl'],['cambridge'],['master']];
+const GOAL_FULL = {general:'Загальна англійська',school:'Шкільна програма',speaking:'Розмовна мова',nmt:'Підготовка до НМТ',business:'Ділова англійська',it:'Англійська для IT',abroad:'Підготовка до вступу за кордон',ielts:'Підготовка до IELTS',toefl:'Підготовка до TOEFL',cambridge:'Підготовка до Cambridge',master:'Підготовка до магістратури — GRE, GMAT'};
+const GOALS_FOR = { all:GOALS.map(g=>g[0]), child:['general','school','speaking','cambridge'], teen:['general','school','speaking','nmt','abroad','ielts','toefl','cambridge'], adult:['general','speaking','business','it','abroad','ielts','toefl','cambridge','master'] };
+const CF_SUBJECT_HAS_GOALS = { 'Англійська мова':true };
+const CF_LEVELS = { child:[['beg','Початковий','з нуля'],['mid','Середній','базові фрази'],['adv','Просунутий','вільно говорить']], adult:[['A1','A1','Початковий'],['A2','A2','Елементарний'],['B1','B1','Середній'],['B2','B2','Вище середнього'],['C1','C1','Просунутий']] };
+const CF_HAS_LEVEL = s => /мова$/.test(s || '');
+const CHILD_TO_CEFR = { beg:['A1','A2'], mid:['B1','B2'], adv:['C1'] };
+const CF = { subject:'', who:'all', level:null, goal:null, fmt:null, pMin:null, pMax:null, sort:'' };
+
+const cfW=document.getElementById('cfWhat'), cfInp=document.getElementById('cfInp'), cfDrop=document.getElementById('cfDrop');
+const cfLvWrap=document.getElementById('cfLvWrap'), cfLvStrip=document.getElementById('cfLvStrip'), cfLvTitle=document.getElementById('cfLvTitle');
+const cfGoalWrap=document.getElementById('cfGoalWrap'), cfGoalBtn=document.getElementById('cfGoalBtn'), cfGoalLabel=document.getElementById('cfGoalLabel'), cfGoalList=document.getElementById('cfGoalList');
+const cfSheetOv=document.getElementById('cfSheetOv'), cfFmtPills=document.getElementById('cfFmtPills'), cfPMin=document.getElementById('cfPMin'), cfPMax=document.getElementById('cfPMax'), cfSfApply=document.getElementById('cfSfApply'), cfBadge=document.getElementById('cfBadge');
+let cfMatches=[];
+
+function cfOpenWhat(){ cfW.classList.add('open'); cfInp.select(); cfRenderWhat(''); }
+function cfCloseWhat(){ cfW.classList.remove('open'); cfInp.value=CF.subject||''; }
+function cfRenderWhat(q){
+  cfMatches=CF_SUBJECTS.filter(s=>s.toLowerCase().includes(q.toLowerCase()));
+  cfDrop.innerHTML='<div class="cf-item any'+(CF.subject===''?' sel':'')+'" data-s="">Усі предмети</div>'+
+    (cfMatches.length?cfMatches.map(s=>'<div class="cf-item'+(s===CF.subject?' sel':'')+'" data-s="'+s+'">'+s+'</div>').join(''):'<div class="cf-empty">Нічого не знайдено</div>');
+}
+function cfPickSubject(s){ if(s!==CF.subject){ CF.goal=null; CF.level=null; } CF.subject=s; cfCloseWhat(); cfInp.blur(); cfRenderAll(); }
+
+function cfLevelScale(){ return CF_LEVELS[CF.who==='child'?'child':'adult']; }
+function cfFade(){ cfLvWrap.classList.toggle('at-end', cfLvStrip.scrollLeft+cfLvStrip.clientWidth>=cfLvStrip.scrollWidth-4); }
+function cfRenderLevel(){
+  const show=CF_HAS_LEVEL(CF.subject);
+  cfLvWrap.classList.toggle('show',show); cfLvTitle.classList.toggle('show',show);
+  if(!show) return;
+  cfLvTitle.textContent = CF.who==='child'?'Поточний рівень дитини':'Ваш поточний рівень';
+  const x=cfLvStrip.scrollLeft;
+  cfLvStrip.innerHTML=cfLevelScale().map(l=>'<button class="cf-goalpill'+(CF.level===l[0]?' on':'')+'" data-v="'+l[0]+'">'+l[1]+(CF.who==='child'?'':'<small>'+l[2]+'</small>')+'</button>').join('');
+  cfLvStrip.scrollLeft=x; cfFade();
+}
+function cfRenderGoals(){
+  const show=CF_SUBJECT_HAS_GOALS[CF.subject];
+  cfGoalWrap.classList.toggle('show',!!show);
+  if(!show) return;
+  cfGoalLabel.textContent = CF.goal?('Ціль: '+GOAL_FULL[CF.goal]):'Оберіть ціль навчання';
+  cfGoalBtn.classList.toggle('on',!!CF.goal);
+  const ids=GOALS_FOR[CF.who];
+  cfGoalList.innerHTML='<div class="cf-opt any'+(!CF.goal?' sel':'')+'" data-v="">Усі цілі</div>'+
+    GOALS.filter(g=>ids.includes(g[0])).map(g=>'<div class="cf-opt'+(CF.goal===g[0]?' sel':'')+'" data-v="'+g[0]+'"><span>'+GOAL_FULL[g[0]]+'</span></div>').join('');
+}
+function cfCloseGoals(){ cfGoalWrap.classList.remove('open'); document.body.style.overflow=''; }
+
+function cfVisible(st){
+  return SPECIALISTS.filter(t=>{
+    if(st.subject && !(t.subjList||[]).includes(st.subject)) return false;
+    if(st.who!=='all' && !(t.who||[]).includes(st.who)) return false;
+    if(st.level && (t.lv||[]).length){ const need=st.who==='child'?CHILD_TO_CEFR[st.level]:[st.level]; if(!need.some(l=>t.lv.includes(l))) return false; }
+    if(st.fmt==='on' && !t.on) return false;
+    if(st.fmt==='off' && !t.off) return false;
+    if(st.pMin && t.price<st.pMin) return false;
+    if(st.pMax && t.price>st.pMax) return false;
+    return true;
+  });
+}
+function cfSortList(list){
+  const s=CF.sort, a=list.slice();
+  if(s==='r') a.sort((x,y)=>y.rating-x.rating);
+  else if(s==='rev') a.sort((x,y)=>y.reviews-x.reviews);
+  else if(s==='pa') a.sort((x,y)=>x.price-y.price);
+  else if(s==='pd') a.sort((x,y)=>y.price-x.price);
+  else if(s==='exp') a.sort((x,y)=>y.exp-x.exp);
+  return a;
+}
+function cfCard(s,i,opts){
+  opts=opts||{};
+  return `
+    <div class="sp-card${opts.dim?' dim':''}" style="animation-delay:${i*0.05}s">
+      <div class="card-photo">
+        <img src="${s.photo}" alt="${s.name}" loading="${i<3?'eager':'lazy'}">
+        <div class="photo-type-badge exp-badge ${s.badgeClass}">${s.badge}</div>
+      </div>
+      <div class="card-body">
+        <div class="card-top">
+          <div>
+            <div class="card-name">${s.name}</div>
+            <div class="card-rating"><span class="rating-stars">★</span><span class="rating-val">${s.rating}</span><span class="rating-reviews">${s.reviews} відгуків</span></div>
+          </div>
+          <div class="card-loc"><i class="fa-solid fa-location-dot"></i>${s.loc}</div>
+        </div>
+        ${opts.matched?`<div class="cf-match">🎯 ${GOAL_FULL[CF.goal]}</div>`:''}
+        <div class="exp-row"><span class="exp-badge ${s.badgeClass}">${s.badge}</span><span class="exp-years">${s.exp} ${pluralYears(s.exp)} досвіду</span></div>
+        <div class="card-stats">
+          <div class="card-stat"><i class="fa-solid fa-user-group"></i><strong>${s.students}</strong> учнів</div>
+          <div class="card-stat"><i class="fa-solid fa-calendar-check"></i><strong>${s.sessions.toLocaleString('uk-UA')}</strong> занять</div>
+        </div>
+        <div class="card-subjects"><i class="fa-solid fa-book-open"></i>${s.subjects}</div>
+        <div class="card-desc">${s.desc}</div>
+      </div>
+      <div class="card-side">
+        <div class="price-wrap"><div class="price-val">₴${s.price}</div><div class="price-unit">/ 50 хв</div></div>
+        <div class="cta-col">
+          <button class="btn-book ${s.ctaClass}" onclick="openBookingModal('${s.name}','${s.rating}','${s.reviews}','${s.exp}',${s.price},'${s.type}')">Записатися</button>
+          <button class="btn-details">Детальніше</button>
+        </div>
+      </div>
+    </div>`;
+}
+const CF_EMPTY = `<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>На жаль, нічого не знайдено</h3><p>За обраними фільтрами немає спеціалістів. Спробуйте розширити критерії або скиньте фільтри.</p><div class="empty-btns"><button class="btn-reset" onclick="clearAll()"><i class="fa-solid fa-rotate-right"></i> Скинути всі фільтри</button><button class="btn-ai-try">Спробувати AI-підбір</button></div></div>`;
+function cfRenderList(){
+  const root=document.getElementById('cards-root');
+  const v=cfSortList(cfVisible(CF));
+  document.getElementById('result-count').textContent=v.length;
+  if(!v.length){ root.innerHTML=CF_EMPTY; return; }
+  const goalActive = CF.goal && CF_SUBJECT_HAS_GOALS[CF.subject];
+  if(!goalActive){ root.innerHTML=v.map((t,i)=>cfCard(t,i,{})).join(''); return; }
+  const yes=v.filter(t=>(t.goals||[]).includes(CF.goal)), no=v.filter(t=>!(t.goals||[]).includes(CF.goal));
+  root.innerHTML = yes.map((t,i)=>cfCard(t,i,{matched:true})).join('') + (no.length?('<div class="cf-divider">Інші репетитори</div>'+no.map((t,i)=>cfCard(t,i,{dim:true})).join('')):'');
+}
+function cfRenderBadge(){ const n=[CF.fmt,(CF.pMin||CF.pMax)].filter(Boolean).length; cfBadge.textContent=n; cfBadge.classList.toggle('show',n>0); }
+function cfRenderAll(){
+  cfInp.value=CF.subject||'';
+  document.querySelectorAll('#cfSeg button').forEach(b=>b.classList.toggle('on',b.dataset.v===CF.who));
+  cfRenderLevel(); cfRenderGoals(); cfRenderList(); cfRenderBadge();
+}
+
+/* фільтри-шторка: формат + ціна */
+let cfDraft={};
+function cfOpenSheet(){ cfDraft={fmt:CF.fmt}; cfPMin.value=CF.pMin??''; cfPMax.value=CF.pMax??''; cfRenderSheet(); cfSheetOv.classList.add('open'); document.body.style.overflow='hidden'; }
+function cfCloseSheet(){ cfSheetOv.classList.remove('open'); document.body.style.overflow=''; }
+function cfDraftState(){ return Object.assign({}, CF, {fmt:cfDraft.fmt, pMin:+cfPMin.value||null, pMax:+cfPMax.value||null}); }
+function cfRenderSheet(){
+  cfFmtPills.innerHTML=[['','Будь-який'],['on','Онлайн'],['off','Офлайн']].map(p=>'<button class="cf-pill'+((cfDraft.fmt||'')===p[0]?' on':'')+'" data-v="'+p[0]+'">'+p[1]+'</button>').join('');
+  cfSfApply.textContent='Показати '+cfVisible(cfDraftState()).length;
+}
+
+/* перевизначення: скидання фільтрів + сортування під нову систему */
+function clearAll(){ CF.subject=''; CF.who='all'; CF.level=null; CF.goal=null; CF.fmt=null; CF.pMin=null; CF.pMax=null; cfRenderAll(); }
+function pickSort(el, label){
+  document.querySelectorAll('.sort-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel');
+  document.getElementById('sort-label').textContent = label.length>22 ? label.slice(0,22)+'…' : label;
+  document.getElementById('sort-wrap').classList.remove('open');
+  CF.sort = label.indexOf('рейтинг')>-1?'r' : label.indexOf('відгук')>-1?'rev' : label.indexOf('низької')>-1?'pa' : label.indexOf('високої')>-1?'pd' : label.indexOf('досвід')>-1?'exp' : '';
+  cfRenderList();
+}
+
+function cfInit(){
+  cfInp.addEventListener('focus', cfOpenWhat);
+  cfInp.addEventListener('input', ()=>{ cfW.classList.add('open'); cfRenderWhat(cfInp.value); });
+  cfInp.addEventListener('keydown', e=>{ if(e.key==='Enter'){ cfPickSubject(cfMatches[0]||''); } if(e.key==='Escape'){ cfCloseWhat(); cfInp.blur(); } });
+  cfDrop.addEventListener('mousedown', e=>{ const it=e.target.closest('.cf-item'); if(it){ e.preventDefault(); cfPickSubject(it.dataset.s); } });
+  document.getElementById('cfArrow').onclick=()=>{ cfW.classList.contains('open')?(cfCloseWhat(),cfInp.blur()):cfInp.focus(); };
+  document.addEventListener('mousedown', e=>{ if(!e.target.closest('#cfWhat')) cfCloseWhat(); if(!e.target.closest('#cfGoalWrap')) cfCloseGoals(); });
+  document.getElementById('cfSeg').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; CF.who=b.dataset.v; if(CF.goal && !GOALS_FOR[CF.who].includes(CF.goal)) CF.goal=null; CF.level=null; cfRenderAll(); });
+  cfLvStrip.addEventListener('click', e=>{ const b=e.target.closest('.cf-goalpill'); if(!b) return; CF.level=CF.level===b.dataset.v?null:b.dataset.v; cfRenderLevel(); cfRenderList(); });
+  cfLvStrip.addEventListener('scroll', cfFade); window.addEventListener('resize', cfFade);
+  cfGoalBtn.onclick=()=>{ const op=!cfGoalWrap.classList.contains('open'); cfGoalWrap.classList.toggle('open',op); if(op && window.innerWidth<=640) document.body.style.overflow='hidden'; else document.body.style.overflow=''; };
+  document.getElementById('cfGoalBack').onclick=cfCloseGoals; document.getElementById('cfGoalX').onclick=cfCloseGoals;
+  cfGoalList.addEventListener('click', e=>{ const o=e.target.closest('.cf-opt'); if(!o) return; CF.goal=o.dataset.v||null; cfCloseGoals(); cfRenderGoals(); cfRenderList(); });
+  document.getElementById('cfFltBtn').onclick=cfOpenSheet;
+  document.getElementById('cfSheetX').onclick=cfCloseSheet;
+  cfSheetOv.addEventListener('click', e=>{ if(e.target===cfSheetOv) return cfCloseSheet(); const p=e.target.closest('.cf-pill'); if(!p) return; cfDraft.fmt=p.dataset.v||null; cfRenderSheet(); });
+  cfPMin.oninput=cfPMax.oninput=cfRenderSheet;
+  document.getElementById('cfSfClear').onclick=()=>{ cfDraft={fmt:null}; cfPMin.value=cfPMax.value=''; cfRenderSheet(); };
+  cfSfApply.onclick=()=>{ Object.assign(CF, cfDraftState()); cfCloseSheet(); cfRenderAll(); };
+  cfRenderAll();
+}
+
 /* ══ INIT ══ */
 document.addEventListener('DOMContentLoaded',()=>{
-  renderCards(SPECIALISTS);
-  renderSubjLists();
-  setTimeout(()=>{
-    updateRangeFill('range-fill','rMin','rMax');
-    updateRangeFill('mob-range-fill','mrMin','mrMax');
-  },100);
+  cfInit();
 });
 </script>
 
