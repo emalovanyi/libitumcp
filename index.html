@@ -518,6 +518,348 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
   .active-chips-bar.has-chips{padding:8px 16px}
 }
 </style>
+<style>
+
+/* ═══ AI-ПІДБІР (додано): токени, яких немає в цій сторінці ═══ */
+:root{--violet-700:#5B21B6;--violet-100:#EDE9FE;--violet-200:#DDD6FE;--radius:16px;--radius-lg:24px;--radius-xl:32px;--shadow-lg:0 10px 40px rgba(15,23,42,.10);--shadow-xl:0 20px 60px rgba(15,23,42,.12);--red:#DC2626}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.aim-overlay :focus-visible, .aib :focus-visible, .empty-ai :focus-visible, .drawer-ai:focus-visible { outline: 2.5px solid var(--teal-500); outline-offset: 2px; }
+
+/* Банер AI-підбору під каталогом */
+.aib {
+  margin-top: 32px; display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 24px; align-items: center;
+  padding: 28px; border-radius: var(--r-xl); background: #fff;
+  border: 1.5px solid var(--violet-200); box-shadow: 0 0 0 6px var(--violet-50);
+}
+.aib[hidden] { display: none; }
+.aib .ais-badge { margin-bottom: 10px; }
+.aib-title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; line-height: 1.2; color: var(--ink); margin-bottom: 6px; }
+.aib-sub { font-size: 14px; color: var(--muted); line-height: 1.55; max-width: 460px; }
+.aib-form { display: flex; gap: 8px; }
+.aib-input {
+  flex: 1; min-width: 0; min-height: 52px; padding: 0 16px; border-radius: 14px;
+  border: 1.5px solid var(--border); background: var(--bg);
+  font-family: 'Manrope', sans-serif; font-size: 15px; color: var(--ink);
+}
+.aib-input::placeholder { color: var(--muted-2); }
+.aib-input:focus { outline: none; border-color: var(--violet); background: #fff; box-shadow: 0 0 0 4px rgba(139,92,246,.12); }
+.aib-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px;
+  border: none; border-radius: 14px; background: var(--ink); color: #fff; cursor: pointer;
+  font-family: 'Manrope', sans-serif; font-size: 15px; font-weight: 800; white-space: nowrap; transition: background .2s;
+}
+.aib-btn:hover { background: var(--ink-2); }
+
+/* Порожній стан: пропозиція AI-підбору */
+.empty-ai {
+  display: flex; align-items: center; gap: 14px; text-align: left; max-width: 560px; margin: 24px auto 0;
+  padding: 16px; border-radius: 18px; background: var(--violet-50); border: 1.5px solid var(--violet-200);
+}
+.empty-ai-icon { width: 44px; height: 44px; border-radius: 12px; background: var(--violet); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.empty-ai-text { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+.empty-ai-text b { font-size: 15px; font-weight: 800; color: var(--ink); }
+.empty-ai-text span { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.empty-ai .aib-btn { min-height: 46px; font-size: 14px; }
+.ti.ai { color: var(--violet); }
+/* ═════════════════════════════════════
+   AI-ПІДБІР: картка пошуку (hero)
+═════════════════════════════════════ */
+.ais-card {
+  background: white; border-radius: var(--radius-lg);
+  border: 1.5px solid var(--border); box-shadow: var(--shadow-xl);
+  padding: 24px; text-align: left; position: relative;
+}
+.ais-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.ais-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--violet-50); border: 1.5px solid var(--violet-200);
+  color: var(--violet-700); border-radius: 50px;
+  font-size: 12px; font-weight: 800; padding: 4px 12px;
+}
+.ais-free { font-size: 12px; color: var(--muted); font-weight: 600; }
+.ais-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; line-height: 1.15; margin-bottom: 6px; }
+.ais-sub { font-size: 14px; color: var(--muted); line-height: 1.5; margin-bottom: 16px; }
+.ais-input {
+  width: 100%; min-height: 96px; resize: vertical;
+  border: 1.5px solid var(--border); border-radius: 16px;
+  padding: 14px 16px; font-family: 'Manrope', sans-serif;
+  font-size: 15px; line-height: 1.5; color: var(--ink);
+  background: var(--bg); transition: border-color .2s, background .2s, box-shadow .2s;
+}
+.ais-input::placeholder { color: var(--muted-2); }
+.ais-input:focus { outline: none; border-color: var(--violet); background: white; box-shadow: 0 0 0 4px rgba(139,92,246,.12); }
+.ais-input.has-error { border-color: var(--red); }
+.ais-error { display: none; font-size: 12px; font-weight: 600; color: var(--red); margin-top: 6px; }
+.ais-error.show { display: block; }
+.ais-examples { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 14px; }
+.ais-ex {
+  border: 1.5px dashed var(--border); background: white; border-radius: 50px;
+  padding: 6px 12px; font-family: 'Manrope', sans-serif;
+  font-size: 12px; font-weight: 600; color: var(--muted); cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.ais-ex:hover { border-color: var(--violet); color: var(--violet-700); }
+.ais-ex-hint { display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); margin: 10px 0 -4px; }
+.ais-ex-hint i { font-size: 11px; color: var(--violet); }
+.ais-more {
+  display: inline-flex; align-items: center; gap: 8px; background: none; border: none;
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--teal-600); cursor: pointer; padding: 6px 0; margin-bottom: 10px;
+}
+.ais-more i { transition: transform .2s; font-size: 11px; }
+.ais-more[aria-expanded="true"] i { transform: rotate(180deg); }
+.ais-criteria { display: grid; gap: 12px; margin-bottom: 16px; padding: 14px; border-radius: 16px; background: var(--bg); border: 1px solid var(--border); }
+.ais-criteria[hidden] { display: none; }
+.ais-group-label { font-size: 12px; font-weight: 700; color: var(--ink-2); margin-bottom: 6px; }
+.ais-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.ais-opt {
+  padding: 7px 12px; border-radius: 50px; border: 1.5px solid var(--border); background: white;
+  font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700; color: var(--muted);
+  cursor: pointer; transition: all .15s; min-height: 34px;
+}
+.ais-opt:hover { border-color: var(--teal-400); color: var(--teal-600); }
+.ais-opt[aria-pressed="true"] { background: var(--teal-500); border-color: var(--teal-500); color: white; }
+.ais-submit {
+  width: 100%; padding: 15px; border: none; border-radius: 14px;
+  background: var(--ink); color: white; font-family: 'Manrope', sans-serif;
+  font-size: 15px; font-weight: 800; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background .2s, transform .1s; min-height: 52px;
+}
+.ais-submit:hover { background: var(--ink-2); }
+.ais-submit:active { transform: scale(.99); }
+.ais-submit:disabled { opacity: .45; cursor: not-allowed; }
+.ais-foot { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 10px; font-size: 12px; color: var(--muted-2); font-weight: 600; }
+.ais-foot b { color: var(--ink-2); }
+.ais-card.in-modal { border: none; box-shadow: none; padding: 0; background: transparent; max-width: 640px; margin: 0 auto; }
+.ais-card.in-modal .ais-title { font-size: 24px; }
+.ais-card.in-modal .ais-head .ais-badge { display: none; }
+.ais-card.in-modal .ais-head { justify-content: flex-start; margin-bottom: 8px; }
+
+/* Компактний вхід в AI-підбір у бургер-меню */
+.drawer-ai {
+  width: 100%; display: flex; align-items: center; gap: 12px; text-align: left;
+  padding: 12px 14px; margin-bottom: 20px; border-radius: 14px; cursor: pointer;
+  background: var(--violet-50); border: 1.5px solid var(--violet-200);
+  font-family: 'Manrope', sans-serif; min-height: 60px;
+}
+.drawer-ai:active { transform: scale(.99); }
+.drawer-ai-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--violet); color: white; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.drawer-ai-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+.drawer-ai-title { font-size: 15px; font-weight: 800; color: var(--ink); }
+.drawer-ai-sub { font-size: 12px; font-weight: 600; color: var(--muted); }
+.drawer-ai-arrow { color: var(--violet); font-size: 12px; }
+
+/* ═════════════════════════════════════
+   AI-ПІДБІР: вікно результатів
+═════════════════════════════════════ */
+.aim-overlay {
+  position: fixed; inset: 0; z-index: 300; display: none;
+  align-items: center; justify-content: center; padding: 24px;
+  background: rgba(15,23,42,.55);
+}
+.aim-overlay.open { display: flex; }
+.aim {
+  width: 100%; max-width: 1080px; max-height: calc(100vh - 48px);
+  background: var(--bg); border-radius: var(--radius-xl); overflow: hidden;
+  display: flex; flex-direction: column; box-shadow: var(--shadow-xl);
+  animation: aimIn .25s ease;
+}
+@keyframes aimIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.aim-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 16px 24px; background: white; border-bottom: 1px solid var(--border);
+}
+.aim-head-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 800; }
+.aim-head-title .ais-badge { font-size: 11px; }
+.aim-close {
+  width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid var(--border);
+  background: white; color: var(--ink); font-size: 16px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.aim-close:hover { background: var(--bg); }
+.aim-body { flex: 1; overflow-y: auto; padding: 24px; }
+.aim-foot {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 24px; background: white; border-top: 1px solid var(--border);
+}
+.aim-foot[hidden] { display: none; }
+
+/* What AI understood */
+.aim-query { background: white; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 22px; }
+.aim-query-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.aim-query-text { font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+.aim-query-text q { font-style: italic; }
+.aim-edit {
+  flex-shrink: 0; background: none; border: none; font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 700; color: var(--teal-600); cursor: pointer; padding: 4px 0;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.aim-understood { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; }
+.aim-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.aim-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 6px 5px 12px; border-radius: 50px;
+  background: var(--teal-50); border: 1.5px solid var(--teal-100);
+  color: var(--teal-700); font-size: 13px; font-weight: 700;
+}
+.aim-chip button {
+  width: 24px; height: 24px; border-radius: 50%; border: none;
+  background: rgba(13,148,136,.12); color: var(--teal-700);
+  font-size: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center;
+}
+.aim-chip button:hover { background: rgba(13,148,136,.25); }
+.aim-chip.muted { background: var(--bg); border-color: var(--border); color: var(--muted); padding-right: 12px; }
+
+.aim-res-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.aim-res-title { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; line-height: 1.15; }
+.aim-res-sub { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+/* Match cards */
+.aim-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.mcard {
+  background: white; border-radius: var(--radius-lg); border: 1.5px solid var(--border);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.mcard.best { border-color: var(--teal-500); box-shadow: 0 0 0 3px rgba(20,184,166,.12); }
+.mcard.swap { animation: swapIn .35s ease; }
+@keyframes swapIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.mcard-top { display: flex; gap: 12px; padding: 16px 16px 0; }
+.mcard-photo { width: 64px; height: 64px; border-radius: 16px; object-fit: cover; flex-shrink: 0; background: var(--teal-50); }
+.mcard-rank { font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 3px; }
+.mcard.best .mcard-rank { color: var(--teal-600); }
+.mcard-name { font-size: 16px; font-weight: 800; line-height: 1.25; }
+.mcard-subj { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.mcard-rating { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; font-size: 12px; font-weight: 800; }
+.mcard-rating i { color: var(--amber); font-size: 11px; }
+.mcard-rating span { color: var(--muted-2); font-weight: 600; }
+.mcard-new { display: inline-block; margin-top: 6px; font-size: 11px; font-weight: 800; color: var(--teal-700); background: var(--teal-50); border-radius: 8px; padding: 2px 8px; }
+.mcard-why { margin: 14px 16px 0; padding: 12px 14px; border-radius: 16px; background: var(--violet-50); border: 1px solid var(--violet-100); }
+.mcard-why-title { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: var(--violet-700); margin-bottom: 8px; }
+.mcard-why ul { list-style: none; display: grid; gap: 7px; }
+.mcard-why li { display: flex; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+.mcard-why li i { color: var(--violet); font-size: 11px; margin-top: 4px; flex-shrink: 0; }
+.mcard-meta { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding: 14px 16px 0; margin-top: auto; }
+.mcard-price { font-size: 20px; font-weight: 800; line-height: 1; }
+.mcard-price small { font-size: 12px; font-weight: 600; color: var(--muted); }
+.mcard-trial { font-size: 11px; font-weight: 800; color: var(--teal-700); background: var(--teal-50); border-radius: 8px; padding: 4px 8px; white-space: nowrap; }
+.mcard-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px 16px 0; }
+.btn-solid, .btn-line {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 44px; padding: 10px 12px; border-radius: 12px;
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 800;
+  cursor: pointer; text-decoration: none; text-align: center; transition: all .15s;
+}
+.btn-solid { background: var(--teal-600); color: white; border: 1.5px solid var(--teal-600); }
+.btn-solid:hover { background: var(--teal-700); border-color: var(--teal-700); }
+.btn-line { background: white; color: var(--ink-2); border: 1.5px solid var(--border); }
+.btn-line:hover { border-color: var(--teal-500); color: var(--teal-600); }
+.mcard-skip {
+  margin: 8px 16px 12px; min-height: 40px; background: none; border: none;
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700; color: var(--muted);
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.mcard-skip:hover { color: var(--ink); }
+.mcard-skip:disabled { opacity: .45; cursor: not-allowed; }
+
+/* Refine bar */
+.aim-refine { display: flex; gap: 8px; flex: 1; min-width: 260px; }
+.aim-refine input {
+  flex: 1; min-width: 0; min-height: 46px; padding: 0 14px;
+  border: 1.5px solid var(--border); border-radius: 12px; background: var(--bg);
+  font-family: 'Manrope', sans-serif; font-size: 14px; color: var(--ink);
+}
+.aim-refine input:focus { outline: none; border-color: var(--violet); background: white; box-shadow: 0 0 0 4px rgba(139,92,246,.12); }
+.aim-refine .btn-line { min-height: 46px; white-space: nowrap; }
+.aim-left { font-size: 12px; font-weight: 600; color: var(--muted-2); }
+.aim-left b { color: var(--ink-2); }
+.aim-catalog { margin-left: auto; white-space: nowrap; }
+
+/* Catalog link under the cards (phone only) */
+.aim-after { display: none; }
+
+/* Loading */
+.aim-loading { max-width: 560px; margin: 8px auto 0; }
+.aim-loading-title { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 6px; }
+.aim-loading-sub { font-size: 13px; color: var(--muted); text-align: center; margin-bottom: 20px; }
+.aim-steps { list-style: none; display: grid; gap: 10px; margin-bottom: 24px; }
+.aim-step {
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  background: white; border: 1.5px solid var(--border); border-radius: 16px;
+  font-size: 14px; font-weight: 700; color: var(--muted-2);
+}
+.aim-step .dot {
+  width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; color: transparent;
+}
+.aim-step.active { color: var(--ink); border-color: var(--violet-200); }
+.aim-step.active .dot { border-color: var(--violet); border-top-color: transparent; animation: spin .8s linear infinite; }
+.aim-step.done { color: var(--ink-2); }
+.aim-step.done .dot { background: var(--teal-500); border-color: var(--teal-500); color: white; animation: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.aim-skel { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; }
+.sk-card { height: 240px; border-radius: var(--radius-lg); }
+.sk {
+  background: linear-gradient(90deg, #EEF2F6 0%, #F8FAFB 50%, #EEF2F6 100%);
+  background-size: 200% 100%; animation: aisShimmer 1.2s infinite;
+}
+@keyframes aisShimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Empty / limit */
+.aim-empty { max-width: 560px; margin: 8px auto 0; background: white; border: 1.5px solid var(--border); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; }
+.aim-empty-icon { width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 18px; background: var(--violet-50); color: var(--violet); display: flex; align-items: center; justify-content: center; font-size: 22px; }
+.aim-empty h3 { font-family: 'Fraunces', serif; font-size: 24px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+.aim-empty p { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 20px; }
+.aim-empty-actions { display: grid; gap: 8px; max-width: 360px; margin: 0 auto; }
+
+/* Toast */
+.aim-toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+  background: var(--ink); color: white; padding: 12px 18px; border-radius: 14px;
+  font-size: 13px; font-weight: 700; z-index: 400; opacity: 0; pointer-events: none;
+  transition: all .25s; max-width: calc(100% - 32px); text-align: center;
+}
+.aim-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 1023px) {
+  .aim-grid, .aim-skel { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .aib { grid-template-columns: 1fr; padding: 22px; }
+}
+@media (max-width: 640px) {
+  .ais-card.in-modal .ais-title { font-size: 22px; }
+  .ais-examples { flex-wrap: nowrap; overflow-x: auto; margin-left: -16px; margin-right: -16px; padding: 0 16px; scrollbar-width: none;
+    scroll-snap-type: x mandatory; scroll-padding-left: 16px;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+  .ais-examples::-webkit-scrollbar { display: none; }
+  .ais-examples.scrolled { -webkit-mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, transparent, #000 32px, #000 calc(100% - 48px), transparent); }
+  .ais-examples.at-end { -webkit-mask-image: linear-gradient(to right, transparent, #000 32px); mask-image: linear-gradient(to right, transparent, #000 32px); }
+  .ais-ex { flex-shrink: 0; max-width: 72%; white-space: normal; text-align: left; line-height: 1.35; scroll-snap-align: start; border-radius: 14px; padding: 8px 12px; }
+  .ais-ex-hint { display: flex; }
+  .aim-overlay { padding: 0; align-items: stretch; }
+  .aim { max-width: none; max-height: none; height: 100%; height: 100dvh; border-radius: 0; }
+  .aim-head { padding: 12px 16px; }
+  .aim-body { padding: 16px; }
+  .aim-grid, .aim-skel { grid-template-columns: 1fr; }
+  .aim-skel .sk-card:nth-child(n+2) { display: none; }
+  .aim-res-title { font-size: 24px; }
+  .aim-foot { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); gap: 8px; }
+  .aim-refine { min-width: 0; width: 100%; }
+  .aim-foot .aim-catalog, .aim-foot .aim-left { display: none; }
+  .aim-after { display: grid; gap: 10px; margin-top: 16px; text-align: center; font-size: 12px; color: var(--muted-2); font-weight: 600; }
+  .aim-after b { color: var(--ink-2); }
+  .aim-query-top { flex-direction: column; gap: 6px; }
+  .aib { padding: 18px; border-radius: 22px; }
+  .aib-title { font-size: 20px; }
+  .aib-form { flex-direction: column; }
+  .aib-btn { width: 100%; }
+  .empty-ai { flex-direction: column; text-align: center; }
+  .empty-ai .aib-btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .aim, .mcard.swap, .aim-step.active .dot, .sk { animation: none !important; }
+}
+
+</style>
 </head>
 <body>
 
@@ -536,7 +878,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
       <button class="btn-ghost">Увійти</button>
       <button class="btn-pri">Реєстрація</button>
     </div>
-    <button class="burger" onclick="openDrw()"><i class="fa-solid fa-bars"></i></button>
+    <button class="burger" onclick="openDrw()" aria-label="Меню"><i class="fa-solid fa-bars"></i></button>
   </div>
 </header>
 
@@ -545,9 +887,18 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
 <div class="drw" id="drw">
   <div class="drw-head">
     <div class="drw-logo"><div class="drw-logo-ic">L</div><span class="drw-logo-txt">LIBITUM</span></div>
-    <button class="drw-close" onclick="closeDrw()"><i class="fa-solid fa-xmark"></i></button>
+    <button class="drw-close" onclick="closeDrw()" aria-label="Закрити меню"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="drw-body">
+    <!-- AI-підбір: компактний вхід, відкриває вікно підбору -->
+    <button type="button" class="drawer-ai" onclick="closeDrw(); openAiFromCatalog();">
+      <span class="drawer-ai-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+      <span class="drawer-ai-text">
+        <span class="drawer-ai-title">AI-підбір спеціаліста</span>
+        <span class="drawer-ai-sub">Опишіть запит — підберемо трьох</span>
+      </span>
+      <i class="fa-solid fa-chevron-right drawer-ai-arrow"></i>
+    </button>
     <div class="drw-lbl">Меню</div>
     <ul class="drw-nav">
       <li><a href="#" class="active"><span class="drw-nav-l"><span class="drw-nav-ic"><i class="fa-solid fa-magnifying-glass"></i></span>Знайти спеціаліста</span><i class="fa-solid fa-chevron-right" style="color:var(--muted-2);font-size:12px"></i></a></li>
@@ -555,8 +906,6 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
       <li><a href="#"><span class="drw-nav-l"><span class="drw-nav-ic"><i class="fa-regular fa-circle"></i></span>Як це працює</span><i class="fa-solid fa-chevron-right" style="color:var(--muted-2);font-size:12px"></i></a></li>
       <li><a href="#"><span class="drw-nav-l"><span class="drw-nav-ic"><i class="fa-solid fa-circle-info"></i></span>Про нас</span><i class="fa-solid fa-chevron-right" style="color:var(--muted-2);font-size:12px"></i></a></li>
     </ul>
-    <div class="drw-lbl">Швидкі дії</div>
-    <button class="drw-ai"><span>AI-підбір репетитора</span><i class="fa-solid fa-chevron-right" style="opacity:.6;font-size:13px"></i></button>
     <div class="drw-lbl">Мова інтерфейсу</div>
     <div class="drw-lang-row">
       <button class="drw-lang-btn active">🇺🇦 UA</button>
@@ -794,17 +1143,19 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
   </div>
   <div class="pg-info">Показано 1–7 з 237 спеціалістів</div>
 
-  <!-- AI BANNER -->
-  <div class="ai-banner">
-    <div class="ai-banner-left">
-      <div class="ai-banner-icon"><i class="fa-regular fa-star"></i></div>
-      <div>
-        <div class="ai-banner-title">Не можете обрати? Дозвольте AI підібрати</div>
-        <div class="ai-banner-sub">Топ-3 ідеальні матчі під ваші критерії за 30 секунд. Безкоштовно.</div>
-      </div>
+  <!-- AI-ПІДБІР: банер під каталогом (позиція як і раніше) -->
+  <section class="aib" aria-labelledby="aib-title">
+    <div class="aib-left">
+      <span class="ais-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-підбір</span>
+      <h2 class="aib-title" id="aib-title">Не знайшли свого? Опишіть, кого шукаєте</h2>
+      <p class="aib-sub">AI підбере трьох спеціалістів і пояснить, чому кожен підходить. Безкоштовно, без реєстрації.</p>
     </div>
-    <button class="btn-ai-banner">Спробувати AI-підбір <i class="fa-solid fa-arrow-right"></i></button>
-  </div>
+    <form class="aib-form" id="aib-form" novalidate>
+      <label class="sr-only" for="aib-q">Ваш запит</label>
+      <input id="aib-q" class="aib-input" type="text" autocomplete="off" maxlength="400" placeholder="Напр.: англійська, IELTS, онлайн, до 500 ₴">
+      <button class="aib-btn" type="submit"><i class="fa-solid fa-wand-magic-sparkles"></i> Підібрати</button>
+    </form>
+  </section>
 </div>
 
 <!-- FOOTER -->
@@ -815,8 +1166,8 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
         <div class="fb-logo">LIBITUM</div>
         <div class="fb-desc">Платформа для пошуку репетиторів, психологів та логопедів з прозорими правилами.</div>
         <div class="fsoc">
-          <a href="#"><i class="fa-brands fa-telegram"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
         </div>
       </div>
       <div><div class="fc-title">Контакти</div><ul class="fls"><li><a href="mailto:support@libitum.com">support@libitum.com</a></li><li><a href="#">@libitum_support</a></li><li><span>09:00–19:00 (Пн–Сб)</span></li></ul></div>
@@ -834,11 +1185,36 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
 <div class="tbar">
   <div class="tbar-in">
     <div class="ti on"><i class="fa-solid fa-magnifying-glass"></i><span>Пошук</span></div>
-    <div class="ti" style="color:var(--amber)"><i class="fa-regular fa-star"></i><span>AI-підбір</span></div>
+    <div class="ti ai" onclick="openAiFromCatalog()"><i class="fa-solid fa-wand-magic-sparkles"></i><span>AI-підбір</span></div>
     <div class="ti"><i class="fa-regular fa-heart"></i><span>Збережені</span></div>
     <div class="ti"><i class="fa-regular fa-user"></i><span>Кабінет</span></div>
   </div>
 </div>
+
+<!-- ══ AI-ПІДБІР: вікно результатів ══ -->
+<div class="aim-overlay" id="aim-overlay" aria-hidden="true">
+  <div class="aim" role="dialog" aria-modal="true" aria-labelledby="aim-title">
+    <div class="aim-head">
+      <div class="aim-head-title">
+        <span class="ais-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-підбір</span>
+        <span id="aim-title">Підбір спеціаліста</span>
+      </div>
+      <button class="aim-close" id="aim-close" aria-label="Закрити"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="aim-body" id="aim-body" aria-live="polite"></div>
+    <div class="aim-foot" id="aim-foot" hidden>
+      <form class="aim-refine" id="aim-refine">
+        <label class="sr-only" for="aim-refine-input">Уточнити запит</label>
+        <input id="aim-refine-input" type="text" autocomplete="off" placeholder="Уточнити: «дешевше», «тільки онлайн», «жінка»…">
+        <button type="submit" class="btn-line"><i class="fa-solid fa-wand-magic-sparkles"></i> Уточнити</button>
+      </form>
+      <span class="aim-left" id="aim-left"></span>
+      <a class="btn-line aim-catalog" id="aim-catalog" href="#"><i class="fa-solid fa-list"></i> <span id="aim-catalog-label">Усі в каталозі</span></a>
+    </div>
+  </div>
+</div>
+<div class="aim-toast" id="aim-toast" role="status"></div>
+
 
 <!-- MOBILE FILTER SHEET -->
 <div class="mob-sheet-overlay" id="main-sheet-overlay" onclick="if(event.target===this)closeSheet('main-sheet')">
@@ -935,6 +1311,9 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
 </div>
 
 <script>
+/* ══ AI-підбір у порожньому стані каталогу ══ */
+const AI_EMPTY_BLOCK = `<div class="empty-ai"><span class="empty-ai-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span><div class="empty-ai-text"><b>Спробуйте AI-підбір</b><span>Опишіть запит своїми словами — AI підбере найближчі варіанти і пояснить, чому вони підходять.</span></div><button type="button" class="aib-btn" onclick="openAiFromCatalog()"><i class="fa-solid fa-wand-magic-sparkles"></i> Підібрати з AI</button></div>`;
+
 /* ══ DATA ══ */
 const SUBJECTS = {
   rep: ['Англійська мова','Математика','Фізика','Хімія','Біологія','Українська мова','Програмування','Німецька мова','Французька мова','Польська мова','Іспанська мова','Музика','Малювання','Логіка','НМТ / ЗНО'],
@@ -963,8 +1342,8 @@ function renderCards(data) {
         <p>За обраними фільтрами немає спеціалістів. Спробуйте розширити критерії або скиньте фільтри.</p>
         <div class="empty-btns">
           <button class="btn-reset" onclick="clearAll()"><i class="fa-solid fa-rotate-right"></i> Скинути всі фільтри</button>
-          <button class="btn-ai-try">Спробувати AI-підбір</button>
         </div>
+        ${AI_EMPTY_BLOCK}
       </div>`;
     return;
   }
@@ -1374,7 +1753,7 @@ function cfCard(s,i,opts){
       </div>
     </div>`;
 }
-const CF_EMPTY = `<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>На жаль, нічого не знайдено</h3><p>За обраними фільтрами немає спеціалістів. Спробуйте розширити критерії або скиньте фільтри.</p><div class="empty-btns"><button class="btn-reset" onclick="clearAll()"><i class="fa-solid fa-rotate-right"></i> Скинути всі фільтри</button><button class="btn-ai-try">Спробувати AI-підбір</button></div></div>`;
+const CF_EMPTY = `<div class="empty-state"><div class="empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div><h3>На жаль, нічого не знайдено</h3><p>За обраними фільтрами немає спеціалістів. Спробуйте розширити критерії або скиньте фільтри.</p><div class="empty-btns"><button class="btn-reset" onclick="clearAll()"><i class="fa-solid fa-rotate-right"></i> Скинути всі фільтри</button></div>${AI_EMPTY_BLOCK}</div>`;
 function cfRenderList(){
   const root=document.getElementById('cards-root');
   const v=cfSortList(cfVisible(CF));
@@ -1793,6 +2172,549 @@ function showModalToast(msg) {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
 }
+</script>
+<script>
+/* ═══════════════════════════════════════════════════════════
+   AI-ПІДБІР СПЕЦІАЛІСТА (MOCK)
+   Логіка для розробника (див. Excel, аркуш 1):
+   1) AI (Haiku 5.5) розбирає текст запиту → фільтри (JSON)
+   2) Бекенд без AI відбирає до 20 кандидатів і рахує бал
+   3) AI ранжує кандидатів → топ-3 + «чому підходить»
+   4) «Не цей» бере наступного з тих самих кандидатів (кеш, без нового підбору)
+   5) «Уточнити» = новий підбір (рахується в денний ліміт)
+   Ліміт: 10 підборів на день на користувача / IP. Без веб-пошуку.
+   Тут усе імітується на фронтенді, щоб показати UX.
+═══════════════════════════════════════════════════════════ */
+const AIS_DAILY_LIMIT = 10;
+let aisLeft = AIS_DAILY_LIMIT;
+
+const AIS_SUBJECTS = {
+  math:   { label:'Математика',        re:/математ|алгебр|геометр/ },
+  eng:    { label:'Англійська',        re:/англ|english|ielts|toefl/ },
+  ukr:    { label:'Українська мова',   re:/українськ|укр\.? ?мов/ },
+  phys:   { label:'Фізика',            re:/фізик/ },
+  chem:   { label:'Хімія',             re:/хімі/ },
+  bio:    { label:'Біологія',          re:/біолог/ },
+  prog:   { label:'Програмування',     re:/програм|python|пайтон|javascript|код/ },
+  logo:   { label:'Логопед',           re:/логопед|мовлен|звук|вимов/ },
+  psych:  { label:'Психолог',          re:/психолог|тривож|стрес|терап/ },
+  kor:    { label:'Корейська',         re:/корейськ/ },
+};
+const AIS_GROUPS = [
+  { key:'who',      label:'Для кого',          opts:[['child','Дитина'],['teen','Підліток'],['adult','Дорослий']] },
+  { key:'goal',     label:'Мета',              opts:[['nmt','НМТ'],['grades','Підтягнути оцінки'],['zero','З нуля'],['exam','Іспит, сертифікат'],['dev','Для себе']] },
+  { key:'format',   label:'Формат',            opts:[['online','Онлайн'],['offline','Офлайн']] },
+  { key:'budget',   label:'Бюджет за 60 хв',   opts:[['300','до 300 ₴'],['500','до 500 ₴'],['800','до 800 ₴']] },
+  { key:'priority', label:'Що найважливіше',   opts:[['exp','Досвід'],['price','Ціна'],['reviews','Відгуки'],['style','Стиль викладання']] },
+];
+const AIS_LABELS = {
+  who:{child:'Для дитини',teen:'Для підлітка',adult:'Для дорослого'},
+  goal:{nmt:'Підготовка до НМТ',grades:'Підтягнути оцінки',zero:'З нуля',exam:'Іспит, сертифікат',dev:'Для себе'},
+  format:{online:'Онлайн',offline:'Офлайн'},
+  priority:{exp:'Важливо: досвід',price:'Важливо: ціна',reviews:'Важливо: відгуки',style:'Важливо: стиль'},
+  gender:{f:'Жінка',m:'Чоловік'},
+};
+const AIS_EXAMPLES = [
+  'Математика для сина, 9 клас, підготовка до НМТ, онлайн, до 450 ₴',
+  'Англійська для себе з нуля, онлайн',
+  'Логопед для дитини 5 років, Київ',
+];
+
+// Тестові спеціалісти (на проді — з бази)
+const AIS_POOL = [
+  { id:'t1',  name:'Ірина Федорченко',  photo:'https://i.pravatar.cc/300?u=ais1',  subj:['math'],       subjText:'Математика', grades:'5–11 класів', who:['child','teen'], goals:['nmt','grades'], formats:['online','offline'], city:'Київ',  price:380, rating:4.9, reviews:48, exp:8,  gender:'f', style:'пояснює через задачі з реального життя' },
+  { id:'t2',  name:'Андрій Коваль',     photo:'https://i.pravatar.cc/300?u=ais2',  subj:['math','phys'],subjText:'Математика, фізика', grades:'7–11 класів', who:['teen'], goals:['nmt','grades'], formats:['online'], city:'Дніпро', price:420, rating:4.8, reviews:31, exp:6, gender:'m', style:'після кожного уроку надсилає короткий конспект' },
+  { id:'t3',  name:'Ольга Савчук',      photo:'https://i.pravatar.cc/300?u=ais3',  subj:['math'],       subjText:'Математика', grades:'1–6 класів', who:['child'], goals:['grades','zero'], formats:['online','offline'], city:'Львів', price:300, rating:5.0, reviews:22, exp:10, gender:'f', style:'ігрові завдання для молодших школярів' },
+  { id:'t4',  name:'Максим Бондар',     photo:'https://i.pravatar.cc/300?u=ais4',  subj:['math'],       subjText:'Математика', grades:'9–11 класів', who:['teen'], goals:['nmt'], formats:['online'], city:'Харків', price:450, rating:4.7, reviews:19, exp:4, gender:'m', style:'щомісяця проводить пробне НМТ' },
+  { id:'t5',  name:'Тетяна Гаврилюк',   photo:'https://i.pravatar.cc/300?u=ais5',  subj:['eng'],        subjText:'Англійська', grades:'дорослими та підлітками', who:['adult','teen'], goals:['zero','dev','exam'], formats:['online'], city:'Київ', price:350, rating:4.9, reviews:27, exp:3, gender:'f', style:'розмовна практика з першого уроку' },
+  { id:'t6',  name:'Олена Іваненко',    photo:'https://i.pravatar.cc/300?u=ais6',  subj:['eng'],        subjText:'Англійська', grades:'підлітками та дорослими', who:['teen','adult'], goals:['exam','nmt'], formats:['online','offline'], city:'Київ', price:500, rating:4.9, reviews:64, exp:12, gender:'f', style:'готує до IELTS і НМТ з англійської' },
+  { id:'t7',  name:'Дмитро Лисенко',    photo:'https://i.pravatar.cc/300?u=ais7',  subj:['eng'],        subjText:'Англійська', grades:'дітьми 6–12 років', who:['child'], goals:['zero','grades'], formats:['online'], city:'Одеса', price:320, rating:4.8, reviews:0, exp:5, gender:'m', style:'короткі блоки по 15 хвилин, щоб дитина не втомлювалась' },
+  { id:'t8',  name:'Юлія Мельник',      photo:'https://i.pravatar.cc/300?u=ais8',  subj:['ukr'],        subjText:'Українська мова та література', grades:'8–11 класів', who:['teen'], goals:['nmt','grades'], formats:['online'], city:'Вінниця', price:360, rating:4.9, reviews:40, exp:7, gender:'f', style:'розбирає типові помилки НМТ' },
+  { id:'t9',  name:'Наталія Ліщук',     photo:'https://i.pravatar.cc/300?u=ais9',  subj:['logo'],       subjText:'Логопед', grades:'дітьми 3–8 років', who:['child'], goals:['dev','zero'], formats:['online','offline'], city:'Київ', price:500, rating:5.0, reviews:80, exp:11, gender:'f', style:'наприкінці заняття дає вправи для батьків' },
+  { id:'t10', name:'Ігор Павленко',     photo:'https://i.pravatar.cc/300?u=ais10', subj:['logo'],       subjText:'Логопед', grades:'дітьми 4–10 років', who:['child'], goals:['dev'], formats:['offline'], city:'Київ', price:450, rating:4.8, reviews:35, exp:9, gender:'m', style:'працює із заїканням і постановкою звуків' },
+  { id:'t11', name:'Марія Кравець',     photo:'https://i.pravatar.cc/300?u=ais11', subj:['psych'],      subjText:'Психолог', grades:'дорослими та підлітками', who:['adult','teen'], goals:['dev'], formats:['online'], city:'Київ', price:600, rating:5.0, reviews:62, exp:9, gender:'f', style:'КПТ: тривожність, стрес, вигорання' },
+  { id:'t12', name:'Роман Петренко',    photo:'https://i.pravatar.cc/300?u=ais12', subj:['psych'],      subjText:'Психолог', grades:'підлітками', who:['teen'], goals:['dev'], formats:['online'], city:'Львів', price:500, rating:4.7, reviews:40, exp:6, gender:'m', style:'підліткова психологія і стосунки з батьками' },
+  { id:'t13', name:'Сергій Ніколаєнко', photo:'https://i.pravatar.cc/300?u=ais13', subj:['prog'],       subjText:'Програмування', grades:'підлітками та дорослими', who:['teen','adult'], goals:['zero','dev'], formats:['online'], city:'Київ', price:550, rating:4.8, reviews:22, exp:7, gender:'m', style:'Python з нуля через власні проєкти' },
+  { id:'t14', name:'Катерина Сидоренко',photo:'https://i.pravatar.cc/300?u=ais14', subj:['chem','bio'], subjText:'Хімія, біологія', grades:'8–11 класів', who:['teen'], goals:['nmt','grades'], formats:['online'], city:'Полтава', price:450, rating:5.0, reviews:75, exp:8, gender:'f', style:'схеми й таблиці замість зубріння' },
+  { id:'t16', name:'Олексій Руденко',   photo:'https://i.pravatar.cc/300?u=ais16', subj:['math'],       subjText:'Математика', grades:'8–11 класів', who:['teen'], goals:['nmt','grades'], formats:['online'], city:'Житомир', price:400, rating:4.8, reviews:0, exp:3, gender:'m', style:'розбирає кожну помилку на прикладах' },
+  { id:'t15', name:'Віктор Гнатюк',     photo:'https://i.pravatar.cc/300?u=ais15', subj:['phys'],       subjText:'Фізика', grades:'7–11 класів', who:['teen'], goals:['nmt','grades'], formats:['online'], city:'Київ', price:400, rating:4.6, reviews:12, exp:5, gender:'m', style:'досліди вдома з підручних засобів' },
+];
+
+let aisState = null;   // { raw, q, list, shown:[idx..], next }
+let aisLastFocus = null;
+
+const aq  = (s, r=document) => r.querySelector(s);
+const aqq = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ── Картка пошуку (рендериться для десктопу і для мобільного) ──
+function buildAisCard(mount, prefix) {
+  mount.innerHTML = `
+    <form class="ais-card${prefix === 'aimf' ? ' in-modal' : ''}" data-prefix="${prefix}" novalidate>
+      <div class="ais-head">
+        <span class="ais-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-підбір</span>
+        <span class="ais-free">Безкоштовно, без реєстрації</span>
+      </div>
+      <h2 class="ais-title">Опишіть, кого шукаєте</h2>
+      <p class="ais-sub">AI підбере 3 спеціалістів і пояснить, чому кожен вам підходить.</p>
+
+      <label class="sr-only" for="${prefix}-q">Ваш запит</label>
+      <textarea class="ais-input" id="${prefix}-q" rows="3" maxlength="400"
+        placeholder="Напр.: репетитор з математики для сина, 9 клас, підготовка до НМТ, онлайн, до 450 ₴"></textarea>
+      <div class="ais-error" id="${prefix}-err" role="alert">Напишіть, кого шукаєте, або оберіть хоча б один критерій.</div>
+
+      <div class="ais-ex-hint" aria-hidden="true">Приклади запитів <i class="fa-solid fa-arrow-right-long"></i> гортайте</div>
+      <div class="ais-examples" aria-label="Приклади запитів">
+        ${AIS_EXAMPLES.map(e => `<button type="button" class="ais-ex" data-example="${esc(e)}">${esc(e)}</button>`).join('')}
+      </div>
+
+      <button type="button" class="ais-more" aria-expanded="false" aria-controls="${prefix}-crit">
+        <i class="fa-solid fa-chevron-down"></i> Уточнити критерії (необов'язково)
+      </button>
+      <div class="ais-criteria" id="${prefix}-crit" hidden>
+        ${AIS_GROUPS.map(g => `
+          <div role="group" aria-label="${g.label}">
+            <div class="ais-group-label">${g.label}</div>
+            <div class="ais-opts">
+              ${g.opts.map(([v,l]) => `<button type="button" class="ais-opt" data-key="${g.key}" data-val="${v}" aria-pressed="false">${l}</button>`).join('')}
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <button type="submit" class="ais-submit"><i class="fa-solid fa-wand-magic-sparkles"></i> Підібрати спеціалістів</button>
+      <div class="ais-foot">
+        <span class="ais-left-text"></span>
+        <span>Зазвичай 5–10 секунд</span>
+      </div>
+    </form>`;
+
+  const form = aq('form', mount);
+  const ta = aq('.ais-input', form);
+  const exWrap = aq('.ais-examples', form);
+  const syncEx = () => {
+    const max = exWrap.scrollWidth - exWrap.clientWidth;
+    exWrap.classList.toggle('scrolled', exWrap.scrollLeft > 4);
+    exWrap.classList.toggle('at-end', max > 0 && exWrap.scrollLeft >= max - 4);
+  };
+  exWrap.addEventListener('scroll', syncEx, { passive: true });
+  syncEx();
+
+  aqq('.ais-ex', form).forEach(b => b.addEventListener('click', () => {
+    ta.value = b.dataset.example; ta.focus(); clearAisError(form);
+  }));
+  const more = aq('.ais-more', form), crit = aq('.ais-criteria', form);
+  more.addEventListener('click', () => {
+    const open = more.getAttribute('aria-expanded') === 'true';
+    more.setAttribute('aria-expanded', String(!open));
+    crit.hidden = open;
+  });
+  aqq('.ais-opt', form).forEach(b => b.addEventListener('click', () => {
+    const on = b.getAttribute('aria-pressed') === 'true';
+    aqq(`.ais-opt[data-key="${b.dataset.key}"]`, form).forEach(x => x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed', String(!on));
+    clearAisError(form);
+  }));
+  ta.addEventListener('input', () => clearAisError(form));
+  ta.addEventListener('keydown', e => { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') form.requestSubmit(); });
+  form.addEventListener('submit', e => { e.preventDefault(); submitAisCard(form); });
+}
+
+function clearAisError(form) {
+  aq('.ais-input', form).classList.remove('has-error');
+  aq('.ais-error', form).classList.remove('show');
+}
+
+function readCriteria(form) {
+  const c = {};
+  aqq('.ais-opt[aria-pressed="true"]', form).forEach(b => { c[b.dataset.key] = b.dataset.key === 'budget' ? Number(b.dataset.val) : b.dataset.val; });
+  return c;
+}
+
+function submitAisCard(form) {
+  const raw = aq('.ais-input', form).value.trim();
+  const crit = readCriteria(form);
+  if (!raw && !Object.keys(crit).length) {
+    aq('.ais-input', form).classList.add('has-error');
+    aq('.ais-error', form).classList.add('show');
+    aq('.ais-input', form).focus();
+    return;
+  }
+  aisLastFocus = aq('.ais-submit', form);
+  const q = parseAisQuery(raw, {}, crit);
+  runAisSearch(raw, q);
+}
+
+// ── Крок 1: «AI» розбирає запит у фільтри (тут — регулярні вирази) ──
+function parseAisQuery(text, base = {}, crit = {}) {
+  const t = (text || '').toLowerCase();
+  const q = { subject:null, grade:null, who:null, goal:null, format:null, budget:null, priority:null, gender:null, city:null, ...base };
+  for (const [k, s] of Object.entries(AIS_SUBJECTS)) if (s.re.test(t)) { q.subject = k; break; }
+  const g = t.match(/(\d{1,2})\s*-?\s*(?:й|ий|го)?\s*клас/); if (g) q.grade = Number(g[1]);
+  if (/нмт|зно/.test(t)) q.goal = 'nmt';
+  else if (/оцінк|підтягн|відста/.test(t)) q.goal = 'grades';
+  else if (/з нуля|почат/.test(t)) q.goal = 'zero';
+  else if (/ielts|toefl|іспит|сертиф/.test(t)) q.goal = 'exam';
+  else if (/для себе|розмовн|розвит/.test(t)) q.goal = q.goal || 'dev';
+  if (/підліт/.test(t) || (q.grade && q.grade >= 7)) q.who = 'teen';
+  else if (/син|доньк|дитин|дит[иі]|школяр|\b\d\s*рок|(\d)\s*років/.test(t) || (q.grade && q.grade < 7)) q.who = 'child';
+  else if (/дорос|для себе|мені\b/.test(t)) q.who = 'adult';
+  if (/онлайн|online|дистанц/.test(t)) q.format = 'online';
+  if (/офлайн|наживо|очно|вдома|київ|львів|одес|харків|дніпр/.test(t)) q.format = q.format || 'offline';
+  const city = t.match(/київ|львів|одес|харків|дніпр/); if (city) q.city = {київ:'Київ',львів:'Львів',одес:'Одеса',харків:'Харків',дніпр:'Дніпро'}[city[0]];
+  const b = t.match(/до\s*(\d{3,4})/); if (b) q.budget = Number(b[1]);
+  if (/дешевш/.test(t)) { q.budget = q.budget ? Math.round(q.budget * 0.8 / 10) * 10 : 400; q.priority = 'price'; }
+  if (/досвід/.test(t)) q.priority = 'exp';
+  if (/відгук|рейтинг/.test(t)) q.priority = 'reviews';
+  if (/жінк|репетиторк|вчительк/.test(t)) q.gender = 'f';
+  if (/чолов/.test(t)) q.gender = 'm';
+  if (/тільки онлайн/.test(t)) q.format = 'online';
+  return { ...q, ...crit };
+}
+
+// ── Крок 2–3: відбір кандидатів і ранжування ──
+function matchAis(q) {
+  let pool = AIS_POOL.filter(t => !q.subject || t.subj.includes(q.subject));
+  const blocked = { subject: q.subject && !pool.length };
+  const step = (key, fn) => { if (!q[key]) return; const next = pool.filter(fn); if (!next.length) blocked[key] = true; pool = next; };
+  step('format', t => t.formats.includes(q.format));
+  step('budget', t => t.price <= q.budget);
+  step('gender', t => t.gender === q.gender);
+  step('who',    t => t.who.includes(q.who));
+  const score = t => {
+    let s = t.rating * 2;
+    if (q.goal && t.goals.includes(q.goal)) s += 4;
+    if (q.city && t.city === q.city) s += 2;
+    if (q.priority === 'price')   s += (800 - t.price) / 60;
+    if (q.priority === 'exp')     s += t.exp / 1.5;
+    if (q.priority === 'reviews') s += t.reviews / 12;
+    if (q.priority === 'style')   s += 1;
+    return s;
+  };
+  return { list: pool.sort((a, b) => score(b) - score(a)), blocked };
+}
+
+// «Чому підходить» — на проді пише AI, тут — шаблони з критеріїв
+function whyAis(t, q) {
+  const r = [];
+  if (q.goal === 'nmt' && t.goals.includes('nmt')) r.push(`Готує до НМТ: ${t.subjText.toLowerCase()}`);
+  else if (q.goal && t.goals.includes(q.goal)) r.push(`${AIS_LABELS.goal[q.goal]}: має досвід саме з таким запитом`);
+  else r.push(`${t.exp} р. досвіду: ${t.subjText.toLowerCase()}`);
+  if (q.grade || q.who) r.push(`Працює з ${t.grades}`);
+  if (q.budget) r.push(`₴${t.price} за 60 хв — у межах бюджету до ${q.budget} ₴`);
+  else if (q.format === 'offline') r.push(`Займається офлайн, ${t.city}`);
+  else if (q.format === 'online') r.push('Проводить заняття онлайн');
+  if (r.length < 3) r.push(t.reviews ? `Оцінка ${String(t.rating).replace('.', ',')} за ${t.reviews} відгуками` : `Особливість: ${t.style}`);
+  if (r.length < 3) r.push(`Особливість: ${t.style}`);
+  return r.slice(0, 3);
+}
+
+// ── Запуск підбору ──
+function runAisSearch(raw, q) {
+  openAim();
+  if (aisLeft <= 0) { renderAimLimit(); return; }
+  aisLeft--; updateAisCounters();
+  renderAimLoading();
+  const steps = aqq('.aim-step');
+  const delay = matchMedia('(prefers-reduced-motion: reduce)').matches ? 150 : 750;
+  steps.forEach((s, i) => setTimeout(() => {
+    steps.forEach((x, j) => { x.classList.toggle('done', j < i); x.classList.toggle('active', j === i); });
+  }, i * delay));
+  setTimeout(() => {
+    const { list, blocked } = matchAis(q);
+    aisState = { raw, q, list, blocked, shown: list.slice(0, 3).map((_, i) => i), next: 3 };
+    list.length ? renderAimResults() : renderAimEmpty();
+  }, steps.length * delay);
+}
+
+// ── Вікно ──
+function openAim() {
+  const ov = aq('#aim-overlay');
+  if (ov.classList.contains('open')) return;
+  aisLastFocus = aisLastFocus || document.activeElement;
+  ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  if (!document.activeElement || !document.activeElement.closest('#aim-overlay')) setTimeout(() => { if (!aq('#aim-overlay').contains(document.activeElement)) aq('#aim-close').focus(); }, 30);
+}
+function closeAim() {
+  const ov = aq('#aim-overlay');
+  ov.classList.remove('open'); ov.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  if (aisLastFocus) aisLastFocus.focus();
+  aisLastFocus = null;
+}
+
+function renderAimLoading() {
+  aq('#aim-foot').hidden = true;
+  aq('#aim-body').innerHTML = `
+    <div class="aim-loading">
+      <div class="aim-loading-title">Підбираємо спеціалістів</div>
+      <div class="aim-loading-sub">Зазвичай це займає 5–10 секунд</div>
+      <ol class="aim-steps">
+        <li class="aim-step active"><span class="dot"><i class="fa-solid fa-check"></i></span>Розбираємо ваш запит</li>
+        <li class="aim-step"><span class="dot"><i class="fa-solid fa-check"></i></span>Шукаємо серед перевірених спеціалістів</li>
+        <li class="aim-step"><span class="dot"><i class="fa-solid fa-check"></i></span>Обираємо трьох і пояснюємо чому</li>
+      </ol>
+    </div>
+    <div class="aim-skel" aria-hidden="true">
+      <div class="sk sk-card"></div><div class="sk sk-card"></div><div class="sk sk-card"></div>
+    </div>`;
+}
+
+function chipsHtml(q) {
+  const chips = [];
+  if (q.subject) chips.push(['subject', AIS_SUBJECTS[q.subject].label]);
+  if (q.grade)   chips.push(['grade', `${q.grade} клас`]);
+  if (q.who && !q.grade) chips.push(['who', AIS_LABELS.who[q.who]]);
+  if (q.goal)    chips.push(['goal', AIS_LABELS.goal[q.goal]]);
+  if (q.format)  chips.push(['format', AIS_LABELS.format[q.format]]);
+  if (q.city && q.format === 'offline') chips.push(['city', q.city]);
+  if (q.budget)  chips.push(['budget', `до ${q.budget} ₴`]);
+  if (q.gender)  chips.push(['gender', AIS_LABELS.gender[q.gender]]);
+  if (q.priority)chips.push(['priority', AIS_LABELS.priority[q.priority]]);
+  if (!chips.length) return `<span class="aim-chip muted">Без фільтрів: показуємо найкращих спеціалістів</span>`;
+  return chips.map(([k, l]) => `<span class="aim-chip">${esc(l)}<button type="button" data-remove="${k}" aria-label="Прибрати «${esc(l)}»"><i class="fa-solid fa-xmark"></i></button></span>`).join('');
+}
+
+function queryBlockHtml() {
+  const { raw, q } = aisState;
+  return `
+    <div class="aim-query">
+      <div class="aim-query-top">
+        <div class="aim-query-text">${raw ? `Ваш запит: <q>${esc(raw)}</q>` : 'Підбір за обраними критеріями'}</div>
+        <button type="button" class="aim-edit" id="aim-edit"><i class="fa-solid fa-pen"></i> Змінити запит</button>
+      </div>
+      <div class="aim-understood">AI зрозумів так (натисніть ×, щоб прибрати):</div>
+      <div class="aim-chips">${chipsHtml(q)}</div>
+    </div>`;
+}
+
+function mcardHtml(t, pos) {
+  const best = pos === 0;
+  const canSkip = aisState.next < aisState.list.length;
+  return `
+    <article class="mcard ${best ? 'best' : ''}" data-pos="${pos}">
+      <div class="mcard-top">
+        <img class="mcard-photo" src="${t.photo}" alt="" loading="lazy">
+        <div>
+          <div class="mcard-rank">${best ? 'Найкращий збіг' : `Варіант ${pos + 1}`}</div>
+          <h4 class="mcard-name">${esc(t.name)}</h4>
+          <div class="mcard-subj">${esc(t.subjText)}</div>
+          ${t.reviews ? `<div class="mcard-rating"><i class="fa-solid fa-star"></i>${String(t.rating).replace('.', ',')} <span>· ${t.reviews} відгуків</span></div>` : `<span class="mcard-new">Новий на Libitum</span>`}
+        </div>
+      </div>
+      <div class="mcard-why">
+        <div class="mcard-why-title"><i class="fa-solid fa-wand-magic-sparkles"></i> Чому підходить</div>
+        <ul>${whyAis(t, aisState.q).map(x => `<li><i class="fa-solid fa-check"></i><span>${esc(x)}</span></li>`).join('')}</ul>
+      </div>
+      <div class="mcard-meta">
+        <div class="mcard-price">₴${t.price} <small>/ 60 хв</small></div>
+        <span class="mcard-trial">Пробне заняття безкоштовне</span>
+      </div>
+      <div class="mcard-actions">
+        <a class="btn-line" href="/ua/tutor/${t.id}">Профіль</a>
+        <button type="button" class="btn-solid" data-book="${t.id}">Залишити заявку</button>
+      </div>
+      <button type="button" class="mcard-skip" data-skip="${pos}" ${canSkip ? '' : 'disabled'}>
+        <i class="fa-solid fa-rotate"></i> ${canSkip ? 'Не цей — показати іншого' : 'Інших варіантів немає'}
+      </button>
+    </article>`;
+}
+
+function renderAimResults() {
+  const { list, shown } = aisState;
+  const n = shown.length;
+  aq('#aim-body').innerHTML = `
+    ${queryBlockHtml()}
+    <div class="aim-res-head">
+      <div>
+        <h3 class="aim-res-title">${n === 1 ? 'Знайшли 1 спеціаліста' : `${n} спеціалісти, які підходять найкраще`}</h3>
+        <div class="aim-res-sub">Усього під ваш запит: ${list.length}. Відсортовано за відповідністю.</div>
+      </div>
+    </div>
+    <div class="aim-grid" id="aim-grid">${shown.map((idx, pos) => mcardHtml(list[idx], pos)).join('')}</div>
+    <div class="aim-after">
+      <a class="btn-line" href="${catalogUrl(aisState.q)}"><i class="fa-solid fa-list"></i> Усі ${list.length} у каталозі</a>
+      <span class="ais-left-text"></span>
+    </div>`;
+  aq('#aim-foot').hidden = false;
+  updateAisCounters();
+  aq('#aim-catalog').href = catalogUrl(aisState.q);
+  aq('#aim-catalog-label').textContent = `Усі ${list.length} у каталозі`;
+  bindAimResults();
+}
+
+function bindAimResults() {
+  aqq('[data-remove]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.remove; const q = { ...aisState.q, [k]: null };
+    if (k === 'grade') q.who = null;
+    if (k === 'format') q.city = null;
+    runAisSearch(aisState.raw, q);
+  }));
+  const edit = aq('#aim-edit'); if (edit) edit.addEventListener('click', backToForm);
+  aqq('[data-skip]').forEach(b => b.addEventListener('click', () => skipCard(Number(b.dataset.skip))));
+  aqq('[data-book]').forEach(b => b.addEventListener('click', () => {
+    const t = AIS_POOL.find(x => x.id === b.dataset.book);
+    const type = t.subj.includes('psych') ? 'psy' : t.subj.includes('logo') ? 'logo' : 'rep';
+    openBookingModal(t.name, String(t.rating), String(t.reviews), String(t.exp), t.price, type);
+  }));
+}
+
+function skipCard(pos) {
+  if (aisState.next >= aisState.list.length) return;
+  aisState.shown[pos] = aisState.next++;
+  const grid = aq('#aim-grid');
+  grid.innerHTML = aisState.shown.map((idx, p) => mcardHtml(aisState.list[idx], p)).join('');
+  const card = aq(`.mcard[data-pos="${pos}"]`, grid); card.classList.add('swap');
+  bindAimResults();
+  if (aisState.next >= aisState.list.length) aisToast('Це всі варіанти під ваш запит. Інших можна переглянути в каталозі.');
+}
+
+function renderAimEmpty() {
+  const { q, blocked } = aisState;
+  let title = 'Поки немає спеціалістів під цей запит', text = 'Спробуйте прибрати один із критеріїв.', actions = '';
+  if (blocked.subject) {
+    title = `Поки немає спеціалістів: ${AIS_SUBJECTS[q.subject].label.toLowerCase()}`;
+    text = 'Ми щойно запустилися і щодня додаємо нових спеціалістів. Залиште запит — ми повідомимо, щойно з’явиться підходящий.';
+    actions = `<a class="btn-solid" href="/ua/request?subject=${q.subject}">Повідомити мене</a>`;
+  } else {
+    const map = { budget:`Прибрати бюджет до ${q.budget} ₴`, format:`Прибрати «${q.format ? AIS_LABELS.format[q.format] : ''}»`, gender:'Прибрати «стать спеціаліста»', who:'Прибрати «для кого»' };
+    const keys = Object.keys(blocked).filter(k => blocked[k] && map[k]);
+    text = keys.length ? 'Під усі критерії одночасно ніхто не підходить. Найбільше обмежує:' : text;
+    actions = keys.map(k => `<button type="button" class="btn-solid" data-remove="${k}">${esc(map[k])}</button>`).join('');
+  }
+  aq('#aim-body').innerHTML = `
+    ${queryBlockHtml()}
+    <div class="aim-empty">
+      <div class="aim-empty-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+      <h3>${esc(title)}</h3>
+      <p>${esc(text)}</p>
+      <div class="aim-empty-actions">
+        ${actions}
+        <button type="button" class="btn-line" id="aim-edit-2">Змінити запит</button>
+        <a class="btn-line" href="${catalogUrl({ subject:q.subject })}">Відкрити каталог</a>
+      </div>
+    </div>`;
+  aq('#aim-foot').hidden = true;
+  bindAimResults();
+  aq('#aim-edit-2').addEventListener('click', backToForm);
+}
+
+function renderAimLimit() {
+  aq('#aim-foot').hidden = true;
+  aq('#aim-body').innerHTML = `
+    <div class="aim-empty">
+      <div class="aim-empty-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+      <h3>Ви використали ${AIS_DAILY_LIMIT} AI-підборів на сьогодні</h3>
+      <p>Нові підбори будуть доступні завтра. Тим часом знайдіть спеціаліста в каталозі за фільтрами — це так само безкоштовно.</p>
+      <div class="aim-empty-actions">
+        <a class="btn-solid" href="${catalogUrl(aisState ? aisState.q : {})}">Відкрити каталог</a>
+        <button type="button" class="btn-line" onclick="closeAim()">Закрити</button>
+      </div>
+    </div>`;
+}
+
+function backToForm() {
+  renderAimForm(aisState ? aisState.raw : '');
+}
+
+// Форма запиту всередині вікна (мобільний вхід з бургер-меню і «Змінити запит»)
+function renderAimForm(prefill = '') {
+  aq('#aim-foot').hidden = true;
+  const body = aq('#aim-body');
+  buildAisCard(body, 'aimf');
+  updateAisCounters();
+  const ta = aq('.ais-input', body);
+  if (prefill) ta.value = prefill;
+  setTimeout(() => ta.focus(), 60);
+}
+
+function openAiPopup(prefill = '') {
+  aisLastFocus = aisLastFocus || document.activeElement;
+  openAim();
+  renderAimForm(prefill);
+}
+
+function catalogUrl(q) {
+  const slug = { math:'matematyka', eng:'angliiska', ukr:'ukrainska-mova', phys:'fizyka', chem:'khimiia', bio:'biolohiia', prog:'prohramuvannia', logo:'logoped', psych:'psykholoh', kor:'koreyska' };
+  const base = q.subject === 'logo' ? '/ua/logopeds' : q.subject === 'psych' ? '/ua/psychologists' : (q.subject ? `/ua/tutors/${slug[q.subject]}` : '/ua/tutors');
+  const p = new URLSearchParams();
+  if (q.grade) p.set('grade', q.grade);
+  if (q.who) p.set('age', q.who);
+  if (q.goal) p.set('goal', q.goal);
+  if (q.format) p.set('format', q.format);
+  if (q.budget) p.set('priceMax', q.budget);
+  const s = p.toString();
+  return s ? `${base}?${s}` : base;
+}
+
+function updateAisCounters() {
+  const txt = aisLeft > 0 ? `Залишилось <b>${aisLeft}</b> з ${AIS_DAILY_LIMIT} підборів сьогодні` : 'На сьогодні підбори закінчились';
+  aqq('.ais-left-text').forEach(el => el.innerHTML = txt);
+  const al = aq('#aim-left'); if (al) al.innerHTML = txt;
+  aqq('.ais-submit').forEach(b => b.disabled = false);
+}
+
+function focusAiSearch(prefill) { openAiPopup(typeof prefill === 'string' ? prefill : ''); }
+
+let aisToastTimer;
+function aisToast(msg) {
+  const t = aq('#aim-toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(aisToastTimer); aisToastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+function initAis() {
+  aq('#aim-close').addEventListener('click', closeAim);
+  aq('#aim-overlay').addEventListener('mousedown', e => { if (e.target.id === 'aim-overlay') e.currentTarget.dataset.down = '1'; });
+  aq('#aim-overlay').addEventListener('mouseup', e => {
+    if (e.target.id === 'aim-overlay' && e.currentTarget.dataset.down === '1') closeAim();
+    e.currentTarget.dataset.down = '';
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && aq('#aim-overlay').classList.contains('open') && !aq('#bookingModal').classList.contains('open')) closeAim();
+  });
+  aq('#aim-refine').addEventListener('submit', e => {
+    e.preventDefault();
+    const inp = aq('#aim-refine-input'); const v = inp.value.trim(); if (!v || !aisState) return;
+    const q = parseAisQuery(v, aisState.q);
+    const raw = aisState.raw ? `${aisState.raw}; ${v}` : v;
+    inp.value = '';
+    runAisSearch(raw, q);
+  });
+  // Банер під каталогом
+  aq('#aib-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = aq('#aib-q').value.trim();
+    aisLastFocus = aq('#aib-form .aib-btn');
+    if (!v) { openAiFromCatalog(); return; }
+    runAisSearch(v, parseAisQuery(v));
+  });
+  // Після закриття бронювання вікно AI лишається відкритим — не даємо сторінці прокручуватися під ним
+  const _closeBooking = closeBookingModal;
+  window.closeBookingModal = function () { _closeBooking(); if (aq('#aim-overlay').classList.contains('open')) document.body.style.overflow = 'hidden'; };
+  // Якщо каталог порожній — AI-пропозиція вже є в порожньому стані, банер під списком ховаємо
+  const cards = aq('#cards-root'), banner = aq('.aib');
+  const syncBanner = () => { banner.hidden = !!cards.querySelector('.empty-state'); };
+  new MutationObserver(syncBanner).observe(cards, { childList: true });
+  syncBanner();
+  updateAisCounters();
+}
+
+/* Відкрити AI-підбір з урахуванням уже обраних фільтрів каталогу */
+function openAiFromCatalog() {
+  const parts = [];
+  if (typeof CF !== 'undefined') {
+    if (CF.subject) parts.push(CF.subject);
+    if (CF.who && CF.who !== 'all') parts.push({ child:'для дитини', teen:'для підлітка', adult:'для дорослого' }[CF.who]);
+    if (CF.level) parts.push('рівень ' + CF.level);
+    if (CF.goal && GOAL_FULL[CF.goal]) parts.push(GOAL_FULL[CF.goal].toLowerCase());
+    if (CF.fmt) parts.push(CF.fmt === 'on' ? 'онлайн' : 'офлайн');
+    if (CF.pMax) parts.push('до ' + CF.pMax + ' ₴');
+  }
+  aisLastFocus = document.activeElement;
+  openAiPopup(parts.join(', '));
+}
+
+document.addEventListener('DOMContentLoaded', initAis);
 </script>
 </body>
 </html>
