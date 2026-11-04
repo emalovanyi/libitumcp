@@ -602,6 +602,7 @@ footer{background:#fff;border-top:1px solid var(--border);padding:48px 0 28px}
 .ais-ex-hint { display: none; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; color: var(--muted); margin: 10px 0 -4px; }
 .ais-ex-hint i { font-size: 11px; color: var(--violet); }
 .ais-more {
+  margin-top: 8px;
   display: inline-flex; align-items: center; gap: 8px; background: none; border: none;
   font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
   color: var(--teal-600); cursor: pointer; padding: 6px 0; margin-bottom: 10px;
@@ -2253,7 +2254,6 @@ function buildAisCard(mount, prefix) {
     <form class="ais-card${prefix === 'aimf' ? ' in-modal' : ''}" data-prefix="${prefix}" novalidate>
       <div class="ais-head">
         <span class="ais-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> AI-підбір</span>
-        <span class="ais-free">Безкоштовно, без реєстрації</span>
       </div>
       <h2 class="ais-title">Опишіть, кого шукаєте</h2>
       <p class="ais-sub">AI підбере 3 спеціалістів і пояснить, чому кожен вам підходить.</p>
@@ -2263,10 +2263,6 @@ function buildAisCard(mount, prefix) {
         placeholder="Напр.: репетитор з математики для сина, 9 клас, підготовка до НМТ, онлайн, до 450 ₴"></textarea>
       <div class="ais-error" id="${prefix}-err" role="alert">Напишіть, кого шукаєте, або оберіть хоча б один критерій.</div>
 
-      <div class="ais-ex-hint" aria-hidden="true">Приклади запитів <i class="fa-solid fa-arrow-right-long"></i> гортайте</div>
-      <div class="ais-examples" aria-label="Приклади запитів">
-        ${AIS_EXAMPLES.map(e => `<button type="button" class="ais-ex" data-example="${esc(e)}">${esc(e)}</button>`).join('')}
-      </div>
 
       <button type="button" class="ais-more" aria-expanded="false" aria-controls="${prefix}-crit">
         <i class="fa-solid fa-chevron-down"></i> Уточнити критерії (необов'язково)
@@ -2284,24 +2280,11 @@ function buildAisCard(mount, prefix) {
       <button type="submit" class="ais-submit"><i class="fa-solid fa-wand-magic-sparkles"></i> Підібрати спеціалістів</button>
       <div class="ais-foot">
         <span class="ais-left-text"></span>
-        <span>Зазвичай 5–10 секунд</span>
       </div>
     </form>`;
 
   const form = aq('form', mount);
   const ta = aq('.ais-input', form);
-  const exWrap = aq('.ais-examples', form);
-  const syncEx = () => {
-    const max = exWrap.scrollWidth - exWrap.clientWidth;
-    exWrap.classList.toggle('scrolled', exWrap.scrollLeft > 4);
-    exWrap.classList.toggle('at-end', max > 0 && exWrap.scrollLeft >= max - 4);
-  };
-  exWrap.addEventListener('scroll', syncEx, { passive: true });
-  syncEx();
-
-  aqq('.ais-ex', form).forEach(b => b.addEventListener('click', () => {
-    ta.value = b.dataset.example; ta.focus(); clearAisError(form);
-  }));
   const more = aq('.ais-more', form), crit = aq('.ais-criteria', form);
   more.addEventListener('click', () => {
     const open = more.getAttribute('aria-expanded') === 'true';
